@@ -2,1196 +2,816 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🌈 O Monstro Comilão Mágico - Para Lavine ✨</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>O Monstro Comilão - Para Lavine</title>
     <style>
-        /* === RESET E VARIÁVEIS === */
-        :root {
-            --color-sky-light: #87CEEB;
-            --color-sky-dark: #4A90E2;
-            --color-grass: #7EC850;
-            --color-sunshine: #FFD93D;
-            --color-magic: #FF6B9D;
-            --color-purple: #C77DFF;
-            --color-orange: #FF9E5E;
-            --color-success: #4ECDC4;
-            --shadow-soft: 0 8px 20px rgba(0,0,0,0.15);
-            --shadow-pop: 0 12px 30px rgba(0,0,0,0.25);
-        }
-
-        * {
+        /* --- ESTILOS GERAIS --- */
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
             overflow: hidden;
-            font-family: 'Fredoka', sans-serif;
+            background-color: #f0f8ff;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
             touch-action: none;
             user-select: none;
             -webkit-user-select: none;
-            background: linear-gradient(180deg, var(--color-sky-light) 0%, var(--color-sky-dark) 100%);
-            position: relative;
-            height: 100vh;
-        }
-
-        /* === FUNDO ANIMADO === */
-        #sky-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 50%, #FFE5B4 100%);
-            animation: skyShift 30s ease-in-out infinite;
-        }
-
-        @keyframes skyShift {
-            0%, 100% { background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 50%, #FFE5B4 100%); }
-            50% { background: linear-gradient(180deg, #FFB6C1 0%, #FFC8DD 50%, #FFDAB9 100%); }
-        }
-
-        .cloud {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 100px;
-            animation: floatCloud 20s linear infinite;
-            box-shadow: 0 4px 20px rgba(255,255,255,0.5);
-        }
-
-        .cloud::before, .cloud::after {
-            content: '';
-            position: absolute;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 100px;
-        }
-
-        @keyframes floatCloud {
-            from { transform: translateX(-200px); }
-            to { transform: translateX(calc(100vw + 200px)); }
-        }
-
-        /* === AMIGUINHOS ANIMADOS === */
-        .friend {
-            position: absolute;
-            font-size: 40px;
-            z-index: 2;
-            animation: friendFloat 4s ease-in-out infinite;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
-            pointer-events: none;
-        }
-
-        @keyframes friendFloat {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(10deg); }
-        }
-
-        .butterfly {
-            animation: butterflyFly 8s ease-in-out infinite;
-        }
-
-        @keyframes butterflyFly {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(100px, -50px) rotate(15deg); }
-            50% { transform: translate(200px, 20px) rotate(-15deg); }
-            75% { transform: translate(100px, 50px) rotate(10deg); }
-            100% { transform: translate(0, 0) rotate(0deg); }
-        }
-
-        /* === CONTAINER PRINCIPAL === */
-        #game-container {
-            position: relative;
             width: 100vw;
             height: 100vh;
-            overflow: hidden;
-            z-index: 1;
         }
 
-        /* === CHÃO COM GRAMA === */
-        #ground {
-            position: absolute;
-            bottom: 0;
+        #game-container {
+            position: relative;
             width: 100%;
-            height: 150px;
-            background: linear-gradient(180deg, var(--color-grass) 0%, #5FA336 100%);
-            z-index: 2;
-            box-shadow: 0 -5px 30px rgba(0,0,0,0.1);
+            height: 100%;
+            overflow: hidden;
         }
 
-        .grass-blade {
-            position: absolute;
-            bottom: 0;
-            width: 3px;
-            background: linear-gradient(180deg, transparent 0%, #4A8C2A 100%);
-            animation: grassSway 2s ease-in-out infinite;
-        }
-
-        @keyframes grassSway {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(3deg); }
-        }
-
-        /* === MONSTRO MELHORADO === */
+        /* --- O MONSTRO --- */
         #monster-container {
             position: absolute;
-            top: 50%;
+            top: 45%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 300px;
             height: 350px;
-            z-index: 5;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
+            z-index: 100; /* CORRIGIDO: Monstro agora fica acima da cesta! */
+            transition: left 0.5s ease;
+            pointer-events: none; 
+        }
+        
+        .monster-idle {
+            animation: breathe 3s infinite ease-in-out;
         }
 
-        .monster-bounce {
-            animation: monsterBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        @keyframes monsterBounce {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.15); }
-        }
-
-        .monster-wiggle {
-            animation: monsterWiggle 0.5s ease-in-out;
-        }
-
-        @keyframes monsterWiggle {
-            0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
-            25% { transform: translate(-50%, -50%) rotate(-5deg); }
-            75% { transform: translate(-50%, -50%) rotate(5deg); }
-        }
-
-        .monster-happy {
-            animation: monsterHappy 1s ease-in-out;
-        }
-
-        @keyframes monsterHappy {
-            0%, 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-            25% { transform: translate(-50%, -50%) scale(1.1) rotate(-3deg); }
-            50% { transform: translate(-50%, -50%) scale(1.15) rotate(3deg); }
-            75% { transform: translate(-50%, -50%) scale(1.1) rotate(-3deg); }
+        #monster-svg {
+            overflow: visible;
         }
 
         #mouth-sensor {
             position: absolute;
-            top: 80px;
-            left: 75px;
-            width: 150px;
-            height: 80px;
-            z-index: 10;
+            top: 130px; left: 75px; width: 150px; height: 100px; 
+            z-index: 105;
         }
 
-        /* === BARRIGA COM EFEITOS === */
+        /* --- BARRIGA (VISUAL) --- */
         #belly-container {
-            position: absolute;
-            top: 200px;
-            left: 90px;
-            width: 120px;
-            height: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 6;
+            position: absolute; top: 200px; left: 90px; width: 120px; height: 100px;
+            display: flex; justify-content: center; align-items: center; z-index: 102;
             pointer-events: none;
         }
 
         #belly-counter {
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: #fff;
-            text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
-            z-index: 8;
-            position: absolute;
-            font-family: 'Bubblegum Sans', cursive;
-            animation: numberPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        @keyframes numberPop {
-            0% { transform: scale(0.8); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+            font-size: 3.5rem; font-weight: bold; color: #fff; text-shadow: 2px 2px 0 #000;
+            z-index: 104; position: absolute;
         }
 
         #eaten-fruits-visuals {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            opacity: 0.6;
-            z-index: 7;
+            position: absolute; width: 100%; height: 100%;
+            display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+            opacity: 0.6; z-index: 103;
         }
 
         .eaten-fruit {
-            width: 25px !important;
-            height: 25px !important;
-            margin: 2px;
-            position: relative !important;
-            transform: none !important;
-            left: auto !important;
-            top: auto !important;
-            animation: fruitInBelly 0.4s ease-out;
+            width: 25px !important; height: 25px !important; margin: 2px;
+            position: relative !important; transform: none !important; left: auto !important; top: auto !important;
         }
 
-        @keyframes fruitInBelly {
-            from { transform: scale(0) rotate(180deg); opacity: 0; }
-            to { transform: scale(1) rotate(0deg); opacity: 1; }
-        }
-
-        /* Expressão de enjoo melhorada */
+        /* --- ESTADOS DO MONSTRO --- */
         .sick-face #monster-body { fill: #a8d5ba !important; transition: fill 0.5s; }
         .sick-face .eye-pupil { transform: scale(0.5); }
         .sick-face .mouth-path { d: path("M75 150 Q110 140 150 150 Q190 160 225 150"); fill: none; stroke: #333; stroke-width: 5; }
         .sick-face .teeth { display: none; }
+        
+        .mouth-open .mouth-path { d: path("M75 130 Q150 130 225 130 Q225 210 150 210 Q75 210 75 130 Z") !important; }
+        .mouth-open .teeth { display: none; }
 
-        /* === LIQUIDIFICADOR ESTILIZADO === */
-        #blender-container {
+        /* --- CESTA DE FRUTAS --- */
+        #fruit-basket {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
-            width: 140px;
-            height: 200px;
-            z-index: 40;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 600px;
+            height: 120px;
+            
+            /* Visual mais realista de cesta */
+            background: 
+                repeating-linear-gradient(90deg, #d2691e 0px, #d2691e 8px, #8b4513 8px, #8b4513 16px),
+                repeating-linear-gradient(0deg, #d2691e 0px, #d2691e 8px, #a0522d 8px, #a0522d 16px);
+            background-blend-mode: multiply;
+            border-radius: 15px 15px 60px 60px;
+            border: 6px solid #6d4c41;
+            box-shadow: 
+                0 15px 30px rgba(0,0,0,0.4) inset,
+                0 5px 15px rgba(0,0,0,0.3);
+            
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            z-index: 50; /* Abaixo do monstro agora */
+            padding: 0 10px;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        
+        /* Borda superior da cesta - alça */
+        #fruit-basket::before {
+            content: '';
+            position: absolute; 
+            top: -20px; 
+            left: -8px; 
+            right: -8px; 
+            height: 25px;
+            border-radius: 15px; 
+            background: linear-gradient(to bottom, #a0522d, #8b4513); 
+            border: 3px solid #5c3317; 
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+            z-index: -1;
+        }
+
+        .basket-item {
+            width: 70px;
+            height: 70px;
+            position: relative;
+            cursor: grab;
+            transition: transform 0.1s;
+            margin-top: -45px; /* Frutas saem mais da cesta */
+            filter: drop-shadow(2px 5px 5px rgba(0,0,0,0.4));
+            z-index: 55;
+            touch-action: none;
+        }
+        .basket-item:active { transform: scale(0.9); cursor: grabbing; }
+
+        /* Fruta sendo arrastada */
+        .fruit-drag {
+            width: 90px; height: 90px;
+            position: absolute;
+            z-index: 1000;
+            pointer-events: none; 
+            filter: drop-shadow(5px 10px 10px rgba(0,0,0,0.3));
+        }
+
+        /* --- LIQUIDIFICADOR --- */
+        #blender-wrapper {
+            position: absolute;
+            bottom: 170px;
+            right: 25px;
+            width: 120px;
+            height: 180px;
+            z-index: 110; /* Acima do monstro para arrastar */
             display: none;
-            transition: transform 0.3s;
+            touch-action: none; 
+        }
+        
+        #blender-container {
+            width: 100%;
+            height: 100%;
             transform-origin: center bottom;
-            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.3));
+            transition: transform 0.1s linear; 
         }
 
         .blender-ready {
             cursor: grab;
-            animation: blenderPulse 1.5s infinite;
+            animation: pulse-ready 1s infinite;
+            filter: drop-shadow(0 0 15px gold);
+        }
+        
+        /* ANIMAÇÃO DE BEBER CORRIGIDA */
+        .blender-drinking-anim {
+            transition: transform 0.6s ease-in-out !important;
+            /* Rotação ajustada para -40deg (copo mais natural) */
+            transform: translate(-160px, -130px) rotate(-40deg) !important; 
+            z-index: 200 !important;
         }
 
-        @keyframes blenderPulse {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 8px 15px rgba(255, 215, 0, 0.5)); }
-            50% { transform: scale(1.05); filter: drop-shadow(0 12px 25px rgba(255, 215, 0, 0.8)); }
+        #blender-sensor { 
+            position: absolute; 
+            top: -30px; 
+            left: -30px; 
+            width: 180px; 
+            height: 180px; 
+            z-index: 111;
+            /* background: rgba(255,0,0,0.2); /* Debug */
         }
-
-        .blender-ready:active { cursor: grabbing; }
-        #blender-sensor { position: absolute; top: 0; left: 10; width: 120px; height: 150px; z-index: 10; }
-        .blender-active #monster-container { left: 30%; }
-        .blender-shaking { animation: shake 0.3s infinite; }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-3px) rotate(-1deg); }
-            75% { transform: translateX(3px) rotate(1deg); }
-        }
-
-        /* === ANIMAÇÃO DO COCÔ === */
+        
+        .blender-active #monster-container { left: 35%; }
+        .blender-shaking { animation: shake 0.5s infinite; }
+        
+        /* --- EFEITOS ESPECIAIS --- */
         .poop-drop {
-            position: absolute;
-            font-size: 80px;
-            z-index: 1;
-            animation: dropPoop 2s forwards;
-            left: 50%;
-            top: 55%;
-            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+            position: absolute; font-size: 80px; z-index: 95;
+            animation: dropPoop 2s forwards; left: 50%; top: 55%;
         }
 
-        @keyframes dropPoop {
-            0% { transform: translate(-50%, 0) scale(0.5) rotate(0deg); opacity: 0; }
-            20% { opacity: 1; transform: translate(-50%, 20px) scale(1) rotate(20deg); }
-            100% { transform: translate(-50%, 400px) scale(1.2) rotate(360deg); opacity: 0; }
-        }
-
-        /* === PARTÍCULAS E CONFETES === */
-        .particle {
-            position: absolute;
-            pointer-events: none;
-            z-index: 100;
-            animation: particleFloat 1.5s ease-out forwards;
-        }
-
-        @keyframes particleFloat {
-            0% { 
-                transform: translate(0, 0) scale(1) rotate(0deg); 
-                opacity: 1; 
-            }
-            100% { 
-                transform: translate(var(--tx), var(--ty)) scale(0) rotate(var(--rot)); 
-                opacity: 0; 
-            }
-        }
-
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            pointer-events: none;
-            z-index: 101;
-            animation: confettiFall 2s ease-out forwards;
-        }
-
-        @keyframes confettiFall {
-            0% { 
-                transform: translateY(0) rotate(0deg); 
-                opacity: 1; 
-            }
-            100% { 
-                transform: translateY(600px) rotate(720deg); 
-                opacity: 0; 
-            }
-        }
-
-        /* === ESTRELINHAS DE CONQUISTA === */
-        .achievement-star {
-            position: absolute;
-            font-size: 60px;
-            z-index: 102;
-            animation: starPop 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-            filter: drop-shadow(0 4px 15px rgba(255, 215, 0, 0.8));
-        }
-
-        @keyframes starPop {
-            0% { 
-                transform: translate(-50%, -50%) scale(0) rotate(0deg); 
-                opacity: 0; 
-            }
-            60% { 
-                transform: translate(-50%, -50%) scale(1.3) rotate(180deg); 
-                opacity: 1; 
-            }
-            100% { 
-                transform: translate(-50%, -50%) scale(1) rotate(360deg); 
-                opacity: 1; 
-            }
-        }
-
-        /* === CONTROLES MELHORADOS === */
+        /* --- CONTROLES LATERAIS --- */
         #controls-sidebar {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 50;
+            position: absolute; right: 15px; top: 15px;
+            display: flex; flex-direction: row;
+            gap: 15px; z-index: 120;
         }
-
         .control-btn {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
-            border-radius: 50%;
-            border: 5px solid var(--color-magic);
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: var(--shadow-soft);
-            transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            position: relative;
+            width: 50px; height: 50px; background: white; border-radius: 50%;
+            border: 3px solid #3498db; cursor: pointer; display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 3px 0 #2980b9; transition: transform 0.1s;
         }
+        .control-btn:active { transform: translateY(3px); box-shadow: none; }
+        .control-btn svg { width: 30px; height: 30px; fill: #333; }
+        .btn-active { background: #ffeaa7; border-color: #f1c40f; box-shadow: 0 3px 0 #d35400; }
+        #btn-color { border-color: #9b59b6; box-shadow: 0 3px 0 #8e44ad; }
 
-        .control-btn::before {
-            content: '';
-            position: absolute;
-            inset: -5px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--color-magic), var(--color-purple));
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .control-btn:hover::before {
-            opacity: 0.3;
-        }
-
-        .control-btn:active {
-            transform: scale(0.9);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-
-        .control-btn svg {
-            width: 40px;
-            height: 40px;
-            fill: #333;
-            transition: transform 0.3s;
-        }
-
-        .control-btn:hover svg {
-            transform: scale(1.1);
-        }
-
-        .btn-active {
-            background: linear-gradient(135deg, var(--color-sunshine) 0%, var(--color-orange) 100%);
-            border-color: var(--color-orange);
-            box-shadow: var(--shadow-pop);
-            animation: btnGlow 1s ease-in-out infinite;
-        }
-
-        @keyframes btnGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 217, 61, 0.5); }
-            50% { box-shadow: 0 0 40px rgba(255, 217, 61, 0.8); }
-        }
-
-        #btn-color {
-            border-color: var(--color-purple);
-        }
-
-        /* Botão de Cocô Melhorado */
+        /* Botão de Cocô */
         #poop-btn {
-            position: absolute;
-            bottom: 30px;
-            left: 30px;
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(135deg, #fff 0%, #f5f5f5 100%);
-            border-radius: 50%;
-            border: 5px solid #e74c3c;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 60;
-            cursor: pointer;
-            box-shadow: var(--shadow-pop);
-            animation: poopPulse 1.2s ease-in-out infinite;
+            position: absolute; top: 50%; right: 20px; transform: translateY(-50%);
+            width: 80px; height: 80px; background: #fff; border-radius: 50%;
+            border: 4px solid #e74c3c; display: none; justify-content: center; align-items: center;
+            z-index: 120; animation: pulse 1s infinite; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        @keyframes poopPulse {
-            0%, 100% { 
-                transform: scale(1); 
-                box-shadow: 0 5px 20px rgba(231, 76, 60, 0.3);
-            }
-            50% { 
-                transform: scale(1.1); 
-                box-shadow: 0 10px 35px rgba(231, 76, 60, 0.6);
-            }
-        }
-
-        /* === UI E TEXTOS MELHORADOS === */
-        #ui-layer {
-            position: absolute;
-            top: 20px;
-            width: 100%;
-            text-align: center;
-            z-index: 20;
-            pointer-events: none;
-        }
-
+        /* --- UI E TEXTOS --- */
+        #ui-layer { position: absolute; top: 80px; width: 100%; text-align: center; z-index: 90; pointer-events: none; }
         #instruction-bubble {
-            display: inline-block;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-            padding: 15px 30px;
-            border-radius: 25px;
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #333;
-            box-shadow: var(--shadow-soft);
-            border: 4px solid var(--color-magic);
-            animation: bubbleBounce 2s ease-in-out infinite;
-            font-family: 'Bubblegum Sans', cursive;
-        }
-
-        @keyframes bubbleBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        #score-display {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: linear-gradient(135deg, var(--color-sunshine) 0%, var(--color-orange) 100%);
-            padding: 15px 25px;
-            border-radius: 20px;
-            font-size: 2rem;
-            font-weight: 700;
-            color: white;
-            box-shadow: var(--shadow-soft);
-            border: 4px solid #fff;
-            z-index: 21;
-            pointer-events: none;
-            font-family: 'Bubblegum Sans', cursive;
-            text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
-        }
-
-        /* === FRUTAS MELHORADAS === */
-        .fruit {
-            position: absolute;
-            width: 70px;
-            height: 70px;
-            cursor: grab;
-            z-index: 30;
+            background: white; padding: 10px 20px; border-radius: 30px; display: inline-block;
+            border: 3px solid #333; font-size: 1.4rem; box-shadow: 5px 5px 0 rgba(0,0,0,0.1); max-width: 85%;
             transition: transform 0.2s;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
         }
+        .highlight-num { color: #e74c3c; font-weight: bold; font-size: 1.6rem; }
 
-        .fruit:active {
-            cursor: grabbing;
-            transform: scale(1.1);
-            z-index: 1000 !important;
+        /* --- TELA INICIAL --- */
+        #start-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(46, 204, 113, 0.98); display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 200;
         }
-
-        .fruit svg {
-            width: 100%;
-            height: 100%;
+        .big-btn {
+            background: #fff; color: #2ecc71; border: none; padding: 20px 60px;
+            font-size: 2rem; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 8px 0 #27ae60; font-weight: bold; margin-top: 20px;
         }
+        .big-btn:active { transform: translateY(8px); box-shadow: none; }
 
-        @keyframes popIn {
-            0% {
-                transform: scale(0) rotate(0deg);
-                opacity: 0;
-            }
-            60% {
-                transform: scale(1.2) rotate(180deg);
-            }
-            100% {
-                transform: scale(1) rotate(360deg);
-                opacity: 1;
-            }
-        }
+        /* --- ANIMAÇÕES --- */
+        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+        @keyframes blink { 0%, 100% { transform: scaleY(1); } 5% { transform: scaleY(0.1); } 10% { transform: scaleY(1); } }
+        @keyframes floatArm { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(5deg); } }
+        @keyframes shake { 0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        @keyframes pulse-ready { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        @keyframes dropPoop { 0% { transform: translate(-50%, 0) scale(0.5); opacity: 0; } 20% { opacity: 1; transform: translate(-50%, 20px) scale(1); } 100% { transform: translate(-50%, 400px) scale(1); opacity: 0; } }
+        @keyframes numberPop { 0% { transform: scale(1); } 50% { transform: scale(1.5); } 100% { transform: scale(1); } }
+        .number-pop { animation: numberPop 0.3s ease-out; }
 
-        /* === CELEBRAÇÃO DE VITÓRIA === */
-        .victory-overlay {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255, 107, 157, 0.9) 0%, rgba(199, 125, 255, 0.9) 100%);
-            z-index: 200;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            animation: victoryFade 0.5s ease-out;
-        }
+        .blink-anim { animation: blink 3s infinite; transform-origin: center; }
+        .arm-left { animation: floatArm 2s infinite ease-in-out alternate; transform-origin: 60px 200px; }
+        .arm-right { animation: floatArm 2.5s infinite ease-in-out alternate-reverse; transform-origin: 240px 200px; }
 
-        @keyframes victoryFade {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .victory-text {
-            font-size: 4rem;
-            font-weight: 700;
-            color: white;
-            text-shadow: 4px 4px 0 rgba(0,0,0,0.3);
-            margin-bottom: 30px;
-            animation: victoryBounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-            font-family: 'Bubblegum Sans', cursive;
-        }
-
-        @keyframes victoryBounce {
-            0%, 100% { transform: translateY(0) rotate(-3deg); }
-            50% { transform: translateY(-20px) rotate(3deg); }
-        }
-
-        /* === RESPONSIVIDADE === */
+        /* --- MEDIA QUERIES (CELULAR) --- */
         @media (max-width: 768px) {
-            #instruction-bubble { font-size: 1.4rem; padding: 12px 20px; }
-            #score-display { font-size: 1.5rem; padding: 12px 20px; }
-            .control-btn { width: 60px; height: 60px; }
-            .control-btn svg { width: 35px; height: 35px; }
-            #monster-container { width: 250px; height: 300px; }
-            .victory-text { font-size: 2.5rem; }
+            #monster-container { 
+                width: 260px; 
+                height: 310px; 
+                top: 48%; /* Ajustado para celular */
+            }
+            #mouth-sensor { top: 110px; left: 60px; width: 140px; height: 90px; }
+            #belly-container { top: 180px; left: 80px; width: 100px; }
+            
+            #instruction-bubble { font-size: 1.1rem; padding: 8px 15px; }
+            #ui-layer { top: 60px; }
+            
+            .basket-item { width: 65px; height: 65px; margin-top: -40px; }
+            #fruit-basket { height: 110px; bottom: 5px; }
+            
+            #blender-wrapper { 
+                bottom: 140px; 
+                right: 15px; 
+                width: 100px;
+                height: 150px;
+            }
+            
+            /* Ajuste da animação de beber no celular */
+            .blender-drinking-anim {
+                transform: translate(-140px, -140px) rotate(-40deg) !important;
+            }
+
+            .blender-active #monster-container { left: 30%; }
+            
+            #controls-sidebar { right: 10px; top: 10px; gap: 10px; }
+            .control-btn { width: 45px; height: 45px; }
+            .control-btn svg { width: 25px; height: 25px; }
+            
+            #poop-btn { width: 70px; height: 70px; right: 15px; }
+            #poop-btn span { font-size: 35px; }
+        }
+        
+        /* Ajuste para tablets (A7 Lite tem ~600x960) */
+        @media (min-width: 600px) and (max-width: 900px) {
+            #monster-container { 
+                width: 280px; 
+                height: 330px; 
+            }
+            #blender-wrapper {
+                bottom: 160px;
+                right: 20px;
+            }
+        }
+        
+        /* Ajuste para telas muito curtas (Landscape) */
+        @media (max-height: 500px) {
+            #monster-container { transform: translate(-50%, -50%) scale(0.7); top: 50%; }
+            #fruit-basket { height: 90px; bottom: 0; }
+            #blender-wrapper { bottom: 100px; right: 10px; width: 90px; height: 130px; }
+            #ui-layer { top: 5px; }
+            #controls-sidebar { top: 5px; right: 5px; }
+            #instruction-bubble { font-size: 0.9rem; padding: 6px 12px; }
         }
 
-        /* === LOADING === */
-        .loading {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, var(--color-sky-light) 0%, var(--color-magic) 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-            animation: loadingFade 0.5s ease-out 2s forwards;
-        }
-
-        @keyframes loadingFade {
-            to { opacity: 0; pointer-events: none; }
-        }
-
-        .loading-text {
-            font-size: 3rem;
-            font-weight: 700;
-            color: white;
-            text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
-            animation: loadingPulse 1s ease-in-out infinite;
-            font-family: 'Bubblegum Sans', cursive;
-        }
-
-        @keyframes loadingPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading">
-        <div class="loading-text">🌟 Carregando mágica... ✨</div>
+
+    <div id="start-screen">
+        <h1 style="color:white; font-size: 2.5rem; text-shadow: 2px 2px 0 #000; text-align:center; margin: 0 20px;">O Monstro Comilão</h1>
+        <div style="font-size: 4rem; margin: 10px;">🦖🍎</div>
+        <button class="big-btn" onclick="startGame()">JOGAR</button>
+        <p style="color:white; margin-top:20px; font-weight:bold;">Para a Lavine ❤️</p>
     </div>
 
-    <!-- Fundo Animado -->
-    <div id="sky-background"></div>
+    <div id="controls-sidebar">
+        <div id="btn-blender" class="control-btn" onclick="toggleBlenderMode()" title="Fazer Vitamina">
+            <svg viewBox="0 0 24 24"><path d="M19,19H5V8H19M19,8V6A2,2 0 0,0 17,4H7A2,2 0 0,0 5,6V8M19,19A2,2 0 0,1 17,21H7A2,2 0 0,1 5,19M9,13H15" fill="#333"/></svg>
+        </div>
+        <div id="btn-color" class="control-btn" onclick="toggleColor()" title="Mudar Cor">
+            <svg viewBox="0 0 24 24"><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" fill="#333" /></svg>
+        </div>
+    </div>
 
-    <!-- Container do Jogo -->
+    <div id="poop-btn" onclick="doPoop()">
+        <span style="font-size: 40px;">💩</span>
+    </div>
+
     <div id="game-container">
-        <!-- Amiguinhos Decorativos -->
-        <div class="friend butterfly" style="top: 10%; left: 10%;">🦋</div>
-        <div class="friend" style="top: 15%; right: 15%;">🐦</div>
-        <div class="friend" style="bottom: 60%; left: 5%;">⭐</div>
-        <div class="friend" style="bottom: 70%; right: 10%;">✨</div>
-
-        <!-- UI Layer -->
         <div id="ui-layer">
-            <div id="instruction-bubble">Arraste as frutas para minha boca! 😋</div>
+            <div id="instruction-bubble">Clique em JOGAR!</div>
         </div>
 
-        <!-- Score Display -->
-        <div id="score-display">⭐ 0</div>
-
-        <!-- Monstro -->
-        <div id="monster-container">
-            <svg viewBox="0 0 300 350">
-                <!-- Corpo -->
-                <ellipse id="monster-body" cx="150" cy="200" rx="130" ry="150" fill="#7B68EE" stroke="#5A4FCF" stroke-width="5"/>
+        <div id="monster-container" class="monster-idle">
+            <div id="mouth-sensor"></div>
+            <div id="belly-container">
+                <div id="eaten-fruits-visuals"></div>
+                <div id="belly-counter"></div>
+            </div>
+            <svg id="monster-svg" viewBox="0 0 300 350" xmlns="http://www.w3.org/2000/svg">
+                <path id="monster-body" d="M50 300 Q20 350 80 340 L220 340 Q280 350 250 300 Q280 200 250 100 Q230 20 150 20 Q70 20 50 100 Q20 200 50 300" fill="#7bed9f" stroke="#2ecc71" stroke-width="5"/>
+                <circle cx="150" cy="250" r="60" fill="rgba(255,255,255,0.5)" stroke="#fff" stroke-width="3" />
                 
-                <!-- Barriga -->
-                <ellipse cx="150" cy="230" rx="80" ry="90" fill="#9B88FF" opacity="0.6"/>
-                
-                <!-- Olhos -->
-                <g class="eyes">
-                    <!-- Olho Esquerdo -->
-                    <ellipse cx="100" cy="100" rx="35" ry="45" fill="white" stroke="#333" stroke-width="3"/>
-                    <circle id="eye-left" class="eye-pupil" cx="100" cy="100" r="20" fill="#333"/>
-                    <circle cx="95" cy="95" r="8" fill="white"/>
-                    
-                    <!-- Olho Direito -->
-                    <ellipse cx="200" cy="100" rx="35" ry="45" fill="white" stroke="#333" stroke-width="3"/>
-                    <circle id="eye-right" class="eye-pupil" cx="200" cy="100" r="20" fill="#333"/>
-                    <circle cx="195" cy="95" r="8" fill="white"/>
-                </g>
-                
-                <!-- Boca -->
-                <g class="mouth">
-                    <ellipse cx="150" cy="150" rx="60" ry="40" fill="#333"/>
-                    <ellipse cx="150" cy="145" rx="60" ry="35" fill="#FF69B4"/>
-                    
-                    <!-- Dentes -->
-                    <g class="teeth" fill="white">
-                        <rect x="110" y="130" width="15" height="20" rx="3"/>
-                        <rect x="130" y="130" width="15" height="20" rx="3"/>
-                        <rect x="155" y="130" width="15" height="20" rx="3"/>
-                        <rect x="175" y="130" width="15" height="20" rx="3"/>
+                <g id="eyes">
+                    <g class="blink-anim" style="animation-delay: 0s;">
+                        <circle cx="100" cy="100" r="25" fill="white" stroke="#333" stroke-width="2"/>
+                        <circle class="eye-pupil" id="eye-left" cx="100" cy="100" r="10" fill="black" />
+                    </g>
+                    <g class="blink-anim" style="animation-delay: 0.1s;">
+                        <circle cx="200" cy="100" r="25" fill="white" stroke="#333" stroke-width="2"/>
+                        <circle class="eye-pupil" id="eye-right" cx="200" cy="100" r="10" fill="black" />
                     </g>
                 </g>
                 
-                <!-- Braços -->
-                <ellipse cx="50" cy="200" rx="25" ry="80" fill="#7B68EE" stroke="#5A4FCF" stroke-width="3" transform="rotate(-20 50 200)"/>
-                <ellipse cx="250" cy="200" rx="25" ry="80" fill="#7B68EE" stroke="#5A4FCF" stroke-width="3" transform="rotate(20 250 200)"/>
+                <g id="mouth-group">
+                    <path class="mouth-path" d="M75 130 Q150 130 225 130 Q225 180 150 180 Q75 180 75 130 Z" fill="#333" />
+                    <path class="teeth" d="M85 130 L95 145 L105 130 M195 130 L205 145 L215 130" stroke="white" stroke-width="3" fill="white"/>
+                </g>
                 
-                <!-- Mãos -->
-                <circle cx="40" cy="260" r="20" fill="#9B88FF" stroke="#5A4FCF" stroke-width="3"/>
-                <circle cx="260" cy="260" r="20" fill="#9B88FF" stroke="#5A4FCF" stroke-width="3"/>
+                <path id="monster-arms-left" class="arm-left" d="M60 200 Q20 220 30 180" stroke="#2ecc71" stroke-width="15" stroke-linecap="round" fill="none"/>
+                <path id="monster-arms-right" class="arm-right" d="M240 200 Q280 220 270 180" stroke="#2ecc71" stroke-width="15" stroke-linecap="round" fill="none"/>
             </svg>
-            
-            <!-- Sensor da Boca -->
-            <div id="mouth-sensor"></div>
-            
-            <!-- Contador da Barriga -->
-            <div id="belly-container">
-                <div id="belly-counter">0</div>
-                <div id="eaten-fruits-visuals"></div>
+        </div>
+
+        <div id="blender-wrapper">
+            <div id="blender-sensor"></div> 
+            <div id="blender-container">
+                <svg viewBox="0 0 140 200">
+                    <path d="M20 40 L30 160 Q35 180 70 180 Q105 180 110 160 L120 40 Z" fill="rgba(200, 230, 255, 0.7)" stroke="#3498db" stroke-width="3"/>
+                    <rect x="15" y="30" width="110" height="15" rx="5" fill="#333"/>
+                    <rect x="25" y="180" width="90" height="20" fill="#e74c3c"/>
+                    <path id="blender-liquid" d="M25 160 Q35 175 70 175 Q105 175 115 160 L118 100 Q70 110 22 100 Z" fill="#e67e22" opacity="0" style="transition: opacity 1s ease;"/>
+                </svg>
             </div>
         </div>
 
-        <!-- Liquidificador -->
-        <div id="blender-container">
-            <svg viewBox="0 0 140 200">
-                <!-- Base -->
-                <rect x="30" y="170" width="80" height="30" rx="5" fill="#666" stroke="#333" stroke-width="2"/>
-                
-                <!-- Motor -->
-                <rect x="40" y="160" width="60" height="15" rx="3" fill="#888"/>
-                
-                <!-- Copo -->
-                <path d="M 35 160 L 25 50 L 115 50 L 105 160 Z" fill="rgba(200,200,255,0.3)" stroke="#4A90E2" stroke-width="3"/>
-                
-                <!-- Líquido -->
-                <path id="blender-liquid" d="M 32 160 L 27 70 L 113 70 L 108 160 Z" fill="#FF69B4" opacity="0" style="transition: opacity 0.5s"/>
-                
-                <!-- Tampa -->
-                <ellipse cx="70" cy="50" rx="45" ry="8" fill="#4A90E2" stroke="#333" stroke-width="2"/>
-                
-                <!-- Botão -->
-                <circle cx="70" cy="175" r="8" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
-            </svg>
-            <div id="blender-sensor"></div>
-        </div>
-
-        <!-- Controles -->
-        <div id="controls-sidebar">
-            <div id="btn-sound" class="control-btn btn-active" title="Som">
-                <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-            </div>
-            <div id="btn-voice" class="control-btn btn-active" title="Voz">
-                <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
-            </div>
-            <div id="btn-color" class="control-btn" title="Mudar Cor">
-                <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-            </div>
-        </div>
-
-        <!-- Botão de Cocô -->
-        <div id="poop-btn">
-            <span style="font-size: 50px;">💩</span>
-        </div>
-
-        <!-- Chão com Grama -->
-        <div id="ground"></div>
+        <div id="fruit-basket"></div>
     </div>
 
     <script>
-        // === CONFIGURAÇÃO INICIAL ===
-        const els = {
-            gameContainer: document.getElementById('game-container'),
-            monster: document.getElementById('monster-container'),
-            mouthSensor: document.getElementById('mouth-sensor'),
-            bellyCounter: document.getElementById('belly-counter'),
-            eatenVisuals: document.getElementById('eaten-fruits-visuals'),
-            instruction: document.getElementById('instruction-bubble'),
-            scoreDisplay: document.getElementById('score-display'),
-            blender: document.getElementById('blender-container'),
-            blenderSensor: document.getElementById('blender-sensor'),
-            blenderLiquid: document.getElementById('blender-liquid'),
-            poopBtn: document.getElementById('poop-btn'),
-            btnSound: document.getElementById('btn-sound'),
-            btnVoice: document.getElementById('btn-voice'),
-            btnColor: document.getElementById('btn-color'),
-            skyBg: document.getElementById('sky-background')
-        };
-
-        const state = {
-            totalScore: 0,
-            roundTarget: 5,
-            eaten: 0,
-            targetType: 'morango',
-            mode: 'normal',
-            blenderRecipe: {},
-            blenderReady: false,
-            poopMeter: 0,
-            isPlaying: false,
-            soundEnabled: true,
-            voiceEnabled: true,
-            monsterColors: ['#7B68EE', '#FF6B9D', '#4ECDC4', '#FFD93D', '#FF9E5E', '#C77DFF']
-        };
-
         const fruitsData = {
-            morango: { shape: '<ellipse cx="35" cy="40" rx="20" ry="25" fill="#ff6b8a"/><circle cx="35" cy="20" r="4" fill="#4CAF50"/><path d="M30 20 L35 10 L40 20" fill="none" stroke="#4CAF50" stroke-width="2"/><circle cx="30" cy="35" r="2" fill="#fff"/><circle cx="40" cy="38" r="2" fill="#fff"/><circle cx="35" cy="43" r="2" fill="#fff"/>', name: 'morango' },
-            banana: { shape: '<path d="M20 35 Q30 15 45 20 Q50 25 48 35 Q45 50 35 55 Q25 58 20 50 Q15 40 20 35" fill="#ffe135"/><ellipse cx="32" cy="35" rx="3" ry="8" fill="#d4a017" opacity="0.3"/>', name: 'banana' },
-            maça: { shape: '<circle cx="35" cy="40" r="22" fill="#ff4444"/><ellipse cx="35" cy="40" rx="18" ry="22" fill="#ff6666"/><circle cx="28" cy="33" r="6" fill="#ff8888" opacity="0.5"/><rect x="33" y="15" width="4" height="10" fill="#8b4513"/><path d="M37 20 Q45 18 48 25" fill="none" stroke="#4CAF50" stroke-width="2"/><ellipse cx="45" cy="24" rx="6" ry="4" fill="#4CAF50"/>', name: 'maçã' },
-            laranja: { shape: '<circle cx="35" cy="35" r="23" fill="#ff8c42"/><circle cx="28" cy="28" r="8" fill="#ffa64d" opacity="0.4"/><circle cx="35" cy="15" r="3" fill="#8b4513"/>', name: 'laranja' },
-            uva: { shape: '<circle cx="35" cy="45" r="8" fill="#8e44ad"/><circle cx="25" cy="40" r="8" fill="#9b59b6"/><circle cx="45" cy="40" r="8" fill="#9b59b6"/><circle cx="30" cy="30" r="8" fill="#a569bd"/><circle cx="40" cy="30" r="8" fill="#a569bd"/><circle cx="35" cy="22" r="8" fill="#bb8fce"/><path d="M35 15 Q40 10 45 15" fill="none" stroke="#4CAF50" stroke-width="2"/><ellipse cx="40" cy="12" rx="8" ry="5" fill="#4CAF50"/>', name: 'uva' }
+            'morango': { color: '#e74c3c', shape: '<path d="M35 10 Q55 10 60 25 Q65 60 35 70 Q5 60 10 25 Q15 10 35 10 Z" fill="#e74c3c" stroke="#c0392b"/><path d="M35 10 L30 5 M35 10 L40 5 M35 10 L35 2" stroke="green" stroke-width="3"/>' },
+            'banana': { color: '#f1c40f', shape: '<path d="M10 50 Q35 70 60 20 Q65 15 60 15 Q40 60 10 40 Z" fill="#f1c40f" stroke="#f39c12" stroke-width="2"/>' },
+            'maçã': { color: '#c0392b', shape: '<circle cx="35" cy="40" r="25" fill="#c0392b"/><path d="M35 15 Q45 5 45 15" fill="none" stroke="green" stroke-width="3"/>' },
+            'uva': { color: '#8e44ad', shape: '<g transform="translate(5,5)"><circle cx="30" cy="45" r="10" fill="#8e44ad"/><circle cx="20" cy="30" r="10" fill="#8e44ad"/><circle cx="40" cy="30" r="10" fill="#8e44ad"/><circle cx="30" cy="15" r="10" fill="#8e44ad"/><path d="M30 15 L30 5" stroke="green" stroke-width="2"/></g>' },
+            'laranja': { color: '#e67e22', shape: '<circle cx="35" cy="35" r="30" fill="#e67e22" stroke="#d35400"/><circle cx="35" cy="35" r="2" fill="#d35400" opacity="0.5"/><circle cx="20" cy="25" r="1" fill="#d35400" opacity="0.5"/><circle cx="50" cy="45" r="1" fill="#d35400" opacity="0.5"/>' },
+            'pera': { color: '#badc58', shape: '<path d="M35 5 Q55 10 55 45 Q55 65 35 65 Q15 65 15 45 Q15 10 35 5 Z" fill="#badc58" stroke="#6ab04c"/><path d="M35 5 L35 0" stroke="#5d4037" stroke-width="3"/>' },
+            'melancia': { color: '#2ecc71', shape: '<path d="M5 20 Q35 65 65 20" fill="#ff6b6b" stroke="#2ecc71" stroke-width="4"/><circle cx="35" cy="35" r="2" fill="black"/><circle cx="25" cy="25" r="2" fill="black"/><circle cx="45" cy="25" r="2" fill="black"/>' },
+            'abacaxi': { color: '#f9ca24', shape: '<ellipse cx="35" cy="45" rx="20" ry="25" fill="#f9ca24" stroke="#f0932b"/><path d="M35 20 L25 5 L30 10 L35 0 L40 10 L45 5 L35 20" fill="green"/>' },
+            'limão': { color: '#6ab04c', shape: '<ellipse cx="35" cy="35" rx="25" ry="20" fill="#badc58" stroke="#6ab04c"/>' }
         };
 
-        const encouragements = [
-            "Muito bem! 🌟",
-            "Você é incrível! ⭐",
-            "Perfeito! 🎉",
-            "Maravilhoso! ✨",
-            "Uau! Que demais! 🎊",
-            "Sensacional! 💫",
-            "Isso aí! Continue! 🌈",
-            "Você é um campeão! 🏆",
-            "Brilhante! ⚡",
-            "Fantástico! 🎪"
+        const monsterColors = [
+            { fill: '#7bed9f', stroke: '#2ecc71' }, { fill: '#ff7675', stroke: '#d63031' },
+            { fill: '#74b9ff', stroke: '#0984e3' }, { fill: '#a29bfe', stroke: '#6c5ce7' }, { fill: '#ffeaa7', stroke: '#fdcb6e' } 
         ];
+        let colorIndex = 0;
 
-        // === INICIALIZAÇÃO ===
-        function init() {
-            createClouds();
-            createGrass();
-            setupBlenderDrag();
-            attachEventListeners();
-            setTimeout(() => startRound(), 2500);
-        }
+        let state = {
+            mode: 'normal',
+            targetCount: 0, eatenCount: 0, targetType: '',
+            blenderRecipe: {}, blenderContent: [], blenderReady: false, 
+            poopMeter: 0, isPlaying: false, needsPoop: false, activeDrag: null
+        };
 
-        // === CRIAR NUVENS ===
-        function createClouds() {
-            for (let i = 0; i < 5; i++) {
-                const cloud = document.createElement('div');
-                cloud.className = 'cloud';
-                const size = 60 + Math.random() * 80;
-                cloud.style.width = size + 'px';
-                cloud.style.height = size * 0.6 + 'px';
-                cloud.style.top = Math.random() * 40 + '%';
-                cloud.style.left = Math.random() * 100 + '%';
-                cloud.style.animationDelay = Math.random() * 20 + 's';
-                cloud.style.animationDuration = (15 + Math.random() * 10) + 's';
-                
-                cloud.style.setProperty('--before-w', size * 0.5 + 'px');
-                cloud.style.setProperty('--before-h', size * 0.5 + 'px');
-                cloud.style.setProperty('--after-w', size * 0.6 + 'px');
-                cloud.style.setProperty('--after-h', size * 0.7 + 'px');
-                
-                els.skyBg.appendChild(cloud);
-            }
-        }
+        const MAX_POOP = 6;
+        const els = {
+            instruction: document.getElementById('instruction-bubble'),
+            monster: document.getElementById('monster-container'),
+            monsterBody: document.getElementById('monster-body'),
+            bellyCounter: document.getElementById('belly-counter'),
+            eatenFruits: document.getElementById('eaten-fruits-visuals'),
+            blenderWrapper: document.getElementById('blender-wrapper'),
+            blenderContainer: document.getElementById('blender-container'),
+            blenderLiquid: document.getElementById('blender-liquid'),
+            blenderSensor: document.getElementById('blender-sensor'),
+            mouthSensor: document.getElementById('mouth-sensor'),
+            poopBtn: document.getElementById('poop-btn'),
+            gameContainer: document.getElementById('game-container'),
+            btnBlender: document.getElementById('btn-blender'),
+            basket: document.getElementById('fruit-basket')
+        };
 
-        // === CRIAR GRAMA ===
-        function createGrass() {
-            const ground = document.getElementById('ground');
-            for (let i = 0; i < 100; i++) {
-                const blade = document.createElement('div');
-                blade.className = 'grass-blade';
-                blade.style.left = Math.random() * 100 + '%';
-                blade.style.height = (20 + Math.random() * 30) + 'px';
-                blade.style.animationDelay = Math.random() * 2 + 's';
-                ground.appendChild(blade);
-            }
-        }
-
-        // === EVENT LISTENERS ===
-        function attachEventListeners() {
-            els.btnSound.onclick = () => {
-                state.soundEnabled = !state.soundEnabled;
-                els.btnSound.classList.toggle('btn-active');
-                speak(state.soundEnabled ? "Som ligado!" : "Som desligado!");
-            };
-
-            els.btnVoice.onclick = () => {
-                state.voiceEnabled = !state.voiceEnabled;
-                els.btnVoice.classList.toggle('btn-active');
-            };
-
-            els.btnColor.onclick = () => {
-                const randomColor = state.monsterColors[Math.floor(Math.random() * state.monsterColors.length)];
-                document.getElementById('monster-body').style.fill = randomColor;
-                createParticles(window.innerWidth / 2, window.innerHeight / 2);
-                speak("Olha que cor linda!");
-            };
-
-            els.poopBtn.onclick = () => {
-                doPoop();
-                els.poopBtn.style.display = 'none';
-                state.poopMeter = 0;
-            };
-        }
-
-        // === EFEITOS VISUAIS ===
-        function createParticles(x, y) {
-            const colors = ['#FFD93D', '#FF6B9D', '#4ECDC4', '#C77DFF', '#FF9E5E'];
-            for (let i = 0; i < 20; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.textContent = ['⭐', '✨', '💫', '🌟', '⚡'][Math.floor(Math.random() * 5)];
-                particle.style.fontSize = (20 + Math.random() * 30) + 'px';
-                particle.style.left = x + 'px';
-                particle.style.top = y + 'px';
-                
-                const angle = Math.random() * Math.PI * 2;
-                const distance = 100 + Math.random() * 150;
-                particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
-                particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
-                particle.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
-                
-                els.gameContainer.appendChild(particle);
-                setTimeout(() => particle.remove(), 1500);
-            }
-        }
-
-        function createConfetti(x, y) {
-            const colors = ['#FFD93D', '#FF6B9D', '#4ECDC4', '#C77DFF', '#FF9E5E', '#7B68EE'];
-            for (let i = 0; i < 30; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = x + (Math.random() * 200 - 100) + 'px';
-                confetti.style.top = y + 'px';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.animationDelay = Math.random() * 0.3 + 's';
-                els.gameContainer.appendChild(confetti);
-                setTimeout(() => confetti.remove(), 2000);
-            }
-        }
-
-        function showAchievementStar(x, y) {
-            const star = document.createElement('div');
-            star.className = 'achievement-star';
-            star.textContent = '⭐';
-            star.style.left = x + 'px';
-            star.style.top = y + 'px';
-            els.gameContainer.appendChild(star);
-            setTimeout(() => star.remove(), 1000);
-        }
-
-        // === ÁUDIO ===
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
-        function playSound(type) {
-            if (!state.soundEnabled) return;
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-
-            switch(type) {
-                case 'eat':
-                    oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.1);
-                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-                    oscillator.start();
-                    oscillator.stop(audioContext.currentTime + 0.1);
-                    break;
-                case 'pop':
-                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + 0.05);
-                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
-                    oscillator.start();
-                    oscillator.stop(audioContext.currentTime + 0.05);
-                    break;
-                case 'glub':
-                    oscillator.type = 'sine';
-                    oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(150, audioContext.currentTime + 0.3);
-                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-                    oscillator.start();
-                    oscillator.stop(audioContext.currentTime + 0.3);
-                    break;
-                case 'victory':
-                    [400, 500, 600, 800].forEach((freq, i) => {
-                        const osc = audioContext.createOscillator();
-                        const gain = audioContext.createGain();
-                        osc.connect(gain);
-                        gain.connect(audioContext.destination);
-                        osc.frequency.value = freq;
-                        gain.gain.setValueAtTime(0.2, audioContext.currentTime + i * 0.1);
-                        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + i * 0.1 + 0.3);
-                        osc.start(audioContext.currentTime + i * 0.1);
-                        osc.stop(audioContext.currentTime + i * 0.1 + 0.3);
-                    });
-                    break;
-            }
-        }
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
         function speak(text) {
-            if (!state.voiceEnabled || !window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'pt-BR';
-            utterance.rate = 0.9;
-            utterance.pitch = 1.3;
-            speechSynthesis.speak(utterance);
+            utterance.lang = 'pt-BR'; utterance.rate = 1.1; 
+            const voices = window.speechSynthesis.getVoices();
+            const preferredVoice = voices.find(v => v.name.includes('Google Português') || v.name.includes('Luciana') || v.lang === 'pt-BR');
+            if(preferredVoice) utterance.voice = preferredVoice;
+            window.speechSynthesis.speak(utterance);
         }
 
-        // === LÓGICA DO JOGO ===
-        function startRound() {
-            state.isPlaying = true;
-            state.eaten = 0;
-            els.bellyCounter.textContent = '0';
-            els.eatenVisuals.innerHTML = '';
-            
-            if (Math.random() > 0.7 && state.totalScore >= 3) {
-                startBlenderMode();
-            } else {
-                state.mode = 'normal';
-                els.blender.style.display = 'none';
-                els.monster.style.left = '50%';
-                
-                const types = Object.keys(fruitsData);
-                state.targetType = types[Math.floor(Math.random() * types.length)];
-                
-                els.instruction.innerHTML = `Me dê ${state.roundTarget} ${fruitsData[state.targetType].name}s! 😋`;
-                speak(`Quero comer ${state.roundTarget} ${fruitsData[state.targetType].name}!`);
-                
-                spawnFruits(8);
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
+
+            if (type === 'pop') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(800, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                osc.start(); osc.stop(now + 0.1);
+            } else if (type === 'eat') {
+                osc.type = 'triangle'; osc.frequency.setValueAtTime(300, now);
+                osc.frequency.linearRampToValueAtTime(100, now + 0.1);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+                osc.start(); osc.stop(now + 0.15);
+            } else if (type === 'blender') {
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(100, now);
+                osc.frequency.linearRampToValueAtTime(150, now + 1.5);
+                gainNode.gain.setValueAtTime(0.2, now); gainNode.gain.linearRampToValueAtTime(0, now + 1.5);
+                osc.start(); osc.stop(now + 1.5);
+            } else if (type === 'glub') { 
+                osc.type = 'sine'; osc.frequency.setValueAtTime(400, now);
+                osc.frequency.linearRampToValueAtTime(200, now + 0.2);
+                gainNode.gain.setValueAtTime(0.3, now); gainNode.gain.linearRampToValueAtTime(0, now + 0.2);
+                osc.start(); osc.stop(now + 0.3);
+            } else if (type === 'fart') {
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, now);
+                osc.frequency.exponentialRampToValueAtTime(50, now + 0.4);
+                gainNode.gain.setValueAtTime(0.5, now); gainNode.gain.linearRampToValueAtTime(0, now + 0.4);
+                osc.start(); osc.stop(now + 0.4);
             }
         }
 
-        function eatFruitNormal(fruitEl) {
-            state.eaten++;
-            state.totalScore++;
+        function startGame() {
+            document.getElementById('start-screen').style.display = 'none';
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            setupBlenderDrag();
+            startRound();
             
-            // Animações
-            els.monster.classList.add('monster-bounce');
-            setTimeout(() => els.monster.classList.remove('monster-bounce'), 600);
-            
-            // Efeitos visuais
-            const rect = fruitEl.getBoundingClientRect();
-            createParticles(rect.left + rect.width/2, rect.top + rect.height/2);
-            
-            // Sons
-            playSound('eat');
-            const encouragement = encouragements[Math.floor(Math.random() * encouragements.length)];
-            speak(encouragement);
-            
-            // Atualizar UI
-            els.scoreDisplay.textContent = `⭐ ${state.totalScore}`;
-            els.bellyCounter.textContent = state.eaten;
-            
-            // Adicionar fruta visual na barriga
-            const miniFruit = fruitEl.cloneNode(true);
-            miniFruit.className = 'eaten-fruit';
-            els.eatenVisuals.appendChild(miniFruit);
-            
-            fruitEl.remove();
-            
-            // Atualizar medidor de cocô
-            state.poopMeter++;
-            if (state.poopMeter >= 8) {
+            setInterval(() => {
+                const eyes = document.querySelectorAll('.blink-anim');
+                eyes.forEach(eye => {
+                    eye.style.animation = 'none';
+                    eye.offsetHeight;
+                    eye.style.animation = `blink ${2 + Math.random()}s infinite`;
+                });
+            }, 5000);
+        }
+
+        function toggleColor() {
+            if (state.needsPoop) return;
+            colorIndex = (colorIndex + 1) % monsterColors.length;
+            const theme = monsterColors[colorIndex];
+            els.monsterBody.setAttribute('fill', theme.fill);
+            els.monsterBody.setAttribute('stroke', theme.stroke);
+            document.getElementById('monster-arms-left').setAttribute('stroke', theme.stroke);
+            document.getElementById('monster-arms-right').setAttribute('stroke', theme.stroke);
+            playSound('pop');
+        }
+
+        function checkPoopStatus() {
+            if (state.poopMeter >= MAX_POOP) {
+                state.needsPoop = true;
+                els.monster.classList.add('sick-face');
+                els.monster.classList.remove('monster-idle');
+                els.instruction.innerHTML = "Ai minha barriga!";
+                speak("Ai ai ai, minha barriga! Preciso fazer cocô!");
                 els.poopBtn.style.display = 'flex';
+                els.basket.style.opacity = '0.5';
+                els.basket.style.pointerEvents = 'none';
+                return true;
             }
-            
-            if (state.eaten >= state.roundTarget) {
-                winRound();
-            }
+            return false;
         }
 
-        function winRound() {
-            state.isPlaying = false;
-            playSound('victory');
+        function doPoop() {
+            playSound('fart');
+            const poopVisual = document.createElement('div');
+            poopVisual.innerHTML = '💩';
+            poopVisual.className = 'poop-drop';
+            const mRect = els.monster.getBoundingClientRect();
+            poopVisual.style.left = (mRect.left + mRect.width/2 - 40) + 'px';
+            poopVisual.style.top = (mRect.bottom - 80) + 'px';
+            els.gameContainer.appendChild(poopVisual);
+            setTimeout(() => poopVisual.remove(), 2000);
+
+            state.poopMeter = 0; state.needsPoop = false;
+            els.poopBtn.style.display = 'none';
+            els.monster.classList.remove('sick-face');
+            els.monster.classList.add('monster-idle');
+            els.basket.style.opacity = '1';
+            els.basket.style.pointerEvents = 'auto';
+            const theme = monsterColors[colorIndex];
+            els.monsterBody.setAttribute('fill', theme.fill);
+            speak("Ufa! Alívio!");
+            els.bellyCounter.innerText = '';
+            els.eatenFruits.innerHTML = '';
+            setTimeout(startRound, 3000);
+        }
+
+        function toggleBlenderMode() {
+            if (state.needsPoop) return;
+            state.mode = (state.mode === 'normal') ? 'blender' : 'normal';
+            if (state.mode === 'blender') {
+                els.blenderWrapper.style.display = 'block';
+                document.body.classList.add('blender-active');
+                els.btnBlender.classList.add('btn-active');
+                els.bellyCounter.innerText = '';
+                els.eatenFruits.innerHTML = '';
+            } else {
+                els.blenderWrapper.style.display = 'none';
+                document.body.classList.remove('blender-active');
+                els.btnBlender.classList.remove('btn-active');
+                resetBlender();
+            }
+            startRound();
+        }
+
+        function startRound() {
+            if (checkPoopStatus()) return;
+            state.isPlaying = true;
+            state.blenderReady = false;
+            els.blenderContainer.classList.remove('blender-ready');
+            els.basket.innerHTML = '';
+
+            if (state.mode === 'normal') setupNormalRound();
+            else setupBlenderRound();
             
-            // Celebração
-            createConfetti(window.innerWidth / 2, window.innerHeight / 2);
-            showAchievementStar(window.innerWidth / 2, 100);
+            const left = document.getElementById('eye-left');
+            const right = document.getElementById('eye-right');
+            left.setAttribute('cx', 100); left.setAttribute('cy', 100);
+            right.setAttribute('cx', 200); right.setAttribute('cy', 200);
+            moveEyes();
+        }
+
+        // FUNÇÃO CORRIGIDA: Agora cria MÚLTIPLAS frutas do mesmo tipo!
+        function fillBasket(requiredFruits) {
+            els.basket.innerHTML = ''; 
             
-            els.monster.classList.add('monster-happy');
-            setTimeout(() => els.monster.classList.remove('monster-happy'), 1000);
+            // requiredFruits agora é um array de tipos, pode ter duplicatas: ['morango', 'morango', 'banana']
+            let fruitArray = [...requiredFruits];
+            const allTypes = Object.keys(fruitsData);
             
-            els.instruction.innerHTML = "🎉 Você é demais! 🎉";
-            speak("Parabéns! Você é incrível!");
+            // Completa com frutas aleatórias até ter 5-6 itens
+            while(fruitArray.length < 6) {
+                const randomType = allTypes[Math.floor(Math.random() * allTypes.length)];
+                fruitArray.push(randomType);
+            }
             
-            // Limpar frutas restantes
-            document.querySelectorAll('.fruit').forEach(el => {
-                el.style.animation = 'popIn 0.5s reverse';
-                setTimeout(() => el.remove(), 500);
+            // Embaralha para não ficar óbvio
+            fruitArray.sort(() => Math.random() - 0.5);
+            
+            // Cria cada fruta individual
+            fruitArray.forEach((type, index) => {
+                const item = document.createElement('div');
+                item.className = 'basket-item';
+                item.innerHTML = `<svg viewBox="0 0 70 70" style="pointer-events:none; width:100%; height:100%;">${fruitsData[type].shape}</svg>`;
+                item.dataset.type = type;
+                item.dataset.id = `${type}-${index}`; // ID único para debug
+                item.addEventListener('touchstart', handleBasketTouchStart, {passive: false});
+                item.addEventListener('mousedown', handleBasketTouchStart);
+                els.basket.appendChild(item);
             });
-            
-            setTimeout(() => {
-                // Mostrar overlay de vitória a cada 3 rodadas
-                if (state.totalScore % 5 === 0) {
-                    showVictoryOverlay();
-                } else {
-                    startRound();
-                }
-            }, 2000);
         }
 
-        function showVictoryOverlay() {
-            const overlay = document.createElement('div');
-            overlay.className = 'victory-overlay';
-            overlay.innerHTML = `
-                <div class="victory-text">🎊 PARABÉNS! 🎊</div>
-                <div class="victory-text" style="font-size: 2.5rem;">Você fez ${state.totalScore} pontos!</div>
-                <div class="victory-text" style="font-size: 1.8rem; margin-top: 20px;">✨ Continue brincando! ✨</div>
-            `;
-            document.body.appendChild(overlay);
+        function handleBasketTouchStart(e) {
+            if (!state.isPlaying || state.needsPoop) return;
+            e.preventDefault();
+            const type = e.currentTarget.dataset.type;
+            const touch = e.type === 'touchstart' ? e.touches[0] : e;
+
+            const dragEl = document.createElement('div');
+            dragEl.className = 'fruit-drag';
+            dragEl.dataset.type = type;
+            dragEl.innerHTML = `<svg viewBox="0 0 70 70">${fruitsData[type].shape}</svg>`;
             
-            createConfetti(window.innerWidth / 2, window.innerHeight / 2);
-            setTimeout(() => createConfetti(window.innerWidth / 2, window.innerHeight / 2), 500);
-            
-            speak("Parabéns! Você é uma campeã!");
-            
-            setTimeout(() => {
-                overlay.style.animation = 'victoryFade 0.5s reverse';
-                setTimeout(() => {
-                    overlay.remove();
-                    startRound();
-                }, 500);
-            }, 3000);
+            dragEl.style.left = (touch.clientX - 45) + 'px';
+            dragEl.style.top = (touch.clientY - 45) + 'px';
+            els.gameContainer.appendChild(dragEl);
+            state.activeDrag = dragEl;
+
+            const moveHandler = (me) => {
+                if(!state.activeDrag) return;
+                const mt = me.type === 'touchmove' ? me.touches[0] : me;
+                state.activeDrag.style.left = (mt.clientX - 45) + 'px';
+                state.activeDrag.style.top = (mt.clientY - 45) + 'px';
+            };
+            const endHandler = () => {
+                document.removeEventListener('mousemove', moveHandler);
+                document.removeEventListener('mouseup', endHandler);
+                document.removeEventListener('touchmove', moveHandler);
+                document.removeEventListener('touchend', endHandler);
+                if (state.activeDrag) { checkDrop(state.activeDrag); state.activeDrag = null; }
+            };
+            document.addEventListener('mousemove', moveHandler);
+            document.addEventListener('mouseup', endHandler);
+            document.addEventListener('touchmove', moveHandler, {passive: false});
+            document.addEventListener('touchend', endHandler);
         }
 
-        // === MODO LIQUIDIFICADOR ===
-        function startBlenderMode() {
-            state.mode = 'blender';
-            state.blenderRecipe = {};
-            
-            const types = Object.keys(fruitsData);
-            const ingredient1 = types[Math.floor(Math.random() * types.length)];
-            let ingredient2 = types[Math.floor(Math.random() * types.length)];
-            while (ingredient2 === ingredient1) {
-                ingredient2 = types[Math.floor(Math.random() * types.length)];
-            }
-            
-            state.blenderRecipe[ingredient1] = 2;
-            state.blenderRecipe[ingredient2] = 2;
-            
-            els.instruction.innerHTML = `Faça um suco! Coloque no liquidificador: 2 ${fruitsData[ingredient1].name}s e 2 ${fruitsData[ingredient2].name}s! 🍹`;
-            speak(`Vamos fazer um suco delicioso! Coloque no liquidificador 2 ${fruitsData[ingredient1].name} e 2 ${fruitsData[ingredient2].name}!`);
-            
-            els.blender.style.display = 'block';
-            els.monster.style.left = '30%';
-            els.gameContainer.classList.add('blender-active');
-            
-            spawnFruits(6);
-        }
+        function checkDrop(el) {
+            const rect = el.getBoundingClientRect();
+            const cx = rect.left + rect.width/2;
+            const cy = rect.top + rect.height/2;
+            let dropped = false;
 
-        function checkBlenderIngredient(fruitEl) {
-            const type = fruitEl.dataset.type;
-            
-            if (state.blenderRecipe[type] > 0) {
-                state.blenderRecipe[type]--;
-                playSound('pop');
-                speak("Boa!");
-                
-                fruitEl.style.animation = 'popIn 0.3s reverse';
-                setTimeout(() => fruitEl.remove(), 300);
-                
-                const remaining = Object.values(state.blenderRecipe).reduce((a, b) => a + b, 0);
-                if (remaining === 0) {
-                    blendJuice();
+            if (state.mode === 'normal') {
+                const mouth = els.mouthSensor.getBoundingClientRect();
+                if (cx >= mouth.left && cx <= mouth.right && cy >= mouth.top && cy <= mouth.bottom) {
+                    if (el.dataset.type === state.targetType) { eatFruitNormal(el); dropped = true; }
+                    else { speak("Essa não!"); playSound('pop'); }
                 }
             } else {
-                speak("Essa não vai no suco!");
-                playSound('pop');
+                const blenderRect = els.blenderSensor.getBoundingClientRect();
+                if (cx >= blenderRect.left && cx <= blenderRect.right && cy >= blenderRect.top && cy <= blenderRect.bottom) {
+                    checkBlenderIngredient(el); dropped = true;
+                }
+            }
+
+            if (!dropped) {
+                el.style.transition = '0.2s'; el.style.transform = 'scale(0)';
+                setTimeout(() => el.remove(), 200);
             }
         }
 
-        function blendJuice() {
-            state.isPlaying = false;
-            els.instruction.innerHTML = "Batendo o suco...";
-            speak("Agora vou bater o suco!");
+        function setupNormalRound() {
+            const types = Object.keys(fruitsData);
+            state.targetType = types[Math.floor(Math.random() * types.length)];
+            state.targetCount = Math.floor(Math.random() * 3) + 1;
+            state.eatenCount = 0;
+            els.bellyCounter.innerText = '';
+            els.eatenFruits.innerHTML = '';
+            const plural = state.targetCount > 1 ? 's' : '';
+            els.instruction.innerHTML = `Quero <span class="highlight-num">${state.targetCount}</span> ${capitalize(state.targetType)}${plural}!`;
+            speak(`Quero ${state.targetCount} ${state.targetType}${plural}`);
             
-            els.blender.classList.add('blender-shaking');
-            playSound('glub');
+            // Cria array com múltiplas frutas do tipo pedido
+            const fruitsNeeded = Array(state.targetCount).fill(state.targetType);
+            fillBasket(fruitsNeeded);
+        }
+
+        function eatFruitNormal(el) {
+            const bellyClone = el.cloneNode(true);
+            bellyClone.className = 'eaten-fruit';
+            bellyClone.style.left = 'auto'; bellyClone.style.top = 'auto';
+            els.eatenFruits.appendChild(bellyClone);
+            el.remove();
+            playSound('eat');
+            state.targetCount--; state.eatenCount++;
+            els.bellyCounter.innerText = state.eatenCount;
+            els.bellyCounter.classList.remove('number-pop');
+            void els.bellyCounter.offsetWidth;
+            els.bellyCounter.classList.add('number-pop');
+            speak(state.targetCount > 0 ? state.eatenCount.toString() : "Delícia!");
+            if (state.targetCount <= 0) {
+                state.poopMeter++; state.isPlaying = false; setTimeout(startRound, 2000);
+            }
+        }
+
+        function setupBlenderRound() {
+            const types = Object.keys(fruitsData);
+            const t1 = types[Math.floor(Math.random()*types.length)];
+            let t2 = types[Math.floor(Math.random()*types.length)];
+            while(t1===t2) t2 = types[Math.floor(Math.random()*types.length)];
+            const c1 = Math.floor(Math.random()*2)+1;
+            const c2 = Math.floor(Math.random()*2)+1;
+            state.blenderRecipe = { [t1]: c1, [t2]: c2 };
+            state.blenderContent = [];
+            els.blenderLiquid.style.opacity = 0;
+            const tx1 = `${c1} ${capitalize(t1)}${c1>1?'s':''}`;
+            const tx2 = `${c2} ${capitalize(t2)}${c2>1?'s':''}`;
+            els.instruction.innerHTML = `Vitamina: <span class="highlight-num">${tx1}</span> e <span class="highlight-num">${tx2}</span>`;
+            speak(`Vitamina de ${t1} com ${t2}.`);
             
+            // CORRIGIDO: Cria array com quantidade correta de cada fruta!
+            const fruitsNeeded = [
+                ...Array(c1).fill(t1),
+                ...Array(c2).fill(t2)
+            ];
+            fillBasket(fruitsNeeded);
+        }
+
+        function checkBlenderIngredient(el) {
+            if (state.blenderReady) return;
+            const type = el.dataset.type;
+            const needed = state.blenderRecipe[type];
+            
+            if (needed && needed > 0) {
+                state.blenderRecipe[type]--;
+                state.blenderContent.push(type);
+                el.remove(); 
+                playSound('pop');
+                
+                const rest = Object.values(state.blenderRecipe).reduce((a,b)=>a+b, 0);
+                if (rest === 0) finishBlender();
+                else updateBlenderText();
+            } else {
+                speak("Essa não precisa!"); 
+                playSound('pop'); 
+                el.remove();
+            }
+        }
+
+        function updateBlenderText() {
+            const parts = [];
+            for (let [t, c] of Object.entries(state.blenderRecipe)) {
+                if (c > 0) parts.push(`${c} ${t}${c>1?'s':''}`);
+            }
+            if(parts.length > 0) speak("Falta " + parts.join(" e "));
+        }
+
+        function finishBlender() {
+            els.instruction.innerHTML = "Misturando...";
+            playSound('blender');
+            els.blenderContainer.classList.add('blender-shaking');
             setTimeout(() => {
-                els.blender.classList.remove('blender-shaking');
-                els.blenderLiquid.style.opacity = 1;
-                
+                els.blenderContainer.classList.remove('blender-shaking');
+                els.blenderLiquid.style.opacity = 1; 
                 state.blenderReady = true;
-                els.blender.classList.add('blender-ready');
-                els.instruction.innerHTML = "Arraste o liquidificador para minha boca! 🥤";
-                speak("Pronto! Agora me dê o suco!");
-                
-                document.querySelectorAll('.fruit').forEach(el => el.remove());
+                els.blenderContainer.classList.add('blender-ready');
+                els.instruction.innerHTML = "Pronto! Dê para o monstro!";
+                speak("Pronto! Dá pra mim!");
+                els.basket.innerHTML = ''; 
             }, 1500);
         }
 
-        // === DRAG DO LIQUIDIFICADOR ===
         function setupBlenderDrag() {
             let startX, startY;
-            const el = els.blender;
+            const wrapper = els.blenderWrapper; 
+            const container = els.blenderContainer;
 
             function onStart(e) {
                 if (!state.blenderReady) return;
-                e.preventDefault();
+                e.preventDefault(); 
                 const touch = e.type === 'touchstart' ? e.touches[0] : e;
-                startX = touch.clientX;
+                startX = touch.clientX; 
                 startY = touch.clientY;
-                el.style.zIndex = 100;
+                wrapper.style.zIndex = 1000;
 
                 function onMove(me) {
                     const mt = me.type === 'touchmove' ? me.touches[0] : me;
                     const dx = mt.clientX - startX;
                     const dy = mt.clientY - startY;
-                    el.style.transform = `translate(${dx}px, ${dy}px)`;
+                    wrapper.style.transform = `translate(${dx}px, ${dy}px)`;
+
+                    const bRect = wrapper.getBoundingClientRect();
+                    const bCx = bRect.left + bRect.width/2;
+                    const bCy = bRect.top + bRect.height/2;
+                    const mRect = els.mouthSensor.getBoundingClientRect();
+                    
+                    if (bCx >= mRect.left && bCx <= mRect.right && bCy >= mRect.top && bCy <= mRect.bottom) {
+                        els.monster.classList.add('mouth-open');
+                    } else {
+                        els.monster.classList.remove('mouth-open');
+                    }
                 }
 
                 function onEnd() {
@@ -1200,7 +820,7 @@
                     document.removeEventListener('touchmove', onMove);
                     document.removeEventListener('touchend', onEnd);
                     
-                    const bRect = el.getBoundingClientRect();
+                    const bRect = wrapper.getBoundingClientRect();
                     const bCx = bRect.left + bRect.width/2;
                     const bCy = bRect.top + bRect.height/2;
                     const mRect = els.mouthSensor.getBoundingClientRect();
@@ -1208,7 +828,11 @@
                     if (bCx >= mRect.left && bCx <= mRect.right && bCy >= mRect.top && bCy <= mRect.bottom) {
                         feedMonsterJuice();
                     } else {
-                        el.style.transform = 'none';
+                        wrapper.style.transition = 'transform 0.3s';
+                        wrapper.style.transform = 'none';
+                        setTimeout(() => wrapper.style.transition = '', 300);
+                        els.monster.classList.remove('mouth-open');
+                        wrapper.style.zIndex = 110;
                     }
                 }
 
@@ -1218,190 +842,59 @@
                 document.addEventListener('touchend', onEnd);
             }
 
-            el.addEventListener('mousedown', onStart);
-            el.addEventListener('touchstart', onStart, {passive: false});
+            els.blenderSensor.addEventListener('mousedown', onStart);
+            els.blenderSensor.addEventListener('touchstart', onStart, {passive: false});
         }
 
         function feedMonsterJuice() {
             state.blenderReady = false;
-            els.blender.classList.remove('blender-ready');
-            
-            els.blender.style.transform = 'translate(-80px, -200px) rotate(-100deg)';
-            els.blender.style.transition = 'transform 0.5s';
+            els.blenderContainer.classList.remove('blender-ready');
+            els.monster.classList.remove('mouth-open');
+            els.blenderContainer.classList.add('blender-drinking-anim');
             
             setTimeout(() => {
                 els.blenderLiquid.style.opacity = 0;
                 playSound('glub');
-                els.monster.classList.add('monster-wiggle');
-                setTimeout(() => els.monster.classList.remove('monster-wiggle'), 500);
                 
                 setTimeout(() => {
-                    playSound('eat');
-                    speak("Hummm que suco delicioso!");
-                    state.totalScore += 2;
-                    els.scoreDisplay.textContent = `⭐ ${state.totalScore}`;
+                    playSound('eat'); 
+                    speak("Hummm delícia!");
                     
-                    createConfetti(window.innerWidth / 2, window.innerHeight / 2);
+                    els.blenderContainer.classList.remove('blender-drinking-anim');
+                    els.blenderWrapper.style.transition = 'transform 0.3s';
+                    els.blenderWrapper.style.transform = 'none';
+                    els.blenderWrapper.style.zIndex = 110;
+                    setTimeout(() => els.blenderWrapper.style.transition = '', 300);
                     
-                    resetBlender();
                     state.poopMeter += 2;
-                    if (state.poopMeter >= 8) {
-                        els.poopBtn.style.display = 'flex';
-                    }
-                    
-                    setTimeout(() => startRound(), 1500);
+                    startRound();
                 }, 1500);
-            }, 500);
+            }, 600);
         }
 
         function resetBlender() {
-            els.blender.style.transform = 'none';
-            els.blender.style.transition = 'transform 0.3s';
-            state.blenderReady = false;
-            els.blender.classList.remove('blender-ready');
+            els.blenderWrapper.style.transform = 'none';
+            els.blenderWrapper.style.zIndex = 110;
+            els.blenderContainer.classList.remove('blender-ready');
+            els.blenderContainer.classList.remove('blender-drinking-anim');
             els.blenderLiquid.style.opacity = 0;
-            els.gameContainer.classList.remove('blender-active');
         }
 
-        // === SISTEMA DE FRUTAS ===
-        function spawnFruits(qtd) {
-            for(let i=0; i<qtd; i++) {
-                let type;
-                const types = Object.keys(fruitsData);
-                if (Math.random() > 0.3) {
-                    if (state.mode === 'normal') {
-                        type = state.targetType;
-                    } else {
-                        const ingredients = Object.keys(state.blenderRecipe);
-                        type = ingredients[Math.floor(Math.random() * ingredients.length)];
-                    }
-                } else {
-                    type = types[Math.floor(Math.random() * types.length)];
-                }
-                createFruit(type);
-            }
-        }
-
-        function createFruit(type) {
-            const el = document.createElement('div');
-            el.className = 'fruit';
-            el.dataset.type = type;
-            el.innerHTML = `<svg viewBox="0 0 70 70">${fruitsData[type].shape}</svg>`;
-            const x = Math.random() * (window.innerWidth - 80);
-            const y = Math.random() * (window.innerHeight - 200) + 50;
-            el.style.left = x + 'px';
-            el.style.top = y + 'px';
-            el.style.animation = 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            setupFruitDrag(el);
-            els.gameContainer.appendChild(el);
-        }
-
-        function setupFruitDrag(el) {
-            let startX, startY, initialLeft, initialTop;
-            
-            function onStart(e) {
-                if (!state.isPlaying) return;
-                e.preventDefault();
-                const touch = e.type === 'touchstart' ? e.touches[0] : e;
-                startX = touch.clientX;
-                startY = touch.clientY;
-                initialLeft = el.offsetLeft;
-                initialTop = el.offsetTop;
-                el.style.zIndex = 1000;
-                
-                function onMove(me) {
-                    const mt = me.type === 'touchmove' ? me.touches[0] : me;
-                    el.style.left = (initialLeft + (mt.clientX - startX)) + 'px';
-                    el.style.top = (initialTop + (mt.clientY - startY)) + 'px';
-                }
-                
-                function onEnd() {
-                    document.removeEventListener('mousemove', onMove);
-                    document.removeEventListener('mouseup', onEnd);
-                    document.removeEventListener('touchmove', onMove);
-                    document.removeEventListener('touchend', onEnd);
-                    el.style.zIndex = 30;
-                    checkDrop(el);
-                }
-                
-                document.addEventListener('mousemove', onMove);
-                document.addEventListener('mouseup', onEnd);
-                document.addEventListener('touchmove', onMove, {passive: false});
-                document.addEventListener('touchend', onEnd);
-            }
-            
-            el.addEventListener('mousedown', onStart);
-            el.addEventListener('touchstart', onStart, {passive: false});
-        }
-
-        function checkDrop(el) {
-            const rect = el.getBoundingClientRect();
-            const cx = rect.left + rect.width/2;
-            const cy = rect.top + rect.height/2;
-
-            if (state.mode === 'normal') {
-                const mouth = els.mouthSensor.getBoundingClientRect();
-                if (cx >= mouth.left && cx <= mouth.right && cy >= mouth.top && cy <= mouth.bottom) {
-                    if (el.dataset.type === state.targetType) {
-                        eatFruitNormal(el);
-                    } else {
-                        speak("Essa não!");
-                        playSound('pop');
-                    }
-                }
-            } else {
-                const blender = els.blenderSensor.getBoundingClientRect();
-                if (cx >= blender.left && cx <= blender.right && cy >= blender.top && cy <= blender.bottom) {
-                    checkBlenderIngredient(el);
-                }
-            }
-        }
-
-        // === SISTEMA DE COCÔ ===
-        function doPoop() {
-            state.isPlaying = false;
-            speak("Ops! Preciso fazer cocô!");
-            
-            els.monster.classList.add('sick-face');
-            
-            setTimeout(() => {
-                const poop = document.createElement('div');
-                poop.className = 'poop-drop';
-                poop.textContent = '💩';
-                els.gameContainer.appendChild(poop);
-                
-                playSound('pop');
-                
-                setTimeout(() => {
-                    poop.remove();
-                    els.monster.classList.remove('sick-face');
-                    speak("Ufa! Que alívio!");
-                    
-                    setTimeout(() => {
-                        state.isPlaying = true;
-                    }, 1000);
-                }, 2000);
-            }, 1000);
-        }
-
-        // === MOVIMENTAÇÃO DOS OLHOS ===
         function moveEyes() {
+            if(state.needsPoop) return;
             const left = document.getElementById('eye-left');
             const right = document.getElementById('eye-right');
             const angle = Math.random() * Math.PI * 2;
             const r = 5;
             const dx = Math.cos(angle) * r;
             const dy = Math.sin(angle) * r;
-            left.setAttribute('cx', 100 + dx);
-            left.setAttribute('cy', 100 + dy);
-            right.setAttribute('cx', 200 + dx);
-            right.setAttribute('cy', 100 + dy);
+            left.setAttribute('cx', 100 + dx); left.setAttribute('cy', 100 + dy);
+            right.setAttribute('cx', 200 + dx); right.setAttribute('cy', 100 + dy);
         }
         
-        setInterval(moveEyes, 2000);
+        function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+        setInterval(moveEyes, 2500);
 
-        // === INICIAR JOGO ===
-        window.addEventListener('load', init);
     </script>
 </body>
 </html>
