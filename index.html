@@ -1,1 +1,1407 @@
-teste
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🌈 O Monstro Comilão Mágico - Para Lavine ✨</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <style>
+        /* === RESET E VARIÁVEIS === */
+        :root {
+            --color-sky-light: #87CEEB;
+            --color-sky-dark: #4A90E2;
+            --color-grass: #7EC850;
+            --color-sunshine: #FFD93D;
+            --color-magic: #FF6B9D;
+            --color-purple: #C77DFF;
+            --color-orange: #FF9E5E;
+            --color-success: #4ECDC4;
+            --shadow-soft: 0 8px 20px rgba(0,0,0,0.15);
+            --shadow-pop: 0 12px 30px rgba(0,0,0,0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            font-family: 'Fredoka', sans-serif;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+            background: linear-gradient(180deg, var(--color-sky-light) 0%, var(--color-sky-dark) 100%);
+            position: relative;
+            height: 100vh;
+        }
+
+        /* === FUNDO ANIMADO === */
+        #sky-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 50%, #FFE5B4 100%);
+            animation: skyShift 30s ease-in-out infinite;
+        }
+
+        @keyframes skyShift {
+            0%, 100% { background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 50%, #FFE5B4 100%); }
+            50% { background: linear-gradient(180deg, #FFB6C1 0%, #FFC8DD 50%, #FFDAB9 100%); }
+        }
+
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 100px;
+            animation: floatCloud 20s linear infinite;
+            box-shadow: 0 4px 20px rgba(255,255,255,0.5);
+        }
+
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 100px;
+        }
+
+        @keyframes floatCloud {
+            from { transform: translateX(-200px); }
+            to { transform: translateX(calc(100vw + 200px)); }
+        }
+
+        /* === AMIGUINHOS ANIMADOS === */
+        .friend {
+            position: absolute;
+            font-size: 40px;
+            z-index: 2;
+            animation: friendFloat 4s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+            pointer-events: none;
+        }
+
+        @keyframes friendFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        .butterfly {
+            animation: butterflyFly 8s ease-in-out infinite;
+        }
+
+        @keyframes butterflyFly {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(100px, -50px) rotate(15deg); }
+            50% { transform: translate(200px, 20px) rotate(-15deg); }
+            75% { transform: translate(100px, 50px) rotate(10deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        /* === CONTAINER PRINCIPAL === */
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        /* === CHÃO COM GRAMA === */
+        #ground {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(180deg, var(--color-grass) 0%, #5FA336 100%);
+            z-index: 2;
+            box-shadow: 0 -5px 30px rgba(0,0,0,0.1);
+        }
+
+        .grass-blade {
+            position: absolute;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, transparent 0%, #4A8C2A 100%);
+            animation: grassSway 2s ease-in-out infinite;
+        }
+
+        @keyframes grassSway {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        /* === MONSTRO MELHORADO === */
+        #monster-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 350px;
+            z-index: 5;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
+        }
+
+        .monster-bounce {
+            animation: monsterBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes monsterBounce {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.15); }
+        }
+
+        .monster-wiggle {
+            animation: monsterWiggle 0.5s ease-in-out;
+        }
+
+        @keyframes monsterWiggle {
+            0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+            25% { transform: translate(-50%, -50%) rotate(-5deg); }
+            75% { transform: translate(-50%, -50%) rotate(5deg); }
+        }
+
+        .monster-happy {
+            animation: monsterHappy 1s ease-in-out;
+        }
+
+        @keyframes monsterHappy {
+            0%, 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+            25% { transform: translate(-50%, -50%) scale(1.1) rotate(-3deg); }
+            50% { transform: translate(-50%, -50%) scale(1.15) rotate(3deg); }
+            75% { transform: translate(-50%, -50%) scale(1.1) rotate(-3deg); }
+        }
+
+        #mouth-sensor {
+            position: absolute;
+            top: 80px;
+            left: 75px;
+            width: 150px;
+            height: 80px;
+            z-index: 10;
+        }
+
+        /* === BARRIGA COM EFEITOS === */
+        #belly-container {
+            position: absolute;
+            top: 200px;
+            left: 90px;
+            width: 120px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 6;
+            pointer-events: none;
+        }
+
+        #belly-counter {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+            z-index: 8;
+            position: absolute;
+            font-family: 'Bubblegum Sans', cursive;
+            animation: numberPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes numberPop {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        #eaten-fruits-visuals {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.6;
+            z-index: 7;
+        }
+
+        .eaten-fruit {
+            width: 25px !important;
+            height: 25px !important;
+            margin: 2px;
+            position: relative !important;
+            transform: none !important;
+            left: auto !important;
+            top: auto !important;
+            animation: fruitInBelly 0.4s ease-out;
+        }
+
+        @keyframes fruitInBelly {
+            from { transform: scale(0) rotate(180deg); opacity: 0; }
+            to { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        /* Expressão de enjoo melhorada */
+        .sick-face #monster-body { fill: #a8d5ba !important; transition: fill 0.5s; }
+        .sick-face .eye-pupil { transform: scale(0.5); }
+        .sick-face .mouth-path { d: path("M75 150 Q110 140 150 150 Q190 160 225 150"); fill: none; stroke: #333; stroke-width: 5; }
+        .sick-face .teeth { display: none; }
+
+        /* === LIQUIDIFICADOR ESTILIZADO === */
+        #blender-container {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 140px;
+            height: 200px;
+            z-index: 40;
+            display: none;
+            transition: transform 0.3s;
+            transform-origin: center bottom;
+            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.3));
+        }
+
+        .blender-ready {
+            cursor: grab;
+            animation: blenderPulse 1.5s infinite;
+        }
+
+        @keyframes blenderPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 8px 15px rgba(255, 215, 0, 0.5)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 12px 25px rgba(255, 215, 0, 0.8)); }
+        }
+
+        .blender-ready:active { cursor: grabbing; }
+        #blender-sensor { position: absolute; top: 0; left: 10; width: 120px; height: 150px; z-index: 10; }
+        .blender-active #monster-container { left: 30%; }
+        .blender-shaking { animation: shake 0.3s infinite; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px) rotate(-1deg); }
+            75% { transform: translateX(3px) rotate(1deg); }
+        }
+
+        /* === ANIMAÇÃO DO COCÔ === */
+        .poop-drop {
+            position: absolute;
+            font-size: 80px;
+            z-index: 1;
+            animation: dropPoop 2s forwards;
+            left: 50%;
+            top: 55%;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+        }
+
+        @keyframes dropPoop {
+            0% { transform: translate(-50%, 0) scale(0.5) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; transform: translate(-50%, 20px) scale(1) rotate(20deg); }
+            100% { transform: translate(-50%, 400px) scale(1.2) rotate(360deg); opacity: 0; }
+        }
+
+        /* === PARTÍCULAS E CONFETES === */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            z-index: 100;
+            animation: particleFloat 1.5s ease-out forwards;
+        }
+
+        @keyframes particleFloat {
+            0% { 
+                transform: translate(0, 0) scale(1) rotate(0deg); 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translate(var(--tx), var(--ty)) scale(0) rotate(var(--rot)); 
+                opacity: 0; 
+            }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            z-index: 101;
+            animation: confettiFall 2s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { 
+                transform: translateY(0) rotate(0deg); 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translateY(600px) rotate(720deg); 
+                opacity: 0; 
+            }
+        }
+
+        /* === ESTRELINHAS DE CONQUISTA === */
+        .achievement-star {
+            position: absolute;
+            font-size: 60px;
+            z-index: 102;
+            animation: starPop 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+            filter: drop-shadow(0 4px 15px rgba(255, 215, 0, 0.8));
+        }
+
+        @keyframes starPop {
+            0% { 
+                transform: translate(-50%, -50%) scale(0) rotate(0deg); 
+                opacity: 0; 
+            }
+            60% { 
+                transform: translate(-50%, -50%) scale(1.3) rotate(180deg); 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translate(-50%, -50%) scale(1) rotate(360deg); 
+                opacity: 1; 
+            }
+        }
+
+        /* === CONTROLES MELHORADOS === */
+        #controls-sidebar {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 50;
+        }
+
+        .control-btn {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            border-radius: 50%;
+            border: 5px solid var(--color-magic);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+        }
+
+        .control-btn::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-magic), var(--color-purple));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .control-btn:hover::before {
+            opacity: 0.3;
+        }
+
+        .control-btn:active {
+            transform: scale(0.9);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .control-btn svg {
+            width: 40px;
+            height: 40px;
+            fill: #333;
+            transition: transform 0.3s;
+        }
+
+        .control-btn:hover svg {
+            transform: scale(1.1);
+        }
+
+        .btn-active {
+            background: linear-gradient(135deg, var(--color-sunshine) 0%, var(--color-orange) 100%);
+            border-color: var(--color-orange);
+            box-shadow: var(--shadow-pop);
+            animation: btnGlow 1s ease-in-out infinite;
+        }
+
+        @keyframes btnGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 217, 61, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(255, 217, 61, 0.8); }
+        }
+
+        #btn-color {
+            border-color: var(--color-purple);
+        }
+
+        /* Botão de Cocô Melhorado */
+        #poop-btn {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #fff 0%, #f5f5f5 100%);
+            border-radius: 50%;
+            border: 5px solid #e74c3c;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 60;
+            cursor: pointer;
+            box-shadow: var(--shadow-pop);
+            animation: poopPulse 1.2s ease-in-out infinite;
+        }
+
+        @keyframes poopPulse {
+            0%, 100% { 
+                transform: scale(1); 
+                box-shadow: 0 5px 20px rgba(231, 76, 60, 0.3);
+            }
+            50% { 
+                transform: scale(1.1); 
+                box-shadow: 0 10px 35px rgba(231, 76, 60, 0.6);
+            }
+        }
+
+        /* === UI E TEXTOS MELHORADOS === */
+        #ui-layer {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            text-align: center;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        #instruction-bubble {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #333;
+            box-shadow: var(--shadow-soft);
+            border: 4px solid var(--color-magic);
+            animation: bubbleBounce 2s ease-in-out infinite;
+            font-family: 'Bubblegum Sans', cursive;
+        }
+
+        @keyframes bubbleBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        #score-display {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, var(--color-sunshine) 0%, var(--color-orange) 100%);
+            padding: 15px 25px;
+            border-radius: 20px;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            box-shadow: var(--shadow-soft);
+            border: 4px solid #fff;
+            z-index: 21;
+            pointer-events: none;
+            font-family: 'Bubblegum Sans', cursive;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+        }
+
+        /* === FRUTAS MELHORADAS === */
+        .fruit {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            cursor: grab;
+            z-index: 30;
+            transition: transform 0.2s;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+        }
+
+        .fruit:active {
+            cursor: grabbing;
+            transform: scale(1.1);
+            z-index: 1000 !important;
+        }
+
+        .fruit svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.2) rotate(180deg);
+            }
+            100% {
+                transform: scale(1) rotate(360deg);
+                opacity: 1;
+            }
+        }
+
+        /* === CELEBRAÇÃO DE VITÓRIA === */
+        .victory-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.9) 0%, rgba(199, 125, 255, 0.9) 100%);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: victoryFade 0.5s ease-out;
+        }
+
+        @keyframes victoryFade {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .victory-text {
+            font-size: 4rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            animation: victoryBounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+            font-family: 'Bubblegum Sans', cursive;
+        }
+
+        @keyframes victoryBounce {
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            50% { transform: translateY(-20px) rotate(3deg); }
+        }
+
+        /* === RESPONSIVIDADE === */
+        @media (max-width: 768px) {
+            #instruction-bubble { font-size: 1.4rem; padding: 12px 20px; }
+            #score-display { font-size: 1.5rem; padding: 12px 20px; }
+            .control-btn { width: 60px; height: 60px; }
+            .control-btn svg { width: 35px; height: 35px; }
+            #monster-container { width: 250px; height: 300px; }
+            .victory-text { font-size: 2.5rem; }
+        }
+
+        /* === LOADING === */
+        .loading {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, var(--color-sky-light) 0%, var(--color-magic) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            animation: loadingFade 0.5s ease-out 2s forwards;
+        }
+
+        @keyframes loadingFade {
+            to { opacity: 0; pointer-events: none; }
+        }
+
+        .loading-text {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+            animation: loadingPulse 1s ease-in-out infinite;
+            font-family: 'Bubblegum Sans', cursive;
+        }
+
+        @keyframes loadingPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading">
+        <div class="loading-text">🌟 Carregando mágica... ✨</div>
+    </div>
+
+    <!-- Fundo Animado -->
+    <div id="sky-background"></div>
+
+    <!-- Container do Jogo -->
+    <div id="game-container">
+        <!-- Amiguinhos Decorativos -->
+        <div class="friend butterfly" style="top: 10%; left: 10%;">🦋</div>
+        <div class="friend" style="top: 15%; right: 15%;">🐦</div>
+        <div class="friend" style="bottom: 60%; left: 5%;">⭐</div>
+        <div class="friend" style="bottom: 70%; right: 10%;">✨</div>
+
+        <!-- UI Layer -->
+        <div id="ui-layer">
+            <div id="instruction-bubble">Arraste as frutas para minha boca! 😋</div>
+        </div>
+
+        <!-- Score Display -->
+        <div id="score-display">⭐ 0</div>
+
+        <!-- Monstro -->
+        <div id="monster-container">
+            <svg viewBox="0 0 300 350">
+                <!-- Corpo -->
+                <ellipse id="monster-body" cx="150" cy="200" rx="130" ry="150" fill="#7B68EE" stroke="#5A4FCF" stroke-width="5"/>
+                
+                <!-- Barriga -->
+                <ellipse cx="150" cy="230" rx="80" ry="90" fill="#9B88FF" opacity="0.6"/>
+                
+                <!-- Olhos -->
+                <g class="eyes">
+                    <!-- Olho Esquerdo -->
+                    <ellipse cx="100" cy="100" rx="35" ry="45" fill="white" stroke="#333" stroke-width="3"/>
+                    <circle id="eye-left" class="eye-pupil" cx="100" cy="100" r="20" fill="#333"/>
+                    <circle cx="95" cy="95" r="8" fill="white"/>
+                    
+                    <!-- Olho Direito -->
+                    <ellipse cx="200" cy="100" rx="35" ry="45" fill="white" stroke="#333" stroke-width="3"/>
+                    <circle id="eye-right" class="eye-pupil" cx="200" cy="100" r="20" fill="#333"/>
+                    <circle cx="195" cy="95" r="8" fill="white"/>
+                </g>
+                
+                <!-- Boca -->
+                <g class="mouth">
+                    <ellipse cx="150" cy="150" rx="60" ry="40" fill="#333"/>
+                    <ellipse cx="150" cy="145" rx="60" ry="35" fill="#FF69B4"/>
+                    
+                    <!-- Dentes -->
+                    <g class="teeth" fill="white">
+                        <rect x="110" y="130" width="15" height="20" rx="3"/>
+                        <rect x="130" y="130" width="15" height="20" rx="3"/>
+                        <rect x="155" y="130" width="15" height="20" rx="3"/>
+                        <rect x="175" y="130" width="15" height="20" rx="3"/>
+                    </g>
+                </g>
+                
+                <!-- Braços -->
+                <ellipse cx="50" cy="200" rx="25" ry="80" fill="#7B68EE" stroke="#5A4FCF" stroke-width="3" transform="rotate(-20 50 200)"/>
+                <ellipse cx="250" cy="200" rx="25" ry="80" fill="#7B68EE" stroke="#5A4FCF" stroke-width="3" transform="rotate(20 250 200)"/>
+                
+                <!-- Mãos -->
+                <circle cx="40" cy="260" r="20" fill="#9B88FF" stroke="#5A4FCF" stroke-width="3"/>
+                <circle cx="260" cy="260" r="20" fill="#9B88FF" stroke="#5A4FCF" stroke-width="3"/>
+            </svg>
+            
+            <!-- Sensor da Boca -->
+            <div id="mouth-sensor"></div>
+            
+            <!-- Contador da Barriga -->
+            <div id="belly-container">
+                <div id="belly-counter">0</div>
+                <div id="eaten-fruits-visuals"></div>
+            </div>
+        </div>
+
+        <!-- Liquidificador -->
+        <div id="blender-container">
+            <svg viewBox="0 0 140 200">
+                <!-- Base -->
+                <rect x="30" y="170" width="80" height="30" rx="5" fill="#666" stroke="#333" stroke-width="2"/>
+                
+                <!-- Motor -->
+                <rect x="40" y="160" width="60" height="15" rx="3" fill="#888"/>
+                
+                <!-- Copo -->
+                <path d="M 35 160 L 25 50 L 115 50 L 105 160 Z" fill="rgba(200,200,255,0.3)" stroke="#4A90E2" stroke-width="3"/>
+                
+                <!-- Líquido -->
+                <path id="blender-liquid" d="M 32 160 L 27 70 L 113 70 L 108 160 Z" fill="#FF69B4" opacity="0" style="transition: opacity 0.5s"/>
+                
+                <!-- Tampa -->
+                <ellipse cx="70" cy="50" rx="45" ry="8" fill="#4A90E2" stroke="#333" stroke-width="2"/>
+                
+                <!-- Botão -->
+                <circle cx="70" cy="175" r="8" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+            </svg>
+            <div id="blender-sensor"></div>
+        </div>
+
+        <!-- Controles -->
+        <div id="controls-sidebar">
+            <div id="btn-sound" class="control-btn btn-active" title="Som">
+                <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+            </div>
+            <div id="btn-voice" class="control-btn btn-active" title="Voz">
+                <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
+            </div>
+            <div id="btn-color" class="control-btn" title="Mudar Cor">
+                <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+            </div>
+        </div>
+
+        <!-- Botão de Cocô -->
+        <div id="poop-btn">
+            <span style="font-size: 50px;">💩</span>
+        </div>
+
+        <!-- Chão com Grama -->
+        <div id="ground"></div>
+    </div>
+
+    <script>
+        // === CONFIGURAÇÃO INICIAL ===
+        const els = {
+            gameContainer: document.getElementById('game-container'),
+            monster: document.getElementById('monster-container'),
+            mouthSensor: document.getElementById('mouth-sensor'),
+            bellyCounter: document.getElementById('belly-counter'),
+            eatenVisuals: document.getElementById('eaten-fruits-visuals'),
+            instruction: document.getElementById('instruction-bubble'),
+            scoreDisplay: document.getElementById('score-display'),
+            blender: document.getElementById('blender-container'),
+            blenderSensor: document.getElementById('blender-sensor'),
+            blenderLiquid: document.getElementById('blender-liquid'),
+            poopBtn: document.getElementById('poop-btn'),
+            btnSound: document.getElementById('btn-sound'),
+            btnVoice: document.getElementById('btn-voice'),
+            btnColor: document.getElementById('btn-color'),
+            skyBg: document.getElementById('sky-background')
+        };
+
+        const state = {
+            totalScore: 0,
+            roundTarget: 5,
+            eaten: 0,
+            targetType: 'morango',
+            mode: 'normal',
+            blenderRecipe: {},
+            blenderReady: false,
+            poopMeter: 0,
+            isPlaying: false,
+            soundEnabled: true,
+            voiceEnabled: true,
+            monsterColors: ['#7B68EE', '#FF6B9D', '#4ECDC4', '#FFD93D', '#FF9E5E', '#C77DFF']
+        };
+
+        const fruitsData = {
+            morango: { shape: '<ellipse cx="35" cy="40" rx="20" ry="25" fill="#ff6b8a"/><circle cx="35" cy="20" r="4" fill="#4CAF50"/><path d="M30 20 L35 10 L40 20" fill="none" stroke="#4CAF50" stroke-width="2"/><circle cx="30" cy="35" r="2" fill="#fff"/><circle cx="40" cy="38" r="2" fill="#fff"/><circle cx="35" cy="43" r="2" fill="#fff"/>', name: 'morango' },
+            banana: { shape: '<path d="M20 35 Q30 15 45 20 Q50 25 48 35 Q45 50 35 55 Q25 58 20 50 Q15 40 20 35" fill="#ffe135"/><ellipse cx="32" cy="35" rx="3" ry="8" fill="#d4a017" opacity="0.3"/>', name: 'banana' },
+            maça: { shape: '<circle cx="35" cy="40" r="22" fill="#ff4444"/><ellipse cx="35" cy="40" rx="18" ry="22" fill="#ff6666"/><circle cx="28" cy="33" r="6" fill="#ff8888" opacity="0.5"/><rect x="33" y="15" width="4" height="10" fill="#8b4513"/><path d="M37 20 Q45 18 48 25" fill="none" stroke="#4CAF50" stroke-width="2"/><ellipse cx="45" cy="24" rx="6" ry="4" fill="#4CAF50"/>', name: 'maçã' },
+            laranja: { shape: '<circle cx="35" cy="35" r="23" fill="#ff8c42"/><circle cx="28" cy="28" r="8" fill="#ffa64d" opacity="0.4"/><circle cx="35" cy="15" r="3" fill="#8b4513"/>', name: 'laranja' },
+            uva: { shape: '<circle cx="35" cy="45" r="8" fill="#8e44ad"/><circle cx="25" cy="40" r="8" fill="#9b59b6"/><circle cx="45" cy="40" r="8" fill="#9b59b6"/><circle cx="30" cy="30" r="8" fill="#a569bd"/><circle cx="40" cy="30" r="8" fill="#a569bd"/><circle cx="35" cy="22" r="8" fill="#bb8fce"/><path d="M35 15 Q40 10 45 15" fill="none" stroke="#4CAF50" stroke-width="2"/><ellipse cx="40" cy="12" rx="8" ry="5" fill="#4CAF50"/>', name: 'uva' }
+        };
+
+        const encouragements = [
+            "Muito bem! 🌟",
+            "Você é incrível! ⭐",
+            "Perfeito! 🎉",
+            "Maravilhoso! ✨",
+            "Uau! Que demais! 🎊",
+            "Sensacional! 💫",
+            "Isso aí! Continue! 🌈",
+            "Você é um campeão! 🏆",
+            "Brilhante! ⚡",
+            "Fantástico! 🎪"
+        ];
+
+        // === INICIALIZAÇÃO ===
+        function init() {
+            createClouds();
+            createGrass();
+            setupBlenderDrag();
+            attachEventListeners();
+            setTimeout(() => startRound(), 2500);
+        }
+
+        // === CRIAR NUVENS ===
+        function createClouds() {
+            for (let i = 0; i < 5; i++) {
+                const cloud = document.createElement('div');
+                cloud.className = 'cloud';
+                const size = 60 + Math.random() * 80;
+                cloud.style.width = size + 'px';
+                cloud.style.height = size * 0.6 + 'px';
+                cloud.style.top = Math.random() * 40 + '%';
+                cloud.style.left = Math.random() * 100 + '%';
+                cloud.style.animationDelay = Math.random() * 20 + 's';
+                cloud.style.animationDuration = (15 + Math.random() * 10) + 's';
+                
+                cloud.style.setProperty('--before-w', size * 0.5 + 'px');
+                cloud.style.setProperty('--before-h', size * 0.5 + 'px');
+                cloud.style.setProperty('--after-w', size * 0.6 + 'px');
+                cloud.style.setProperty('--after-h', size * 0.7 + 'px');
+                
+                els.skyBg.appendChild(cloud);
+            }
+        }
+
+        // === CRIAR GRAMA ===
+        function createGrass() {
+            const ground = document.getElementById('ground');
+            for (let i = 0; i < 100; i++) {
+                const blade = document.createElement('div');
+                blade.className = 'grass-blade';
+                blade.style.left = Math.random() * 100 + '%';
+                blade.style.height = (20 + Math.random() * 30) + 'px';
+                blade.style.animationDelay = Math.random() * 2 + 's';
+                ground.appendChild(blade);
+            }
+        }
+
+        // === EVENT LISTENERS ===
+        function attachEventListeners() {
+            els.btnSound.onclick = () => {
+                state.soundEnabled = !state.soundEnabled;
+                els.btnSound.classList.toggle('btn-active');
+                speak(state.soundEnabled ? "Som ligado!" : "Som desligado!");
+            };
+
+            els.btnVoice.onclick = () => {
+                state.voiceEnabled = !state.voiceEnabled;
+                els.btnVoice.classList.toggle('btn-active');
+            };
+
+            els.btnColor.onclick = () => {
+                const randomColor = state.monsterColors[Math.floor(Math.random() * state.monsterColors.length)];
+                document.getElementById('monster-body').style.fill = randomColor;
+                createParticles(window.innerWidth / 2, window.innerHeight / 2);
+                speak("Olha que cor linda!");
+            };
+
+            els.poopBtn.onclick = () => {
+                doPoop();
+                els.poopBtn.style.display = 'none';
+                state.poopMeter = 0;
+            };
+        }
+
+        // === EFEITOS VISUAIS ===
+        function createParticles(x, y) {
+            const colors = ['#FFD93D', '#FF6B9D', '#4ECDC4', '#C77DFF', '#FF9E5E'];
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.textContent = ['⭐', '✨', '💫', '🌟', '⚡'][Math.floor(Math.random() * 5)];
+                particle.style.fontSize = (20 + Math.random() * 30) + 'px';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 100 + Math.random() * 150;
+                particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+                particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+                particle.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
+                
+                els.gameContainer.appendChild(particle);
+                setTimeout(() => particle.remove(), 1500);
+            }
+        }
+
+        function createConfetti(x, y) {
+            const colors = ['#FFD93D', '#FF6B9D', '#4ECDC4', '#C77DFF', '#FF9E5E', '#7B68EE'];
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = x + (Math.random() * 200 - 100) + 'px';
+                confetti.style.top = y + 'px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.3 + 's';
+                els.gameContainer.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 2000);
+            }
+        }
+
+        function showAchievementStar(x, y) {
+            const star = document.createElement('div');
+            star.className = 'achievement-star';
+            star.textContent = '⭐';
+            star.style.left = x + 'px';
+            star.style.top = y + 'px';
+            els.gameContainer.appendChild(star);
+            setTimeout(() => star.remove(), 1000);
+        }
+
+        // === ÁUDIO ===
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSound(type) {
+            if (!state.soundEnabled) return;
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            switch(type) {
+                case 'eat':
+                    oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.1);
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.1);
+                    break;
+                case 'pop':
+                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + 0.05);
+                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.05);
+                    break;
+                case 'glub':
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(150, audioContext.currentTime + 0.3);
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                    break;
+                case 'victory':
+                    [400, 500, 600, 800].forEach((freq, i) => {
+                        const osc = audioContext.createOscillator();
+                        const gain = audioContext.createGain();
+                        osc.connect(gain);
+                        gain.connect(audioContext.destination);
+                        osc.frequency.value = freq;
+                        gain.gain.setValueAtTime(0.2, audioContext.currentTime + i * 0.1);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + i * 0.1 + 0.3);
+                        osc.start(audioContext.currentTime + i * 0.1);
+                        osc.stop(audioContext.currentTime + i * 0.1 + 0.3);
+                    });
+                    break;
+            }
+        }
+
+        function speak(text) {
+            if (!state.voiceEnabled || !window.speechSynthesis) return;
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'pt-BR';
+            utterance.rate = 0.9;
+            utterance.pitch = 1.3;
+            speechSynthesis.speak(utterance);
+        }
+
+        // === LÓGICA DO JOGO ===
+        function startRound() {
+            state.isPlaying = true;
+            state.eaten = 0;
+            els.bellyCounter.textContent = '0';
+            els.eatenVisuals.innerHTML = '';
+            
+            if (Math.random() > 0.7 && state.totalScore >= 3) {
+                startBlenderMode();
+            } else {
+                state.mode = 'normal';
+                els.blender.style.display = 'none';
+                els.monster.style.left = '50%';
+                
+                const types = Object.keys(fruitsData);
+                state.targetType = types[Math.floor(Math.random() * types.length)];
+                
+                els.instruction.innerHTML = `Me dê ${state.roundTarget} ${fruitsData[state.targetType].name}s! 😋`;
+                speak(`Quero comer ${state.roundTarget} ${fruitsData[state.targetType].name}!`);
+                
+                spawnFruits(8);
+            }
+        }
+
+        function eatFruitNormal(fruitEl) {
+            state.eaten++;
+            state.totalScore++;
+            
+            // Animações
+            els.monster.classList.add('monster-bounce');
+            setTimeout(() => els.monster.classList.remove('monster-bounce'), 600);
+            
+            // Efeitos visuais
+            const rect = fruitEl.getBoundingClientRect();
+            createParticles(rect.left + rect.width/2, rect.top + rect.height/2);
+            
+            // Sons
+            playSound('eat');
+            const encouragement = encouragements[Math.floor(Math.random() * encouragements.length)];
+            speak(encouragement);
+            
+            // Atualizar UI
+            els.scoreDisplay.textContent = `⭐ ${state.totalScore}`;
+            els.bellyCounter.textContent = state.eaten;
+            
+            // Adicionar fruta visual na barriga
+            const miniFruit = fruitEl.cloneNode(true);
+            miniFruit.className = 'eaten-fruit';
+            els.eatenVisuals.appendChild(miniFruit);
+            
+            fruitEl.remove();
+            
+            // Atualizar medidor de cocô
+            state.poopMeter++;
+            if (state.poopMeter >= 8) {
+                els.poopBtn.style.display = 'flex';
+            }
+            
+            if (state.eaten >= state.roundTarget) {
+                winRound();
+            }
+        }
+
+        function winRound() {
+            state.isPlaying = false;
+            playSound('victory');
+            
+            // Celebração
+            createConfetti(window.innerWidth / 2, window.innerHeight / 2);
+            showAchievementStar(window.innerWidth / 2, 100);
+            
+            els.monster.classList.add('monster-happy');
+            setTimeout(() => els.monster.classList.remove('monster-happy'), 1000);
+            
+            els.instruction.innerHTML = "🎉 Você é demais! 🎉";
+            speak("Parabéns! Você é incrível!");
+            
+            // Limpar frutas restantes
+            document.querySelectorAll('.fruit').forEach(el => {
+                el.style.animation = 'popIn 0.5s reverse';
+                setTimeout(() => el.remove(), 500);
+            });
+            
+            setTimeout(() => {
+                // Mostrar overlay de vitória a cada 3 rodadas
+                if (state.totalScore % 5 === 0) {
+                    showVictoryOverlay();
+                } else {
+                    startRound();
+                }
+            }, 2000);
+        }
+
+        function showVictoryOverlay() {
+            const overlay = document.createElement('div');
+            overlay.className = 'victory-overlay';
+            overlay.innerHTML = `
+                <div class="victory-text">🎊 PARABÉNS! 🎊</div>
+                <div class="victory-text" style="font-size: 2.5rem;">Você fez ${state.totalScore} pontos!</div>
+                <div class="victory-text" style="font-size: 1.8rem; margin-top: 20px;">✨ Continue brincando! ✨</div>
+            `;
+            document.body.appendChild(overlay);
+            
+            createConfetti(window.innerWidth / 2, window.innerHeight / 2);
+            setTimeout(() => createConfetti(window.innerWidth / 2, window.innerHeight / 2), 500);
+            
+            speak("Parabéns! Você é uma campeã!");
+            
+            setTimeout(() => {
+                overlay.style.animation = 'victoryFade 0.5s reverse';
+                setTimeout(() => {
+                    overlay.remove();
+                    startRound();
+                }, 500);
+            }, 3000);
+        }
+
+        // === MODO LIQUIDIFICADOR ===
+        function startBlenderMode() {
+            state.mode = 'blender';
+            state.blenderRecipe = {};
+            
+            const types = Object.keys(fruitsData);
+            const ingredient1 = types[Math.floor(Math.random() * types.length)];
+            let ingredient2 = types[Math.floor(Math.random() * types.length)];
+            while (ingredient2 === ingredient1) {
+                ingredient2 = types[Math.floor(Math.random() * types.length)];
+            }
+            
+            state.blenderRecipe[ingredient1] = 2;
+            state.blenderRecipe[ingredient2] = 2;
+            
+            els.instruction.innerHTML = `Faça um suco! Coloque no liquidificador: 2 ${fruitsData[ingredient1].name}s e 2 ${fruitsData[ingredient2].name}s! 🍹`;
+            speak(`Vamos fazer um suco delicioso! Coloque no liquidificador 2 ${fruitsData[ingredient1].name} e 2 ${fruitsData[ingredient2].name}!`);
+            
+            els.blender.style.display = 'block';
+            els.monster.style.left = '30%';
+            els.gameContainer.classList.add('blender-active');
+            
+            spawnFruits(6);
+        }
+
+        function checkBlenderIngredient(fruitEl) {
+            const type = fruitEl.dataset.type;
+            
+            if (state.blenderRecipe[type] > 0) {
+                state.blenderRecipe[type]--;
+                playSound('pop');
+                speak("Boa!");
+                
+                fruitEl.style.animation = 'popIn 0.3s reverse';
+                setTimeout(() => fruitEl.remove(), 300);
+                
+                const remaining = Object.values(state.blenderRecipe).reduce((a, b) => a + b, 0);
+                if (remaining === 0) {
+                    blendJuice();
+                }
+            } else {
+                speak("Essa não vai no suco!");
+                playSound('pop');
+            }
+        }
+
+        function blendJuice() {
+            state.isPlaying = false;
+            els.instruction.innerHTML = "Batendo o suco...";
+            speak("Agora vou bater o suco!");
+            
+            els.blender.classList.add('blender-shaking');
+            playSound('glub');
+            
+            setTimeout(() => {
+                els.blender.classList.remove('blender-shaking');
+                els.blenderLiquid.style.opacity = 1;
+                
+                state.blenderReady = true;
+                els.blender.classList.add('blender-ready');
+                els.instruction.innerHTML = "Arraste o liquidificador para minha boca! 🥤";
+                speak("Pronto! Agora me dê o suco!");
+                
+                document.querySelectorAll('.fruit').forEach(el => el.remove());
+            }, 1500);
+        }
+
+        // === DRAG DO LIQUIDIFICADOR ===
+        function setupBlenderDrag() {
+            let startX, startY;
+            const el = els.blender;
+
+            function onStart(e) {
+                if (!state.blenderReady) return;
+                e.preventDefault();
+                const touch = e.type === 'touchstart' ? e.touches[0] : e;
+                startX = touch.clientX;
+                startY = touch.clientY;
+                el.style.zIndex = 100;
+
+                function onMove(me) {
+                    const mt = me.type === 'touchmove' ? me.touches[0] : me;
+                    const dx = mt.clientX - startX;
+                    const dy = mt.clientY - startY;
+                    el.style.transform = `translate(${dx}px, ${dy}px)`;
+                }
+
+                function onEnd() {
+                    document.removeEventListener('mousemove', onMove);
+                    document.removeEventListener('mouseup', onEnd);
+                    document.removeEventListener('touchmove', onMove);
+                    document.removeEventListener('touchend', onEnd);
+                    
+                    const bRect = el.getBoundingClientRect();
+                    const bCx = bRect.left + bRect.width/2;
+                    const bCy = bRect.top + bRect.height/2;
+                    const mRect = els.mouthSensor.getBoundingClientRect();
+
+                    if (bCx >= mRect.left && bCx <= mRect.right && bCy >= mRect.top && bCy <= mRect.bottom) {
+                        feedMonsterJuice();
+                    } else {
+                        el.style.transform = 'none';
+                    }
+                }
+
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onEnd);
+                document.addEventListener('touchmove', onMove, {passive: false});
+                document.addEventListener('touchend', onEnd);
+            }
+
+            el.addEventListener('mousedown', onStart);
+            el.addEventListener('touchstart', onStart, {passive: false});
+        }
+
+        function feedMonsterJuice() {
+            state.blenderReady = false;
+            els.blender.classList.remove('blender-ready');
+            
+            els.blender.style.transform = 'translate(-80px, -200px) rotate(-100deg)';
+            els.blender.style.transition = 'transform 0.5s';
+            
+            setTimeout(() => {
+                els.blenderLiquid.style.opacity = 0;
+                playSound('glub');
+                els.monster.classList.add('monster-wiggle');
+                setTimeout(() => els.monster.classList.remove('monster-wiggle'), 500);
+                
+                setTimeout(() => {
+                    playSound('eat');
+                    speak("Hummm que suco delicioso!");
+                    state.totalScore += 2;
+                    els.scoreDisplay.textContent = `⭐ ${state.totalScore}`;
+                    
+                    createConfetti(window.innerWidth / 2, window.innerHeight / 2);
+                    
+                    resetBlender();
+                    state.poopMeter += 2;
+                    if (state.poopMeter >= 8) {
+                        els.poopBtn.style.display = 'flex';
+                    }
+                    
+                    setTimeout(() => startRound(), 1500);
+                }, 1500);
+            }, 500);
+        }
+
+        function resetBlender() {
+            els.blender.style.transform = 'none';
+            els.blender.style.transition = 'transform 0.3s';
+            state.blenderReady = false;
+            els.blender.classList.remove('blender-ready');
+            els.blenderLiquid.style.opacity = 0;
+            els.gameContainer.classList.remove('blender-active');
+        }
+
+        // === SISTEMA DE FRUTAS ===
+        function spawnFruits(qtd) {
+            for(let i=0; i<qtd; i++) {
+                let type;
+                const types = Object.keys(fruitsData);
+                if (Math.random() > 0.3) {
+                    if (state.mode === 'normal') {
+                        type = state.targetType;
+                    } else {
+                        const ingredients = Object.keys(state.blenderRecipe);
+                        type = ingredients[Math.floor(Math.random() * ingredients.length)];
+                    }
+                } else {
+                    type = types[Math.floor(Math.random() * types.length)];
+                }
+                createFruit(type);
+            }
+        }
+
+        function createFruit(type) {
+            const el = document.createElement('div');
+            el.className = 'fruit';
+            el.dataset.type = type;
+            el.innerHTML = `<svg viewBox="0 0 70 70">${fruitsData[type].shape}</svg>`;
+            const x = Math.random() * (window.innerWidth - 80);
+            const y = Math.random() * (window.innerHeight - 200) + 50;
+            el.style.left = x + 'px';
+            el.style.top = y + 'px';
+            el.style.animation = 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            setupFruitDrag(el);
+            els.gameContainer.appendChild(el);
+        }
+
+        function setupFruitDrag(el) {
+            let startX, startY, initialLeft, initialTop;
+            
+            function onStart(e) {
+                if (!state.isPlaying) return;
+                e.preventDefault();
+                const touch = e.type === 'touchstart' ? e.touches[0] : e;
+                startX = touch.clientX;
+                startY = touch.clientY;
+                initialLeft = el.offsetLeft;
+                initialTop = el.offsetTop;
+                el.style.zIndex = 1000;
+                
+                function onMove(me) {
+                    const mt = me.type === 'touchmove' ? me.touches[0] : me;
+                    el.style.left = (initialLeft + (mt.clientX - startX)) + 'px';
+                    el.style.top = (initialTop + (mt.clientY - startY)) + 'px';
+                }
+                
+                function onEnd() {
+                    document.removeEventListener('mousemove', onMove);
+                    document.removeEventListener('mouseup', onEnd);
+                    document.removeEventListener('touchmove', onMove);
+                    document.removeEventListener('touchend', onEnd);
+                    el.style.zIndex = 30;
+                    checkDrop(el);
+                }
+                
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onEnd);
+                document.addEventListener('touchmove', onMove, {passive: false});
+                document.addEventListener('touchend', onEnd);
+            }
+            
+            el.addEventListener('mousedown', onStart);
+            el.addEventListener('touchstart', onStart, {passive: false});
+        }
+
+        function checkDrop(el) {
+            const rect = el.getBoundingClientRect();
+            const cx = rect.left + rect.width/2;
+            const cy = rect.top + rect.height/2;
+
+            if (state.mode === 'normal') {
+                const mouth = els.mouthSensor.getBoundingClientRect();
+                if (cx >= mouth.left && cx <= mouth.right && cy >= mouth.top && cy <= mouth.bottom) {
+                    if (el.dataset.type === state.targetType) {
+                        eatFruitNormal(el);
+                    } else {
+                        speak("Essa não!");
+                        playSound('pop');
+                    }
+                }
+            } else {
+                const blender = els.blenderSensor.getBoundingClientRect();
+                if (cx >= blender.left && cx <= blender.right && cy >= blender.top && cy <= blender.bottom) {
+                    checkBlenderIngredient(el);
+                }
+            }
+        }
+
+        // === SISTEMA DE COCÔ ===
+        function doPoop() {
+            state.isPlaying = false;
+            speak("Ops! Preciso fazer cocô!");
+            
+            els.monster.classList.add('sick-face');
+            
+            setTimeout(() => {
+                const poop = document.createElement('div');
+                poop.className = 'poop-drop';
+                poop.textContent = '💩';
+                els.gameContainer.appendChild(poop);
+                
+                playSound('pop');
+                
+                setTimeout(() => {
+                    poop.remove();
+                    els.monster.classList.remove('sick-face');
+                    speak("Ufa! Que alívio!");
+                    
+                    setTimeout(() => {
+                        state.isPlaying = true;
+                    }, 1000);
+                }, 2000);
+            }, 1000);
+        }
+
+        // === MOVIMENTAÇÃO DOS OLHOS ===
+        function moveEyes() {
+            const left = document.getElementById('eye-left');
+            const right = document.getElementById('eye-right');
+            const angle = Math.random() * Math.PI * 2;
+            const r = 5;
+            const dx = Math.cos(angle) * r;
+            const dy = Math.sin(angle) * r;
+            left.setAttribute('cx', 100 + dx);
+            left.setAttribute('cy', 100 + dy);
+            right.setAttribute('cx', 200 + dx);
+            right.setAttribute('cy', 100 + dy);
+        }
+        
+        setInterval(moveEyes, 2000);
+
+        // === INICIAR JOGO ===
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
