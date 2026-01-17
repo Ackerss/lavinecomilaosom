@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>O Monstro Comilão - Para Lavine</title>
     <style>
-        /* --- ESTILOS GERAIS --- */
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
             margin: 0;
             padding: 0;
@@ -26,7 +29,7 @@
             overflow: hidden;
         }
 
-        /* --- O MONSTRO --- */
+        /* === MONSTRO NA FRENTE === z-index: 100 */
         #monster-container {
             position: absolute;
             top: 45%;
@@ -34,7 +37,7 @@
             transform: translate(-50%, -50%);
             width: 300px;
             height: 350px;
-            z-index: 100; /* CORRIGIDO: Monstro agora fica acima da cesta! */
+            z-index: 100; /* ALTO - monstro na frente! */
             transition: left 0.5s ease;
             pointer-events: none; 
         }
@@ -49,116 +52,186 @@
 
         #mouth-sensor {
             position: absolute;
-            top: 130px; left: 75px; width: 150px; height: 100px; 
+            top: 130px; 
+            left: 75px; 
+            width: 150px; 
+            height: 100px; 
             z-index: 105;
         }
 
-        /* --- BARRIGA (VISUAL) --- */
         #belly-container {
-            position: absolute; top: 200px; left: 90px; width: 120px; height: 100px;
-            display: flex; justify-content: center; align-items: center; z-index: 102;
+            position: absolute; 
+            top: 200px; 
+            left: 90px; 
+            width: 120px; 
+            height: 100px;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 102;
             pointer-events: none;
         }
 
         #belly-counter {
-            font-size: 3.5rem; font-weight: bold; color: #fff; text-shadow: 2px 2px 0 #000;
-            z-index: 104; position: absolute;
+            font-size: 3.5rem; 
+            font-weight: bold; 
+            color: #fff; 
+            text-shadow: 2px 2px 0 #000;
+            z-index: 104; 
+            position: absolute;
         }
 
         #eaten-fruits-visuals {
-            position: absolute; width: 100%; height: 100%;
-            display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
-            opacity: 0.6; z-index: 103;
+            position: absolute; 
+            width: 100%; 
+            height: 100%;
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            align-items: center;
+            opacity: 0.6; 
+            z-index: 103;
         }
 
         .eaten-fruit {
-            width: 25px !important; height: 25px !important; margin: 2px;
-            position: relative !important; transform: none !important; left: auto !important; top: auto !important;
+            width: 25px !important; 
+            height: 25px !important; 
+            margin: 2px;
+            position: relative !important; 
+            transform: none !important; 
+            left: auto !important; 
+            top: auto !important;
         }
 
-        /* --- ESTADOS DO MONSTRO --- */
-        .sick-face #monster-body { fill: #a8d5ba !important; transition: fill 0.5s; }
-        .sick-face .eye-pupil { transform: scale(0.5); }
-        .sick-face .mouth-path { d: path("M75 150 Q110 140 150 150 Q190 160 225 150"); fill: none; stroke: #333; stroke-width: 5; }
-        .sick-face .teeth { display: none; }
+        .sick-face #monster-body { 
+            fill: #a8d5ba !important; 
+            transition: fill 0.5s; 
+        }
+        .sick-face .eye-pupil { 
+            transform: scale(0.5); 
+        }
+        .sick-face .mouth-path { 
+            d: path("M75 150 Q110 140 150 150 Q190 160 225 150"); 
+            fill: none; 
+            stroke: #333; 
+            stroke-width: 5; 
+        }
+        .sick-face .teeth { 
+            display: none; 
+        }
         
-        .mouth-open .mouth-path { d: path("M75 130 Q150 130 225 130 Q225 210 150 210 Q75 210 75 130 Z") !important; }
-        .mouth-open .teeth { display: none; }
+        .mouth-open .mouth-path { 
+            d: path("M75 130 Q150 130 225 130 Q225 210 150 210 Q75 210 75 130 Z") !important; 
+        }
+        .mouth-open .teeth { 
+            display: none; 
+        }
 
-        /* --- CESTA DE FRUTAS --- */
+        /* === CESTA LATERAL ATRÁS === z-index: 10 */
         #fruit-basket {
             position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 95%;
-            max-width: 600px;
-            height: 120px;
+            bottom: 80px;
+            left: 10px;
+            width: 80px;
+            height: 400px;
             
-            /* Visual mais realista de cesta */
+            /* Cesta de vime vertical */
             background: 
-                repeating-linear-gradient(90deg, #d2691e 0px, #d2691e 8px, #8b4513 8px, #8b4513 16px),
-                repeating-linear-gradient(0deg, #d2691e 0px, #d2691e 8px, #a0522d 8px, #a0522d 16px);
+                repeating-linear-gradient(0deg, 
+                    #d2691e 0px, #d2691e 6px, 
+                    #8b4513 6px, #8b4513 12px),
+                repeating-linear-gradient(90deg, 
+                    #d2691e 0px, #d2691e 6px, 
+                    #a0522d 6px, #a0522d 12px);
             background-blend-mode: multiply;
-            border-radius: 15px 15px 60px 60px;
-            border: 6px solid #6d4c41;
+            border-radius: 40px;
+            border: 5px solid #6d4c41;
             box-shadow: 
-                0 15px 30px rgba(0,0,0,0.4) inset,
-                0 5px 15px rgba(0,0,0,0.3);
+                0 10px 20px rgba(0,0,0,0.4) inset,
+                0 3px 10px rgba(0,0,0,0.3);
             
             display: flex;
-            justify-content: space-evenly;
+            flex-direction: column;
+            justify-content: flex-start;
             align-items: center;
-            z-index: 50; /* Abaixo do monstro agora */
-            padding: 0 10px;
-            padding-bottom: env(safe-area-inset-bottom);
+            gap: 12px;
+            z-index: 10; /* BAIXO - cesta atrás! */
+            padding: 15px 8px;
+            padding-bottom: calc(15px + env(safe-area-inset-bottom));
+            overflow-y: auto;
+            overflow-x: hidden;
         }
         
-        /* Borda superior da cesta - alça */
+        /* Borda/alça superior */
         #fruit-basket::before {
             content: '';
             position: absolute; 
-            top: -20px; 
-            left: -8px; 
-            right: -8px; 
-            height: 25px;
-            border-radius: 15px; 
+            top: -12px; 
+            left: -5px; 
+            right: -5px; 
+            height: 20px;
+            border-radius: 20px; 
             background: linear-gradient(to bottom, #a0522d, #8b4513); 
             border: 3px solid #5c3317; 
             box-shadow: 0 3px 8px rgba(0,0,0,0.3);
-            z-index: -1;
+            z-index: 1;
         }
 
+        /* CADA FRUTA APARECE SÓ 1 VEZ! */
         .basket-item {
-            width: 70px;
-            height: 70px;
+            width: 64px;
+            height: 64px;
+            flex-shrink: 0;
             position: relative;
             cursor: grab;
             transition: transform 0.1s;
-            margin-top: -45px; /* Frutas saem mais da cesta */
-            filter: drop-shadow(2px 5px 5px rgba(0,0,0,0.4));
-            z-index: 55;
+            filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.4));
+            z-index: 11;
             touch-action: none;
         }
-        .basket-item:active { transform: scale(0.9); cursor: grabbing; }
+        
+        .basket-item:active { 
+            transform: scale(0.95); 
+            cursor: grabbing; 
+        }
 
-        /* Fruta sendo arrastada */
+        /* Contador de quantidade na fruta */
+        .fruit-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            pointer-events: none;
+        }
+
         .fruit-drag {
-            width: 90px; height: 90px;
+            width: 90px; 
+            height: 90px;
             position: absolute;
             z-index: 1000;
             pointer-events: none; 
             filter: drop-shadow(5px 10px 10px rgba(0,0,0,0.3));
         }
 
-        /* --- LIQUIDIFICADOR --- */
+        /* === LIQUIDIFICADOR === z-index: 110 */
         #blender-wrapper {
             position: absolute;
-            bottom: 170px;
-            right: 25px;
+            bottom: 180px;
+            right: 15px;
             width: 120px;
             height: 180px;
-            z-index: 110; /* Acima do monstro para arrastar */
+            z-index: 110;
             display: none;
             touch-action: none; 
         }
@@ -166,8 +239,8 @@
         #blender-container {
             width: 100%;
             height: 100%;
-            transform-origin: center bottom;
-            transition: transform 0.1s linear; 
+            transform-origin: center center;
+            transition: none;
         }
 
         .blender-ready {
@@ -176,153 +249,318 @@
             filter: drop-shadow(0 0 15px gold);
         }
         
-        /* ANIMAÇÃO DE BEBER CORRIGIDA */
         .blender-drinking-anim {
-            transition: transform 0.6s ease-in-out !important;
-            /* Rotação ajustada para -40deg (copo mais natural) */
-            transform: translate(-160px, -130px) rotate(-40deg) !important; 
-            z-index: 200 !important;
+            animation: drinkBlender 1s ease-in-out forwards !important;
+        }
+
+        @keyframes drinkBlender {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            100% {
+                transform: translate(-180px, -180px) rotate(25deg);
+            }
         }
 
         #blender-sensor { 
             position: absolute; 
-            top: -30px; 
-            left: -30px; 
-            width: 180px; 
-            height: 180px; 
+            top: -20px; 
+            left: -20px; 
+            width: 160px; 
+            height: 200px; 
             z-index: 111;
-            /* background: rgba(255,0,0,0.2); /* Debug */
+            cursor: grab;
         }
         
-        .blender-active #monster-container { left: 35%; }
-        .blender-shaking { animation: shake 0.5s infinite; }
+        .blender-active #monster-container { 
+            left: 50%; /* Monstro fica no centro */
+        }
         
-        /* --- EFEITOS ESPECIAIS --- */
+        .blender-shaking { 
+            animation: shake 0.5s infinite; 
+        }
+        
         .poop-drop {
-            position: absolute; font-size: 80px; z-index: 95;
-            animation: dropPoop 2s forwards; left: 50%; top: 55%;
+            position: absolute; 
+            font-size: 80px; 
+            z-index: 99; /* Abaixo do monstro para ver saindo */
+            animation: dropPoop 2s forwards; 
+            left: 50%; 
+            top: 55%;
         }
 
-        /* --- CONTROLES LATERAIS --- */
+        /* === CONTROLES === z-index: 120 */
         #controls-sidebar {
-            position: absolute; right: 15px; top: 15px;
-            display: flex; flex-direction: row;
-            gap: 15px; z-index: 120;
+            position: absolute; 
+            right: 15px; 
+            top: 15px;
+            display: flex; 
+            flex-direction: row;
+            gap: 15px; 
+            z-index: 120;
         }
+        
         .control-btn {
-            width: 50px; height: 50px; background: white; border-radius: 50%;
-            border: 3px solid #3498db; cursor: pointer; display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 3px 0 #2980b9; transition: transform 0.1s;
+            width: 50px; 
+            height: 50px; 
+            background: white; 
+            border-radius: 50%;
+            border: 3px solid #3498db; 
+            cursor: pointer; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            box-shadow: 0 3px 0 #2980b9; 
+            transition: transform 0.1s;
         }
-        .control-btn:active { transform: translateY(3px); box-shadow: none; }
-        .control-btn svg { width: 30px; height: 30px; fill: #333; }
-        .btn-active { background: #ffeaa7; border-color: #f1c40f; box-shadow: 0 3px 0 #d35400; }
-        #btn-color { border-color: #9b59b6; box-shadow: 0 3px 0 #8e44ad; }
+        .control-btn:active { 
+            transform: translateY(3px); 
+            box-shadow: none; 
+        }
+        .control-btn svg { 
+            width: 30px; 
+            height: 30px; 
+            fill: #333; 
+        }
+        .btn-active { 
+            background: #ffeaa7; 
+            border-color: #f1c40f; 
+            box-shadow: 0 3px 0 #d35400; 
+        }
+        #btn-color { 
+            border-color: #9b59b6; 
+            box-shadow: 0 3px 0 #8e44ad; 
+        }
 
-        /* Botão de Cocô */
         #poop-btn {
-            position: absolute; top: 50%; right: 20px; transform: translateY(-50%);
-            width: 80px; height: 80px; background: #fff; border-radius: 50%;
-            border: 4px solid #e74c3c; display: none; justify-content: center; align-items: center;
-            z-index: 120; animation: pulse 1s infinite; cursor: pointer;
+            position: absolute; 
+            top: 50%; 
+            right: 20px; 
+            transform: translateY(-50%);
+            width: 80px; 
+            height: 80px; 
+            background: #fff; 
+            border-radius: 50%;
+            border: 4px solid #e74c3c; 
+            display: none; 
+            justify-content: center; 
+            align-items: center;
+            z-index: 120; 
+            animation: pulse 1s infinite; 
+            cursor: pointer;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        /* --- UI E TEXTOS --- */
-        #ui-layer { position: absolute; top: 80px; width: 100%; text-align: center; z-index: 90; pointer-events: none; }
-        #instruction-bubble {
-            background: white; padding: 10px 20px; border-radius: 30px; display: inline-block;
-            border: 3px solid #333; font-size: 1.4rem; box-shadow: 5px 5px 0 rgba(0,0,0,0.1); max-width: 85%;
-            transition: transform 0.2s;
+        /* === UI === z-index: 115 */
+        #ui-layer { 
+            position: absolute; 
+            top: 70px; 
+            width: 100%; 
+            text-align: center; 
+            z-index: 115; 
+            pointer-events: none; 
         }
-        .highlight-num { color: #e74c3c; font-weight: bold; font-size: 1.6rem; }
+        
+        #instruction-bubble {
+            background: white; 
+            padding: 12px 24px; 
+            border-radius: 30px; 
+            display: inline-block;
+            border: 3px solid #333; 
+            font-size: 1.3rem; 
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.1); 
+            max-width: 85%;
+        }
+        .highlight-num { 
+            color: #e74c3c; 
+            font-weight: bold; 
+            font-size: 1.5rem; 
+        }
 
-        /* --- TELA INICIAL --- */
         #start-screen {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(46, 204, 113, 0.98); display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 200;
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            background: rgba(46, 204, 113, 0.98); 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            z-index: 200;
         }
         .big-btn {
-            background: #fff; color: #2ecc71; border: none; padding: 20px 60px;
-            font-size: 2rem; border-radius: 50px; cursor: pointer;
-            box-shadow: 0 8px 0 #27ae60; font-weight: bold; margin-top: 20px;
+            background: #fff; 
+            color: #2ecc71; 
+            border: none; 
+            padding: 20px 60px;
+            font-size: 2rem; 
+            border-radius: 50px; 
+            cursor: pointer;
+            box-shadow: 0 8px 0 #27ae60; 
+            font-weight: bold; 
+            margin-top: 20px;
         }
-        .big-btn:active { transform: translateY(8px); box-shadow: none; }
+        .big-btn:active { 
+            transform: translateY(8px); 
+            box-shadow: none; 
+        }
 
-        /* --- ANIMAÇÕES --- */
-        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
-        @keyframes blink { 0%, 100% { transform: scaleY(1); } 5% { transform: scaleY(0.1); } 10% { transform: scaleY(1); } }
-        @keyframes floatArm { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(5deg); } }
-        @keyframes shake { 0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        @keyframes pulse-ready { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-        @keyframes dropPoop { 0% { transform: translate(-50%, 0) scale(0.5); opacity: 0; } 20% { opacity: 1; transform: translate(-50%, 20px) scale(1); } 100% { transform: translate(-50%, 400px) scale(1); opacity: 0; } }
-        @keyframes numberPop { 0% { transform: scale(1); } 50% { transform: scale(1.5); } 100% { transform: scale(1); } }
+        /* === ANIMAÇÕES === */
+        @keyframes breathe { 
+            0%, 100% { transform: scale(1); } 
+            50% { transform: scale(1.03); } 
+        }
+        @keyframes blink { 
+            0%, 100% { transform: scaleY(1); } 
+            5% { transform: scaleY(0.1); } 
+            10% { transform: scaleY(1); } 
+        }
+        @keyframes floatArm { 
+            0%, 100% { transform: rotate(0deg); } 
+            50% { transform: rotate(5deg); } 
+        }
+        @keyframes shake { 
+            0% { transform: translate(1px, 1px) rotate(0deg); } 
+            10% { transform: translate(-1px, -2px) rotate(-1deg); } 
+            50% { transform: translate(-1px, 2px) rotate(-1deg); } 
+            100% { transform: translate(1px, -2px) rotate(-1deg); } 
+        }
+        @keyframes pulse { 
+            0% { transform: scale(1) translateY(-50%); } 
+            50% { transform: scale(1.1) translateY(-50%); } 
+            100% { transform: scale(1) translateY(-50%); } 
+        }
+        @keyframes pulse-ready { 
+            0% { transform: scale(1); } 
+            50% { transform: scale(1.05); } 
+            100% { transform: scale(1); } 
+        }
+        @keyframes dropPoop { 
+            0% { transform: translate(-50%, 0) scale(0.5); opacity: 0; } 
+            20% { opacity: 1; transform: translate(-50%, 20px) scale(1); } 
+            100% { transform: translate(-50%, 400px) scale(1); opacity: 0; } 
+        }
+        @keyframes numberPop { 
+            0% { transform: scale(1); } 
+            50% { transform: scale(1.5); } 
+            100% { transform: scale(1); } 
+        }
+        
         .number-pop { animation: numberPop 0.3s ease-out; }
-
         .blink-anim { animation: blink 3s infinite; transform-origin: center; }
         .arm-left { animation: floatArm 2s infinite ease-in-out alternate; transform-origin: 60px 200px; }
         .arm-right { animation: floatArm 2.5s infinite ease-in-out alternate-reverse; transform-origin: 240px 200px; }
 
-        /* --- MEDIA QUERIES (CELULAR) --- */
+        /* === RESPONSIVO === */
         @media (max-width: 768px) {
             #monster-container { 
                 width: 260px; 
                 height: 310px; 
-                top: 48%; /* Ajustado para celular */
+                top: 46%; 
             }
-            #mouth-sensor { top: 110px; left: 60px; width: 140px; height: 90px; }
-            #belly-container { top: 180px; left: 80px; width: 100px; }
+            #mouth-sensor { 
+                top: 110px; 
+                left: 60px; 
+                width: 140px; 
+                height: 90px; 
+            }
+            #belly-container { 
+                top: 180px; 
+                left: 80px; 
+                width: 100px; 
+            }
             
-            #instruction-bubble { font-size: 1.1rem; padding: 8px 15px; }
-            #ui-layer { top: 60px; }
+            #instruction-bubble { 
+                font-size: 1rem; 
+                padding: 10px 18px; 
+            }
+            #ui-layer { 
+                top: 50px; 
+            }
             
-            .basket-item { width: 65px; height: 65px; margin-top: -40px; }
-            #fruit-basket { height: 110px; bottom: 5px; }
+            #fruit-basket {
+                width: 70px;
+                height: 350px;
+                bottom: 60px;
+                left: 5px;
+                gap: 10px;
+                padding: 12px 6px;
+            }
+            
+            .basket-item { 
+                width: 56px; 
+                height: 56px; 
+            }
+            
+            .fruit-count {
+                width: 20px;
+                height: 20px;
+                font-size: 12px;
+            }
             
             #blender-wrapper { 
-                bottom: 140px; 
-                right: 15px; 
+                bottom: 150px; 
+                right: 10px; 
                 width: 100px;
                 height: 150px;
             }
             
-            /* Ajuste da animação de beber no celular */
-            .blender-drinking-anim {
-                transform: translate(-140px, -140px) rotate(-40deg) !important;
+            @keyframes drinkBlender {
+                0% {
+                    transform: translate(0, 0) rotate(0deg);
+                }
+                100% {
+                    transform: translate(-140px, -200px) rotate(25deg);
+                }
             }
 
-            .blender-active #monster-container { left: 30%; }
+            .blender-active #monster-container { 
+                left: 50%; 
+            }
             
-            #controls-sidebar { right: 10px; top: 10px; gap: 10px; }
-            .control-btn { width: 45px; height: 45px; }
-            .control-btn svg { width: 25px; height: 25px; }
+            #controls-sidebar { 
+                right: 10px; 
+                top: 10px; 
+                gap: 10px; 
+            }
+            .control-btn { 
+                width: 45px; 
+                height: 45px; 
+            }
+            .control-btn svg { 
+                width: 25px; 
+                height: 25px; 
+            }
             
-            #poop-btn { width: 70px; height: 70px; right: 15px; }
-            #poop-btn span { font-size: 35px; }
+            #poop-btn { 
+                width: 70px; 
+                height: 70px; 
+                right: 15px; 
+            }
+            #poop-btn span { 
+                font-size: 35px; 
+            }
         }
         
-        /* Ajuste para tablets (A7 Lite tem ~600x960) */
-        @media (min-width: 600px) and (max-width: 900px) {
+        @media (max-height: 600px) {
             #monster-container { 
-                width: 280px; 
-                height: 330px; 
+                transform: translate(-50%, -50%) scale(0.8); 
+                top: 50%; 
             }
-            #blender-wrapper {
-                bottom: 160px;
-                right: 20px;
+            #fruit-basket { 
+                height: 280px; 
+                bottom: 40px; 
             }
-        }
-        
-        /* Ajuste para telas muito curtas (Landscape) */
-        @media (max-height: 500px) {
-            #monster-container { transform: translate(-50%, -50%) scale(0.7); top: 50%; }
-            #fruit-basket { height: 90px; bottom: 0; }
-            #blender-wrapper { bottom: 100px; right: 10px; width: 90px; height: 130px; }
-            #ui-layer { top: 5px; }
-            #controls-sidebar { top: 5px; right: 5px; }
-            #instruction-bubble { font-size: 0.9rem; padding: 6px 12px; }
+            #blender-wrapper { 
+                bottom: 120px; 
+                width: 90px; 
+                height: 130px; 
+            }
+            #ui-layer { 
+                top: 30px; 
+            }
         }
 
     </style>
@@ -354,6 +592,10 @@
             <div id="instruction-bubble">Clique em JOGAR!</div>
         </div>
 
+        <!-- CESTA LATERAL ATRÁS -->
+        <div id="fruit-basket"></div>
+
+        <!-- MONSTRO NA FRENTE -->
         <div id="monster-container" class="monster-idle">
             <div id="mouth-sensor"></div>
             <div id="belly-container">
@@ -396,8 +638,6 @@
                 </svg>
             </div>
         </div>
-
-        <div id="fruit-basket"></div>
     </div>
 
     <script>
@@ -414,16 +654,27 @@
         };
 
         const monsterColors = [
-            { fill: '#7bed9f', stroke: '#2ecc71' }, { fill: '#ff7675', stroke: '#d63031' },
-            { fill: '#74b9ff', stroke: '#0984e3' }, { fill: '#a29bfe', stroke: '#6c5ce7' }, { fill: '#ffeaa7', stroke: '#fdcb6e' } 
+            { fill: '#7bed9f', stroke: '#2ecc71' }, 
+            { fill: '#ff7675', stroke: '#d63031' },
+            { fill: '#74b9ff', stroke: '#0984e3' }, 
+            { fill: '#a29bfe', stroke: '#6c5ce7' }, 
+            { fill: '#ffeaa7', stroke: '#fdcb6e' } 
         ];
         let colorIndex = 0;
 
         let state = {
             mode: 'normal',
-            targetCount: 0, eatenCount: 0, targetType: '',
-            blenderRecipe: {}, blenderContent: [], blenderReady: false, 
-            poopMeter: 0, isPlaying: false, needsPoop: false, activeDrag: null
+            targetCount: 0, 
+            eatenCount: 0, 
+            targetType: '',
+            blenderRecipe: {}, 
+            blenderContent: [], 
+            blenderReady: false, 
+            poopMeter: 0, 
+            isPlaying: false, 
+            needsPoop: false, 
+            activeDrag: null,
+            fruitNeeds: {} // Controla quantas vezes cada fruta é necessária
         };
 
         const MAX_POOP = 6;
@@ -449,9 +700,14 @@
         function speak(text) {
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'pt-BR'; utterance.rate = 1.1; 
+            utterance.lang = 'pt-BR'; 
+            utterance.rate = 1.1; 
             const voices = window.speechSynthesis.getVoices();
-            const preferredVoice = voices.find(v => v.name.includes('Google Português') || v.name.includes('Luciana') || v.lang === 'pt-BR');
+            const preferredVoice = voices.find(v => 
+                v.name.includes('Google Português') || 
+                v.name.includes('Luciana') || 
+                v.lang === 'pt-BR'
+            );
             if(preferredVoice) utterance.voice = preferredVoice;
             window.speechSynthesis.speak(utterance);
         }
@@ -460,33 +716,47 @@
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
-            osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+            osc.connect(gainNode); 
+            gainNode.connect(audioCtx.destination);
             const now = audioCtx.currentTime;
 
             if (type === 'pop') {
-                osc.type = 'sine'; osc.frequency.setValueAtTime(800, now);
+                osc.type = 'sine'; 
+                osc.frequency.setValueAtTime(800, now);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
-                osc.start(); osc.stop(now + 0.1);
+                osc.start(); 
+                osc.stop(now + 0.1);
             } else if (type === 'eat') {
-                osc.type = 'triangle'; osc.frequency.setValueAtTime(300, now);
+                osc.type = 'triangle'; 
+                osc.frequency.setValueAtTime(300, now);
                 osc.frequency.linearRampToValueAtTime(100, now + 0.1);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
-                osc.start(); osc.stop(now + 0.15);
+                osc.start(); 
+                osc.stop(now + 0.15);
             } else if (type === 'blender') {
-                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(100, now);
+                osc.type = 'sawtooth'; 
+                osc.frequency.setValueAtTime(100, now);
                 osc.frequency.linearRampToValueAtTime(150, now + 1.5);
-                gainNode.gain.setValueAtTime(0.2, now); gainNode.gain.linearRampToValueAtTime(0, now + 1.5);
-                osc.start(); osc.stop(now + 1.5);
+                gainNode.gain.setValueAtTime(0.2, now); 
+                gainNode.gain.linearRampToValueAtTime(0, now + 1.5);
+                osc.start(); 
+                osc.stop(now + 1.5);
             } else if (type === 'glub') { 
-                osc.type = 'sine'; osc.frequency.setValueAtTime(400, now);
+                osc.type = 'sine'; 
+                osc.frequency.setValueAtTime(400, now);
                 osc.frequency.linearRampToValueAtTime(200, now + 0.2);
-                gainNode.gain.setValueAtTime(0.3, now); gainNode.gain.linearRampToValueAtTime(0, now + 0.2);
-                osc.start(); osc.stop(now + 0.3);
+                gainNode.gain.setValueAtTime(0.3, now); 
+                gainNode.gain.linearRampToValueAtTime(0, now + 0.2);
+                osc.start(); 
+                osc.stop(now + 0.3);
             } else if (type === 'fart') {
-                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, now);
+                osc.type = 'sawtooth'; 
+                osc.frequency.setValueAtTime(150, now);
                 osc.frequency.exponentialRampToValueAtTime(50, now + 0.4);
-                gainNode.gain.setValueAtTime(0.5, now); gainNode.gain.linearRampToValueAtTime(0, now + 0.4);
-                osc.start(); osc.stop(now + 0.4);
+                gainNode.gain.setValueAtTime(0.5, now); 
+                gainNode.gain.linearRampToValueAtTime(0, now + 0.4);
+                osc.start(); 
+                osc.stop(now + 0.4);
             }
         }
 
@@ -543,7 +813,8 @@
             els.gameContainer.appendChild(poopVisual);
             setTimeout(() => poopVisual.remove(), 2000);
 
-            state.poopMeter = 0; state.needsPoop = false;
+            state.poopMeter = 0; 
+            state.needsPoop = false;
             els.poopBtn.style.display = 'none';
             els.monster.classList.remove('sick-face');
             els.monster.classList.add('monster-idle');
@@ -580,42 +851,52 @@
             state.isPlaying = true;
             state.blenderReady = false;
             els.blenderContainer.classList.remove('blender-ready');
-            els.basket.innerHTML = '';
 
             if (state.mode === 'normal') setupNormalRound();
             else setupBlenderRound();
             
             const left = document.getElementById('eye-left');
             const right = document.getElementById('eye-right');
-            left.setAttribute('cx', 100); left.setAttribute('cy', 100);
-            right.setAttribute('cx', 200); right.setAttribute('cy', 200);
+            left.setAttribute('cx', 100); 
+            left.setAttribute('cy', 100);
+            right.setAttribute('cx', 200); 
+            right.setAttribute('cy', 100);
             moveEyes();
         }
 
-        // FUNÇÃO CORRIGIDA: Agora cria MÚLTIPLAS frutas do mesmo tipo!
-        function fillBasket(requiredFruits) {
+        // NOVA FUNÇÃO: Cria cesta SEM frutas repetidas visualmente
+        function fillBasket(needsMap) {
             els.basket.innerHTML = ''; 
+            state.fruitNeeds = {...needsMap}; // Copia o que precisa
             
-            // requiredFruits agora é um array de tipos, pode ter duplicatas: ['morango', 'morango', 'banana']
-            let fruitArray = [...requiredFruits];
             const allTypes = Object.keys(fruitsData);
+            const typesInBasket = new Set(Object.keys(needsMap));
             
-            // Completa com frutas aleatórias até ter 5-6 itens
-            while(fruitArray.length < 6) {
-                const randomType = allTypes[Math.floor(Math.random() * allTypes.length)];
-                fruitArray.push(randomType);
+            // Adiciona 2-3 frutas extras que NÃO são necessárias
+            while(typesInBasket.size < Math.min(allTypes.length, 6)) {
+                const random = allTypes[Math.floor(Math.random() * allTypes.length)];
+                typesInBasket.add(random);
             }
             
-            // Embaralha para não ficar óbvio
-            fruitArray.sort(() => Math.random() - 0.5);
+            // Converte para array e embaralha
+            const basketArray = Array.from(typesInBasket).sort(() => Math.random() - 0.5);
             
-            // Cria cada fruta individual
-            fruitArray.forEach((type, index) => {
+            // Cria CADA fruta UMA VEZ, com contador se precisar múltiplas
+            basketArray.forEach(type => {
                 const item = document.createElement('div');
                 item.className = 'basket-item';
-                item.innerHTML = `<svg viewBox="0 0 70 70" style="pointer-events:none; width:100%; height:100%;">${fruitsData[type].shape}</svg>`;
                 item.dataset.type = type;
-                item.dataset.id = `${type}-${index}`; // ID único para debug
+                
+                const needed = needsMap[type] || 0;
+                const hasCounter = needed > 1;
+                
+                item.innerHTML = `
+                    <svg viewBox="0 0 70 70" style="pointer-events:none; width:100%; height:100%;">
+                        ${fruitsData[type].shape}
+                    </svg>
+                    ${hasCounter ? `<div class="fruit-count">${needed}</div>` : ''}
+                `;
+                
                 item.addEventListener('touchstart', handleBasketTouchStart, {passive: false});
                 item.addEventListener('mousedown', handleBasketTouchStart);
                 els.basket.appendChild(item);
@@ -625,9 +906,12 @@
         function handleBasketTouchStart(e) {
             if (!state.isPlaying || state.needsPoop) return;
             e.preventDefault();
-            const type = e.currentTarget.dataset.type;
+            
+            const basketItem = e.currentTarget;
+            const type = basketItem.dataset.type;
             const touch = e.type === 'touchstart' ? e.touches[0] : e;
 
+            // Cria clone para arrastar
             const dragEl = document.createElement('div');
             dragEl.className = 'fruit-drag';
             dragEl.dataset.type = type;
@@ -644,20 +928,25 @@
                 state.activeDrag.style.left = (mt.clientX - 45) + 'px';
                 state.activeDrag.style.top = (mt.clientY - 45) + 'px';
             };
+            
             const endHandler = () => {
                 document.removeEventListener('mousemove', moveHandler);
                 document.removeEventListener('mouseup', endHandler);
                 document.removeEventListener('touchmove', moveHandler);
                 document.removeEventListener('touchend', endHandler);
-                if (state.activeDrag) { checkDrop(state.activeDrag); state.activeDrag = null; }
+                if (state.activeDrag) { 
+                    checkDrop(state.activeDrag, basketItem); 
+                    state.activeDrag = null; 
+                }
             };
+            
             document.addEventListener('mousemove', moveHandler);
             document.addEventListener('mouseup', endHandler);
             document.addEventListener('touchmove', moveHandler, {passive: false});
             document.addEventListener('touchend', endHandler);
         }
 
-        function checkDrop(el) {
+        function checkDrop(el, basketItem) {
             const rect = el.getBoundingClientRect();
             const cx = rect.left + rect.width/2;
             const cy = rect.top + rect.height/2;
@@ -666,18 +955,26 @@
             if (state.mode === 'normal') {
                 const mouth = els.mouthSensor.getBoundingClientRect();
                 if (cx >= mouth.left && cx <= mouth.right && cy >= mouth.top && cy <= mouth.bottom) {
-                    if (el.dataset.type === state.targetType) { eatFruitNormal(el); dropped = true; }
-                    else { speak("Essa não!"); playSound('pop'); }
+                    if (el.dataset.type === state.targetType) { 
+                        eatFruitNormal(el, basketItem); 
+                        dropped = true; 
+                    } else { 
+                        speak("Essa não!"); 
+                        playSound('pop'); 
+                    }
                 }
             } else {
                 const blenderRect = els.blenderSensor.getBoundingClientRect();
-                if (cx >= blenderRect.left && cx <= blenderRect.right && cy >= blenderRect.top && cy <= blenderRect.bottom) {
-                    checkBlenderIngredient(el); dropped = true;
+                if (cx >= blenderRect.left && cx <= blenderRect.right && 
+                    cy >= blenderRect.top && cy <= blenderRect.bottom) {
+                    checkBlenderIngredient(el, basketItem); 
+                    dropped = true;
                 }
             }
 
             if (!dropped) {
-                el.style.transition = '0.2s'; el.style.transform = 'scale(0)';
+                el.style.transition = '0.2s'; 
+                el.style.transform = 'scale(0)';
                 setTimeout(() => el.remove(), 200);
             }
         }
@@ -689,30 +986,40 @@
             state.eatenCount = 0;
             els.bellyCounter.innerText = '';
             els.eatenFruits.innerHTML = '';
+            
             const plural = state.targetCount > 1 ? 's' : '';
             els.instruction.innerHTML = `Quero <span class="highlight-num">${state.targetCount}</span> ${capitalize(state.targetType)}${plural}!`;
             speak(`Quero ${state.targetCount} ${state.targetType}${plural}`);
             
-            // Cria array com múltiplas frutas do tipo pedido
-            const fruitsNeeded = Array(state.targetCount).fill(state.targetType);
-            fillBasket(fruitsNeeded);
+            // Cria mapa: { 'morango': 3 }
+            const needsMap = { [state.targetType]: state.targetCount };
+            fillBasket(needsMap);
         }
 
-        function eatFruitNormal(el) {
+        function eatFruitNormal(el, basketItem) {
             const bellyClone = el.cloneNode(true);
             bellyClone.className = 'eaten-fruit';
-            bellyClone.style.left = 'auto'; bellyClone.style.top = 'auto';
             els.eatenFruits.appendChild(bellyClone);
             el.remove();
             playSound('eat');
-            state.targetCount--; state.eatenCount++;
+            
+            state.targetCount--; 
+            state.eatenCount++;
+            
+            // Atualiza contador visual na cesta
+            updateBasketCounter(basketItem);
+            
             els.bellyCounter.innerText = state.eatenCount;
             els.bellyCounter.classList.remove('number-pop');
             void els.bellyCounter.offsetWidth;
             els.bellyCounter.classList.add('number-pop');
+            
             speak(state.targetCount > 0 ? state.eatenCount.toString() : "Delícia!");
+            
             if (state.targetCount <= 0) {
-                state.poopMeter++; state.isPlaying = false; setTimeout(startRound, 2000);
+                state.poopMeter++; 
+                state.isPlaying = false; 
+                setTimeout(startRound, 2000);
             }
         }
 
@@ -721,25 +1028,25 @@
             const t1 = types[Math.floor(Math.random()*types.length)];
             let t2 = types[Math.floor(Math.random()*types.length)];
             while(t1===t2) t2 = types[Math.floor(Math.random()*types.length)];
+            
             const c1 = Math.floor(Math.random()*2)+1;
             const c2 = Math.floor(Math.random()*2)+1;
+            
             state.blenderRecipe = { [t1]: c1, [t2]: c2 };
             state.blenderContent = [];
             els.blenderLiquid.style.opacity = 0;
+            
             const tx1 = `${c1} ${capitalize(t1)}${c1>1?'s':''}`;
             const tx2 = `${c2} ${capitalize(t2)}${c2>1?'s':''}`;
             els.instruction.innerHTML = `Vitamina: <span class="highlight-num">${tx1}</span> e <span class="highlight-num">${tx2}</span>`;
             speak(`Vitamina de ${t1} com ${t2}.`);
             
-            // CORRIGIDO: Cria array com quantidade correta de cada fruta!
-            const fruitsNeeded = [
-                ...Array(c1).fill(t1),
-                ...Array(c2).fill(t2)
-            ];
-            fillBasket(fruitsNeeded);
+            // Cria mapa: { 'banana': 2, 'morango': 1 }
+            const needsMap = { [t1]: c1, [t2]: c2 };
+            fillBasket(needsMap);
         }
 
-        function checkBlenderIngredient(el) {
+        function checkBlenderIngredient(el, basketItem) {
             if (state.blenderReady) return;
             const type = el.dataset.type;
             const needed = state.blenderRecipe[type];
@@ -750,6 +1057,9 @@
                 el.remove(); 
                 playSound('pop');
                 
+                // Atualiza contador visual
+                updateBasketCounter(basketItem);
+                
                 const rest = Object.values(state.blenderRecipe).reduce((a,b)=>a+b, 0);
                 if (rest === 0) finishBlender();
                 else updateBlenderText();
@@ -757,6 +1067,27 @@
                 speak("Essa não precisa!"); 
                 playSound('pop'); 
                 el.remove();
+            }
+        }
+
+        // Atualiza o contador visual na cesta
+        function updateBasketCounter(basketItem) {
+            const type = basketItem.dataset.type;
+            const countEl = basketItem.querySelector('.fruit-count');
+            
+            if (state.fruitNeeds[type]) {
+                state.fruitNeeds[type]--;
+                
+                if (countEl) {
+                    const remaining = state.fruitNeeds[type];
+                    if (remaining > 0) {
+                        countEl.textContent = remaining;
+                        countEl.classList.add('number-pop');
+                        setTimeout(() => countEl.classList.remove('number-pop'), 300);
+                    } else {
+                        countEl.remove();
+                    }
+                }
             }
         }
 
@@ -779,14 +1110,12 @@
                 els.blenderContainer.classList.add('blender-ready');
                 els.instruction.innerHTML = "Pronto! Dê para o monstro!";
                 speak("Pronto! Dá pra mim!");
-                els.basket.innerHTML = ''; 
             }, 1500);
         }
 
         function setupBlenderDrag() {
             let startX, startY;
             const wrapper = els.blenderWrapper; 
-            const container = els.blenderContainer;
 
             function onStart(e) {
                 if (!state.blenderReady) return;
@@ -797,6 +1126,7 @@
                 wrapper.style.zIndex = 1000;
 
                 function onMove(me) {
+                    me.preventDefault();
                     const mt = me.type === 'touchmove' ? me.touches[0] : me;
                     const dx = mt.clientX - startX;
                     const dy = mt.clientY - startY;
@@ -807,7 +1137,8 @@
                     const bCy = bRect.top + bRect.height/2;
                     const mRect = els.mouthSensor.getBoundingClientRect();
                     
-                    if (bCx >= mRect.left && bCx <= mRect.right && bCy >= mRect.top && bCy <= mRect.bottom) {
+                    if (bCx >= mRect.left && bCx <= mRect.right && 
+                        bCy >= mRect.top && bCy <= mRect.bottom) {
                         els.monster.classList.add('mouth-open');
                     } else {
                         els.monster.classList.remove('mouth-open');
@@ -825,14 +1156,17 @@
                     const bCy = bRect.top + bRect.height/2;
                     const mRect = els.mouthSensor.getBoundingClientRect();
 
-                    if (bCx >= mRect.left && bCx <= mRect.right && bCy >= mRect.top && bCy <= mRect.bottom) {
+                    if (bCx >= mRect.left && bCx <= mRect.right && 
+                        bCy >= mRect.top && bCy <= mRect.bottom) {
                         feedMonsterJuice();
                     } else {
                         wrapper.style.transition = 'transform 0.3s';
                         wrapper.style.transform = 'none';
-                        setTimeout(() => wrapper.style.transition = '', 300);
+                        setTimeout(() => {
+                            wrapper.style.transition = '';
+                            wrapper.style.zIndex = 110;
+                        }, 300);
                         els.monster.classList.remove('mouth-open');
-                        wrapper.style.zIndex = 110;
                     }
                 }
 
@@ -850,6 +1184,12 @@
             state.blenderReady = false;
             els.blenderContainer.classList.remove('blender-ready');
             els.monster.classList.remove('mouth-open');
+            
+            els.blenderWrapper.style.transition = 'none';
+            els.blenderWrapper.style.transform = 'none';
+            els.blenderWrapper.style.zIndex = 200;
+            
+            void els.blenderContainer.offsetHeight;
             els.blenderContainer.classList.add('blender-drinking-anim');
             
             setTimeout(() => {
@@ -861,19 +1201,17 @@
                     speak("Hummm delícia!");
                     
                     els.blenderContainer.classList.remove('blender-drinking-anim');
-                    els.blenderWrapper.style.transition = 'transform 0.3s';
-                    els.blenderWrapper.style.transform = 'none';
                     els.blenderWrapper.style.zIndex = 110;
-                    setTimeout(() => els.blenderWrapper.style.transition = '', 300);
                     
                     state.poopMeter += 2;
-                    startRound();
+                    setTimeout(startRound, 1000);
                 }, 1500);
-            }, 600);
+            }, 1000);
         }
 
         function resetBlender() {
             els.blenderWrapper.style.transform = 'none';
+            els.blenderWrapper.style.transition = '';
             els.blenderWrapper.style.zIndex = 110;
             els.blenderContainer.classList.remove('blender-ready');
             els.blenderContainer.classList.remove('blender-drinking-anim');
@@ -888,11 +1226,16 @@
             const r = 5;
             const dx = Math.cos(angle) * r;
             const dy = Math.sin(angle) * r;
-            left.setAttribute('cx', 100 + dx); left.setAttribute('cy', 100 + dy);
-            right.setAttribute('cx', 200 + dx); right.setAttribute('cy', 100 + dy);
+            left.setAttribute('cx', 100 + dx); 
+            left.setAttribute('cy', 100 + dy);
+            right.setAttribute('cx', 200 + dx); 
+            right.setAttribute('cy', 100 + dy);
         }
         
-        function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+        function capitalize(s) { 
+            return s.charAt(0).toUpperCase() + s.slice(1); 
+        }
+        
         setInterval(moveEyes, 2500);
 
     </script>
