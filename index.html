@@ -29,7 +29,6 @@
             pointer-events: none; 
         }
         
-        /* Classe para ativar toques no monstro (Modo Carinho/Banho) */
         .interactive {
             pointer-events: auto !important;
             cursor: pointer;
@@ -39,8 +38,8 @@
         
         /* Sujeira */
         .dirt-spot {
-            fill: #795548; /* Marrom suave */
-            opacity: 0.6;   /* Transparencia para nao tapar tudo */
+            fill: #795548; 
+            opacity: 0.6;
             transition: opacity 0.5s ease, transform 0.5s ease;
             transform-origin: center;
         }
@@ -53,7 +52,7 @@
 
         #mouth-sensor {
             position: absolute; top: 35%; left: 20%; width: 60%; height: 35%; 
-            z-index: 15; pointer-events: auto; /* Boca sempre interativa para comer */
+            z-index: 15; pointer-events: auto;
         }
 
         /* --- BARRIGA --- */
@@ -150,7 +149,6 @@
             pointer-events: none; z-index: 9999; display: none;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        /* Poros da esponja */
         #sponge-cursor::after {
             content: ".:"; color: #d35400; font-size: 20px; font-weight: bold;
             position: absolute; top: 5px; left: 10px;
@@ -242,11 +240,9 @@
         <p style="color:white; margin-top:40px; font-weight:bold; font-size: 1.3rem;">Para a Lavine ❤️</p>
     </div>
 
-    <!-- Cursor Esponja -->
     <div id="sponge-cursor"></div>
 
     <div id="controls-sidebar">
-        <!-- Botão Liquidificador -->
         <div id="btn-blender" class="control-btn" onclick="setMode('blender')" title="Modo Vitamina">
             <svg viewBox="0 0 100 100" width="45" height="45">
                 <rect x="25" y="75" width="50" height="15" rx="5" fill="#333" />
@@ -255,11 +251,9 @@
                 <circle cx="50" cy="82" r="4" fill="#f1c40f" />
             </svg>
         </div>
-        <!-- Botão Carinho -->
         <div id="btn-heart" class="control-btn" onclick="setMode('heart')" title="Modo Carinho">
             <span style="font-size: 35px;">❤️</span>
         </div>
-        <!-- Botão Banho (NOVO) -->
         <div id="btn-bath" class="control-btn" onclick="setMode('bath')" title="Modo Banho">
             <svg viewBox="0 0 100 100" width="45" height="45">
                 <path d="M20 80 Q20 40 50 40 Q80 40 80 80" fill="none" stroke="#3498db" stroke-width="4" />
@@ -269,7 +263,6 @@
                 <line x1="65" y1="40" x2="65" y2="55" stroke="#3498db" stroke-width="3" stroke-dasharray="5,3" />
             </svg>
         </div>
-        <!-- Botão Cor -->
         <div id="btn-color" class="control-btn" onclick="toggleColor()" title="Trocar Cor">
             <svg viewBox="0 0 24 24" width="35" height="35"><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" fill="#333" /></svg>
         </div>
@@ -294,17 +287,12 @@
             
             <svg id="monster-svg" viewBox="0 0 300 350" preserveAspectRatio="xMidYMid meet">
                 <path id="monster-body" d="M50 300 Q20 350 80 340 L220 340 Q280 350 250 300 Q280 200 250 100 Q230 20 150 20 Q70 20 50 100 Q20 200 50 300" fill="#7bed9f" stroke="#2ecc71" stroke-width="5"/>
-                
-                <!-- GRUPO DE SUJEIRA (Atrás da barriga e olhos) -->
                 <g id="dirt-group"></g>
-
                 <circle cx="150" cy="250" r="60" fill="rgba(255,255,255,0.4)" stroke="#fff" stroke-width="3" />
-                
                 <g id="blush-group">
                     <circle cx="90" cy="180" r="15" fill="#ff7675" />
                     <circle cx="210" cy="180" r="15" fill="#ff7675" />
                 </g>
-
                 <g id="eyes">
                     <g class="blink-anim">
                         <circle cx="100" cy="100" r="25" fill="white" stroke="#333" stroke-width="2"/>
@@ -346,16 +334,17 @@
     </div>
 
     <script>
+        // ADICIONEI GÊNERO NAS FRUTAS (masc/fem)
         const fruitsData = {
-            'morango': { color: '#e74c3c', shape: '<path d="M35 10 Q55 10 60 25 Q65 60 35 70 Q5 60 10 25 Q15 10 35 10 Z" fill="#e74c3c"/><path d="M35 10 L35 2" stroke="green" stroke-width="3"/>' },
-            'banana': { color: '#f1c40f', shape: '<path d="M10 50 Q35 70 60 20 Q40 60 10 40 Z" fill="#f1c40f" stroke="#f39c12"/>' },
-            'maçã': { color: '#c0392b', shape: '<circle cx="35" cy="40" r="25" fill="#c0392b"/><path d="M35 15 Q45 5 45 15" stroke="green" stroke-width="3" fill="none"/>' },
-            'uva': { color: '#8e44ad', shape: '<g transform="translate(5,5)"><circle cx="30" cy="45" r="10" fill="#8e44ad"/><circle cx="20" cy="30" r="10" fill="#8e44ad"/><circle cx="40" cy="30" r="10" fill="#8e44ad"/><circle cx="30" cy="15" r="10" fill="#8e44ad"/></g>' },
-            'laranja': { color: '#e67e22', shape: '<circle cx="35" cy="35" r="30" fill="#e67e22"/><circle cx="35" cy="35" r="2" fill="#d35400"/>' },
-            'pera': { color: '#badc58', shape: '<path d="M35 5 Q55 10 55 45 Q55 65 35 65 Q15 65 15 45 Q15 10 35 5 Z" fill="#badc58"/><path d="M35 5 L35 0" stroke="#5d4037" stroke-width="3"/>' },
-            'melancia': { color: '#2ecc71', shape: '<path d="M5 20 Q35 65 65 20" fill="#ff6b6b" stroke="#2ecc71" stroke-width="4"/><circle cx="35" cy="35" r="2" fill="black"/>' },
-            'abacaxi': { color: '#f9ca24', shape: '<ellipse cx="35" cy="45" rx="20" ry="25" fill="#f9ca24"/><path d="M35 20 L35 0" stroke="green" stroke-width="4"/>' },
-            'limão': { color: '#6ab04c', shape: '<ellipse cx="35" cy="35" rx="25" ry="20" fill="#badc58"/>' }
+            'morango': { gender: 'masc', color: '#e74c3c', shape: '<path d="M35 10 Q55 10 60 25 Q65 60 35 70 Q5 60 10 25 Q15 10 35 10 Z" fill="#e74c3c"/><path d="M35 10 L35 2" stroke="green" stroke-width="3"/>' },
+            'banana': { gender: 'fem', color: '#f1c40f', shape: '<path d="M10 50 Q35 70 60 20 Q40 60 10 40 Z" fill="#f1c40f" stroke="#f39c12"/>' },
+            'maçã': { gender: 'fem', color: '#c0392b', shape: '<circle cx="35" cy="40" r="25" fill="#c0392b"/><path d="M35 15 Q45 5 45 15" stroke="green" stroke-width="3" fill="none"/>' },
+            'uva': { gender: 'fem', color: '#8e44ad', shape: '<g transform="translate(5,5)"><circle cx="30" cy="45" r="10" fill="#8e44ad"/><circle cx="20" cy="30" r="10" fill="#8e44ad"/><circle cx="40" cy="30" r="10" fill="#8e44ad"/><circle cx="30" cy="15" r="10" fill="#8e44ad"/></g>' },
+            'laranja': { gender: 'fem', color: '#e67e22', shape: '<circle cx="35" cy="35" r="30" fill="#e67e22"/><circle cx="35" cy="35" r="2" fill="#d35400"/>' },
+            'pera': { gender: 'fem', color: '#badc58', shape: '<path d="M35 5 Q55 10 55 45 Q55 65 35 65 Q15 65 15 45 Q15 10 35 5 Z" fill="#badc58"/><path d="M35 5 L35 0" stroke="#5d4037" stroke-width="3"/>' },
+            'melancia': { gender: 'fem', color: '#2ecc71', shape: '<path d="M5 20 Q35 65 65 20" fill="#ff6b6b" stroke="#2ecc71" stroke-width="4"/><circle cx="35" cy="35" r="2" fill="black"/>' },
+            'abacaxi': { gender: 'masc', color: '#f9ca24', shape: '<ellipse cx="35" cy="45" rx="20" ry="25" fill="#f9ca24"/><path d="M35 20 L35 0" stroke="green" stroke-width="4"/>' },
+            'limão': { gender: 'masc', color: '#6ab04c', shape: '<ellipse cx="35" cy="35" rx="25" ry="20" fill="#badc58"/>' }
         };
 
         const monsterColors = [
@@ -369,7 +358,8 @@
             blenderRecipe: {}, blenderReady: false, 
             poopMeter: 0, isPlaying: false, needsPoop: false, activeDrag: null,
             justActivatedBlender: false, lastSoundTime: 0, lastAmbientSpeechTime: 0,
-            dirtSpots: [], lastCleanTime: 0
+            dirtSpots: [], lastCleanTime: 0,
+            audioQueue: [] 
         };
 
         const MAX_POOP = 6;
@@ -397,19 +387,61 @@
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        // Função de fala melhorada com controle de "ambiente"
-        function speak(text, isAmbient = false) {
-            // Se for uma fala de ambiente (banho/carinho) e falou recentemente, ignora para não encavalar
-            if (isAmbient && (Date.now() - state.lastAmbientSpeechTime < 2000)) return; 
-            
+        // --- SISTEMA DE ÁUDIO M4A COM GRAMÁTICA ---
+        function playVoice(input, isAmbient = false) {
+            if (isAmbient && (Date.now() - state.lastAmbientSpeechTime < 2000)) return;
             if (isAmbient) state.lastAmbientSpeechTime = Date.now();
 
-            window.speechSynthesis.cancel(); 
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'pt-BR'; utterance.rate = 1.1; utterance.pitch = 1.2; 
-            window.speechSynthesis.speak(utterance);
+            if (Array.isArray(input)) {
+                playAudioSequence(input);
+            } else {
+                // AGORA USA .m4a
+                const audio = new Audio(`mp3/${input}.m4a`);
+                audio.play().catch(e => console.log("Audio m4a não encontrado ou bloqueado: " + input));
+            }
         }
 
+        function playAudioSequence(list) {
+            if (list.length === 0) return;
+            const current = list[0];
+            const audio = new Audio(`mp3/${current}.m4a`);
+            
+            audio.onended = function() {
+                playAudioSequence(list.slice(1));
+            };
+            
+            audio.onerror = function() {
+                console.log("Audio pulado (erro): " + current);
+                playAudioSequence(list.slice(1));
+            }
+
+            audio.play().catch(e => {
+                playAudioSequence(list.slice(1));
+            });
+        }
+
+        // Funções auxiliares para gramática
+        function getSafeName(name) {
+            return name.replace(/[ãáàâ]/g, "a").replace("ç", "c").replace("ê", "e").replace("õ", "o");
+        }
+
+        function getNumberAudio(count, gender) {
+            // Se for 1 ou 2 e feminino, usa o arquivo especial
+            if (gender === 'fem' && (count === 1 || count === 2)) {
+                return `${count}_fem`;
+            }
+            return count.toString();
+        }
+
+        function getFruitAudio(fruitName, count) {
+            let safe = getSafeName(fruitName);
+            if (count > 1) {
+                return `${safe}_s`; // Plural
+            }
+            return safe; // Singular
+        }
+
+        // Sintetizador de efeitos sonoros (mantido para efeitos como POP, FART, EAT)
         function playSound(type) {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             
@@ -437,7 +469,6 @@
                 gainNode.gain.setValueAtTime(0.3, now); gainNode.gain.linearRampToValueAtTime(0, now + 0.3);
                 osc.start(); osc.stop(now + 0.3);
             } else if (type === 'water') {
-                // Bubbling sound
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(400 + Math.random() * 200, now);
                 osc.frequency.linearRampToValueAtTime(800 + Math.random() * 200, now + 0.1);
@@ -457,25 +488,19 @@
             setupBlenderDrag();
             setupInteractionEvents();
             startRound();
-            
-            // Inicia o ciclo de sujeira automática aleatória
             scheduleNextDirt();
         }
 
-        // --- SISTEMA DE SUJEIRA ---
         function scheduleNextDirt() {
-            // Agenda próxima sujeira entre 30s e 50s
             const delay = 30000 + Math.random() * 20000;
             setTimeout(() => {
                 tryAddDirt();
-                scheduleNextDirt(); // Loop
+                scheduleNextDirt(); 
             }, delay);
         }
 
         function tryAddDirt() {
-            // Limite máximo de manchas para não cobrir tudo
             if (state.dirtSpots.length > 8) return;
-
             let attempts = 0;
             let success = false;
             let x, y, r;
@@ -483,30 +508,19 @@
             while (!success && attempts < 10) {
                 x = 60 + Math.random() * 180;
                 y = 100 + Math.random() * 200;
-                r = 15 + Math.random() * 15; // Raio da mancha
-
-                // Verifica se está muito perto da boca ou olhos
+                r = 15 + Math.random() * 15; 
                 if (y < 160) { attempts++; continue; }
-
-                // Verifica sobreposição com outras manchas
                 let overlap = false;
                 for (let spot of state.dirtSpots) {
                     const dx = spot.x - x;
                     const dy = spot.y - y;
                     const dist = Math.sqrt(dx*dx + dy*dy);
-                    if (dist < (spot.r + r + 5)) { // 5px de margem extra
-                        overlap = true;
-                        break;
-                    }
+                    if (dist < (spot.r + r + 5)) { overlap = true; break; }
                 }
-                
                 if (!overlap) success = true;
                 attempts++;
             }
-
-            if (success) {
-                addDirtSpot(x, y, r);
-            }
+            if (success) addDirtSpot(x, y, r);
         }
 
         function addDirtSpot(x, y, r) {
@@ -515,8 +529,6 @@
             spot.setAttribute("cy", y);
             spot.setAttribute("r", r);
             spot.setAttribute("class", "dirt-spot");
-            
-            // Adiciona ao DOM e ao State
             els.dirtGroup.appendChild(spot);
             state.dirtSpots.push({ x, y, r, el: spot });
         }
@@ -524,15 +536,12 @@
         function removeDirtSpot(spotData) {
             const index = state.dirtSpots.indexOf(spotData);
             if (index > -1) {
-                // Animação de saída
                 spotData.el.style.opacity = '0';
                 spotData.el.style.transform = 'scale(1.5)';
                 setTimeout(() => {
                     if (spotData.el.parentNode) spotData.el.parentNode.removeChild(spotData.el);
                 }, 500);
                 state.dirtSpots.splice(index, 1);
-                
-                // Feedback visual e sonoro
                 createParticle(spotData.x, spotData.y, 'bubble');
                 playSound('water');
             }
@@ -554,7 +563,7 @@
                 state.needsPoop = true;
                 els.monster.className = 'sick-face';
                 els.instruction.innerHTML = "Ai minha barriga!";
-                speak("Ai ai ai, minha barriga! me ajude aliviar");
+                playVoice('dor_barriga'); 
                 els.poopBtn.style.display = 'flex';
                 els.shelf.style.opacity = '0.3';
                 els.shelf.style.pointerEvents = 'none';
@@ -579,7 +588,7 @@
             els.monster.className = 'monster-idle';
             els.shelf.style.opacity = '1';
             els.shelf.style.pointerEvents = 'auto';
-            speak("Ufa! Melhorou!");
+            playVoice('alivio'); 
             els.bellyCounter.innerText = '';
             els.eatenFruits.innerHTML = '';
             setTimeout(startRound, 2500);
@@ -589,15 +598,11 @@
             els.btnHeart.classList.remove('btn-active');
             els.btnBlender.classList.remove('btn-active');
             els.btnBath.classList.remove('btn-active');
-            
             els.monster.classList.remove('heart-face');
             els.monster.classList.remove('interactive');
-            
             els.blenderWrapper.style.display = 'none';
             resetBlender();
-            
             els.sponge.style.display = 'none';
-            
             els.shelf.style.opacity = '1';
             els.shelf.style.pointerEvents = 'auto';
         }
@@ -626,14 +631,20 @@
                 els.monster.classList.add('heart-face');
                 els.monster.classList.add('interactive'); 
                 els.instruction.innerHTML = "Dê carinho no monstro!";
-                speak("Ah, eu quero carinho!");
+                
+                playVoice('quero_carinho'); 
+                if(Math.random() > 0.5) setTimeout(()=> playVoice('instrucao_carinho'), 2000);
+
                 hideShelf();
             } 
             else if (state.mode === 'bath') {
                 els.btnBath.classList.add('btn-active');
                 els.monster.classList.add('interactive'); 
                 els.instruction.innerHTML = "Hora do banho!";
-                speak("Vamos ficar limpinhos!");
+                
+                playVoice('modo_banho'); 
+                if(Math.random() > 0.5) setTimeout(()=> playVoice('instrucao_banho'), 2000);
+
                 els.sponge.style.display = 'block';
                 hideShelf();
             } 
@@ -651,7 +662,8 @@
 
         function setupInteractionEvents() {
             const container = document.getElementById('game-container');
-            const bathPhrases = ["Xô sujeira!", "Lavando a barriga!", "Que cheirinho bom!", "Esfrega, esfrega!", "Obrigado, fiquei limpinho!", "Tchibum!"];
+            const bathSounds = ["banho_1", "banho_2", "banho_3", "banho_4", "banho_5", "banho_6"];
+            const heartSounds = ["carinho_1", "carinho_2", "carinho_3", "carinho_4"];
 
             const handleTap = (e) => {
                 if (state.mode !== 'heart') return;
@@ -666,7 +678,9 @@
                     
                     createParticle(clientX, clientY, 'heart');
                     playSound('heart');
-                    if(Math.random() > 0.7) speak(["Obrigado!", "Meu amigo!", "Gostoso!", "Te amo!"][Math.floor(Math.random()*4)], true);
+                    if(Math.random() > 0.7) {
+                        playVoice(heartSounds[Math.floor(Math.random()*heartSounds.length)], true);
+                    }
                 }
             };
 
@@ -682,28 +696,24 @@
                     if (!isTouching) return;
 
                     const mRect = els.monster.getBoundingClientRect();
-                    // Verifica se está esfregando SOBRE o monstro
                     const isOverMonster = clientX >= mRect.left && clientX <= mRect.right && 
                                           clientY >= mRect.top && clientY <= mRect.bottom;
 
                     if (isOverMonster) {
-                        // Lógica de limpeza simplificada: Esfregar em qualquer lugar limpa sujeira aleatória
                         const now = Date.now();
-                        // Remove uma mancha a cada ~800ms esfregando
                         if (state.dirtSpots.length > 0 && now - state.lastCleanTime > 800) {
                             const randomSpotIndex = Math.floor(Math.random() * state.dirtSpots.length);
                             removeDirtSpot(state.dirtSpots[randomSpotIndex]);
                             state.lastCleanTime = now;
                         }
 
-                        // Feedback visual (bolhas) mais frequente
                         if (Math.random() > 0.8) {
                             createParticle(clientX, clientY, 'bubble');
                             playSound('water');
                         }
                         
                         if (Math.random() > 0.98) {
-                            speak(bathPhrases[Math.floor(Math.random() * bathPhrases.length)], true);
+                            playVoice(bathSounds[Math.floor(Math.random() * bathSounds.length)], true);
                         }
                     }
                 }
@@ -810,7 +820,7 @@
                 const mouth = els.mouthSensor.getBoundingClientRect();
                 if (cx >= mouth.left && cx <= mouth.right && cy >= mouth.top && cy <= mouth.bottom) {
                     if (el.dataset.type === state.targetType) { eatFruitNormal(el); dropped = true; }
-                    else { speak("Essa não!"); playSound('pop'); }
+                    else { playVoice('erro'); playSound('pop'); }
                 }
             } else if (state.mode === 'blender') {
                 const blenderRect = els.blenderSensor.getBoundingClientRect();
@@ -827,13 +837,22 @@
         function setupNormalRound() {
             const types = Object.keys(fruitsData);
             state.targetType = types[Math.floor(Math.random() * types.length)];
-            state.targetCount = Math.floor(Math.random() * 3) + 1;
+            state.targetCount = Math.floor(Math.random() * 3) + 1; // Entre 1 e 3
             state.eatenCount = 0;
             els.bellyCounter.innerText = '';
             els.eatenFruits.innerHTML = '';
+            
+            // Lógica Gramatical
+            const gender = fruitsData[state.targetType].gender;
+            const numAudio = getNumberAudio(state.targetCount, gender);
+            const fruitAudio = getFruitAudio(state.targetType, state.targetCount);
+            
             const plural = state.targetCount > 1 ? 's' : '';
             els.instruction.innerHTML = `Quero <span class="highlight-num">${state.targetCount}</span> ${state.targetType}${plural}!`;
-            speak(`Quero ${state.targetCount} ${state.targetType}${plural}`);
+            
+            // "Quero" + Numero Correto + Fruta Correta
+            playVoice(['quero', numAudio, fruitAudio]);
+
             fillBasket([state.targetType]);
         }
 
@@ -845,10 +864,15 @@
             playSound('eat');
             state.targetCount--; state.eatenCount++;
             els.bellyCounter.innerText = state.eatenCount;
-            speak(state.eatenCount.toString());
+            
+            // O numeral de feedback também pode ser feminino dependendo da fruta
+            // Mas geralmente em contagem pura usamos o masculino (1, 2, 3...)
+            // Se preferir concordar: getNumberAudio(state.eatenCount, gender)
+            // Vou deixar contagem absoluta (1, 2, 3) que é mais fácil pra criança aprender a sequência
+            playVoice(state.eatenCount.toString());
             
             if (state.targetCount <= 0) {
-                setTimeout(() => speak("Delícia!"), 1000);
+                setTimeout(() => playVoice('delicia'), 1000);
                 state.poopMeter++; state.isPlaying = false; setTimeout(startRound, 2500);
             }
         }
@@ -862,13 +886,20 @@
             els.blenderLiquid.style.opacity = 0;
             els.instruction.innerHTML = `Vitamina: <span class="highlight-num">1 ${t1}</span> e <span class="highlight-num">1 ${t2}</span>`;
             
-            // Lógica da narração inicial
-            let speechText = `Vitamina de ${t1} com ${t2}.`;
+            // Nomes seguros para arquivo (sem acento) e genero
+            const f1Safe = getSafeName(t1);
+            const f2Safe = getSafeName(t2);
+            
+            // Na vitamina é sempre 1 unidade, então é sempre "UM" ou "UMA"
+            const num1 = getNumberAudio(1, fruitsData[t1].gender);
+            const num2 = getNumberAudio(1, fruitsData[t2].gender);
+
             if (state.justActivatedBlender) {
-                speechText = "Vamos fazer uma vitamina! " + speechText;
                 state.justActivatedBlender = false;
+                playVoice(['modo_vitamina', 'vitamina_de', f1Safe, 'com', f2Safe]);
+            } else {
+                playVoice(['vitamina_de', f1Safe, 'com', f2Safe]);
             }
-            speak(speechText);
             
             fillBasket([t1, t2]);
         }
@@ -884,11 +915,19 @@
                 el.remove(); playSound('pop');
                 
                 const remaining = [];
-                for (let [t, q] of Object.entries(state.blenderRecipe)) { if (q > 0) remaining.push(`${q} ${t}`); }
-                if (remaining.length > 0) speak("Falta " + remaining.join(" e "));
+                for (let [t, q] of Object.entries(state.blenderRecipe)) { if (q > 0) remaining.push(t); }
+                
+                if (remaining.length > 0) {
+                    const nextFruit = remaining[0];
+                    const safeName = getSafeName(nextFruit);
+                    const gender = fruitsData[nextFruit].gender;
+                    // "Falta" + "Uma" + "Banana"
+                    playVoice(['falta', getNumberAudio(1, gender), safeName]);
+                }
+
                 if (Object.values(state.blenderRecipe).every(v => v === 0)) finishBlender();
             } else { 
-                speak("Essa não!"); 
+                playVoice('erro'); 
                 el.style.transition = '0.3s'; el.style.transform = 'scale(0)';
                 setTimeout(() => el.remove(), 300);
             }
@@ -896,13 +935,14 @@
 
         function finishBlender() {
             els.instruction.innerHTML = "Misturando...";
+            playVoice('misturando');
             els.blenderContainer.classList.add('blender-ready');
             setTimeout(() => {
                 els.blenderItems.innerHTML = '';
                 els.blenderLiquid.style.opacity = 1; 
                 state.blenderReady = true;
                 els.instruction.innerHTML = "Dê para o monstro!";
-                speak("Dá pra mim!");
+                playVoice('da_pra_mim');
             }, 1500);
         }
 
@@ -953,17 +993,13 @@
                 els.blenderLiquid.style.opacity = 0;
                 playSound('eat'); 
                 
-                speak("Hummm, obrigado! Delícia!");
+                playVoice('obrigado_vitamina');
                 
                 setTimeout(() => {
                     els.blenderWrapper.style.transition = 'transform 0.5s ease';
                     els.blenderWrapper.style.transform = 'none';
                     state.poopMeter += 2; 
-                    
-                    // CORREÇÃO: Aumentei o tempo de espera para iniciar a próxima rodada
-                    // Isso evita que o "Vitamina de X..." sobreponha o "Obrigado"
                     setTimeout(startRound, 3500);
-
                 }, 1000);
             }, 1000);
         }
