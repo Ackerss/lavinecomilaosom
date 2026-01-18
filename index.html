@@ -38,7 +38,7 @@
         
         /* Sujeira */
         .dirt-spot {
-            fill: #795548; 
+            fill: #795548; /* Marrom suave */
             opacity: 0.6;
             transition: opacity 0.5s ease, transform 0.5s ease;
             transform-origin: center;
@@ -57,9 +57,7 @@
 
         /* --- BARRIGA --- */
         #belly-container {
-            position: absolute; 
-            top: 71.4%; 
-            left: 50%; 
+            position: absolute; top: 71.4%; left: 50%; 
             transform: translate(-50%, -50%);
             width: 35%; height: 25%;
             display: flex; justify-content: center; align-items: center; z-index: 12;
@@ -334,17 +332,16 @@
     </div>
 
     <script>
-        // ADICIONEI GÊNERO NAS FRUTAS (masc/fem)
         const fruitsData = {
-            'morango': { gender: 'masc', color: '#e74c3c', shape: '<path d="M35 10 Q55 10 60 25 Q65 60 35 70 Q5 60 10 25 Q15 10 35 10 Z" fill="#e74c3c"/><path d="M35 10 L35 2" stroke="green" stroke-width="3"/>' },
-            'banana': { gender: 'fem', color: '#f1c40f', shape: '<path d="M10 50 Q35 70 60 20 Q40 60 10 40 Z" fill="#f1c40f" stroke="#f39c12"/>' },
-            'maçã': { gender: 'fem', color: '#c0392b', shape: '<circle cx="35" cy="40" r="25" fill="#c0392b"/><path d="M35 15 Q45 5 45 15" stroke="green" stroke-width="3" fill="none"/>' },
-            'uva': { gender: 'fem', color: '#8e44ad', shape: '<g transform="translate(5,5)"><circle cx="30" cy="45" r="10" fill="#8e44ad"/><circle cx="20" cy="30" r="10" fill="#8e44ad"/><circle cx="40" cy="30" r="10" fill="#8e44ad"/><circle cx="30" cy="15" r="10" fill="#8e44ad"/></g>' },
-            'laranja': { gender: 'fem', color: '#e67e22', shape: '<circle cx="35" cy="35" r="30" fill="#e67e22"/><circle cx="35" cy="35" r="2" fill="#d35400"/>' },
-            'pera': { gender: 'fem', color: '#badc58', shape: '<path d="M35 5 Q55 10 55 45 Q55 65 35 65 Q15 65 15 45 Q15 10 35 5 Z" fill="#badc58"/><path d="M35 5 L35 0" stroke="#5d4037" stroke-width="3"/>' },
-            'melancia': { gender: 'fem', color: '#2ecc71', shape: '<path d="M5 20 Q35 65 65 20" fill="#ff6b6b" stroke="#2ecc71" stroke-width="4"/><circle cx="35" cy="35" r="2" fill="black"/>' },
-            'abacaxi': { gender: 'masc', color: '#f9ca24', shape: '<ellipse cx="35" cy="45" rx="20" ry="25" fill="#f9ca24"/><path d="M35 20 L35 0" stroke="green" stroke-width="4"/>' },
-            'limão': { gender: 'masc', color: '#6ab04c', shape: '<ellipse cx="35" cy="35" rx="25" ry="20" fill="#badc58"/>' }
+            'morango': { color: '#e74c3c', shape: '<path d="M35 10 Q55 10 60 25 Q65 60 35 70 Q5 60 10 25 Q15 10 35 10 Z" fill="#e74c3c"/><path d="M35 10 L35 2" stroke="green" stroke-width="3"/>' },
+            'banana': { color: '#f1c40f', shape: '<path d="M10 50 Q35 70 60 20 Q40 60 10 40 Z" fill="#f1c40f" stroke="#f39c12"/>' },
+            'maçã': { color: '#c0392b', shape: '<circle cx="35" cy="40" r="25" fill="#c0392b"/><path d="M35 15 Q45 5 45 15" stroke="green" stroke-width="3" fill="none"/>' },
+            'uva': { color: '#8e44ad', shape: '<g transform="translate(5,5)"><circle cx="30" cy="45" r="10" fill="#8e44ad"/><circle cx="20" cy="30" r="10" fill="#8e44ad"/><circle cx="40" cy="30" r="10" fill="#8e44ad"/><circle cx="30" cy="15" r="10" fill="#8e44ad"/></g>' },
+            'laranja': { color: '#e67e22', shape: '<circle cx="35" cy="35" r="30" fill="#e67e22"/><circle cx="35" cy="35" r="2" fill="#d35400"/>' },
+            'pera': { color: '#badc58', shape: '<path d="M35 5 Q55 10 55 45 Q55 65 35 65 Q15 65 15 45 Q15 10 35 5 Z" fill="#badc58"/><path d="M35 5 L35 0" stroke="#5d4037" stroke-width="3"/>' },
+            'melancia': { color: '#2ecc71', shape: '<path d="M5 20 Q35 65 65 20" fill="#ff6b6b" stroke="#2ecc71" stroke-width="4"/><circle cx="35" cy="35" r="2" fill="black"/>' },
+            'abacaxi': { color: '#f9ca24', shape: '<ellipse cx="35" cy="45" rx="20" ry="25" fill="#f9ca24"/><path d="M35 20 L35 0" stroke="green" stroke-width="4"/>' },
+            'limão': { color: '#6ab04c', shape: '<ellipse cx="35" cy="35" rx="25" ry="20" fill="#badc58"/>' }
         };
 
         const monsterColors = [
@@ -359,7 +356,7 @@
             poopMeter: 0, isPlaying: false, needsPoop: false, activeDrag: null,
             justActivatedBlender: false, lastSoundTime: 0, lastAmbientSpeechTime: 0,
             dirtSpots: [], lastCleanTime: 0,
-            audioQueue: [] 
+            audioQueue: [] // Fila para tocar audios em sequencia
         };
 
         const MAX_POOP = 6;
@@ -387,58 +384,42 @@
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        // --- SISTEMA DE ÁUDIO M4A COM GRAMÁTICA ---
+        // --- SISTEMA DE ÁUDIO MP3 ---
+        // Funcao para tocar um arquivo, ou uma sequencia (array)
         function playVoice(input, isAmbient = false) {
+            // Se for audio de ambiente e tocou recentemente, ignora
             if (isAmbient && (Date.now() - state.lastAmbientSpeechTime < 2000)) return;
             if (isAmbient) state.lastAmbientSpeechTime = Date.now();
 
             if (Array.isArray(input)) {
+                // Toca sequencia
                 playAudioSequence(input);
             } else {
-                // AGORA USA .m4a
-                const audio = new Audio(`mp3/${input}.m4a`);
-                audio.play().catch(e => console.log("Audio m4a não encontrado ou bloqueado: " + input));
+                // Toca unico arquivo
+                const audio = new Audio(`mp3/${input}.mp3`);
+                audio.play().catch(e => console.log("Audio não encontrado ou bloqueado: " + input));
             }
         }
 
         function playAudioSequence(list) {
             if (list.length === 0) return;
             const current = list[0];
-            const audio = new Audio(`mp3/${current}.m4a`);
+            const audio = new Audio(`mp3/${current}.mp3`);
             
             audio.onended = function() {
                 playAudioSequence(list.slice(1));
             };
             
             audio.onerror = function() {
+                // Se der erro (arquivo nao existe), pula para o proximo
                 console.log("Audio pulado (erro): " + current);
                 playAudioSequence(list.slice(1));
             }
 
             audio.play().catch(e => {
+                // Se der erro de play (bloqueio), tenta o proximo
                 playAudioSequence(list.slice(1));
             });
-        }
-
-        // Funções auxiliares para gramática
-        function getSafeName(name) {
-            return name.replace(/[ãáàâ]/g, "a").replace("ç", "c").replace("ê", "e").replace("õ", "o");
-        }
-
-        function getNumberAudio(count, gender) {
-            // Se for 1 ou 2 e feminino, usa o arquivo especial
-            if (gender === 'fem' && (count === 1 || count === 2)) {
-                return `${count}_fem`;
-            }
-            return count.toString();
-        }
-
-        function getFruitAudio(fruitName, count) {
-            let safe = getSafeName(fruitName);
-            if (count > 1) {
-                return `${safe}_s`; // Plural
-            }
-            return safe; // Singular
         }
 
         // Sintetizador de efeitos sonoros (mantido para efeitos como POP, FART, EAT)
@@ -563,7 +544,7 @@
                 state.needsPoop = true;
                 els.monster.className = 'sick-face';
                 els.instruction.innerHTML = "Ai minha barriga!";
-                playVoice('dor_barriga'); 
+                playVoice('dor_barriga'); // Alterado para MP3
                 els.poopBtn.style.display = 'flex';
                 els.shelf.style.opacity = '0.3';
                 els.shelf.style.pointerEvents = 'none';
@@ -588,7 +569,7 @@
             els.monster.className = 'monster-idle';
             els.shelf.style.opacity = '1';
             els.shelf.style.pointerEvents = 'auto';
-            playVoice('alivio'); 
+            playVoice('alivio'); // Alterado para MP3
             els.bellyCounter.innerText = '';
             els.eatenFruits.innerHTML = '';
             setTimeout(startRound, 2500);
@@ -632,7 +613,7 @@
                 els.monster.classList.add('interactive'); 
                 els.instruction.innerHTML = "Dê carinho no monstro!";
                 
-                playVoice('quero_carinho'); 
+                playVoice('quero_carinho'); // Alterado para MP3
                 if(Math.random() > 0.5) setTimeout(()=> playVoice('instrucao_carinho'), 2000);
 
                 hideShelf();
@@ -642,7 +623,7 @@
                 els.monster.classList.add('interactive'); 
                 els.instruction.innerHTML = "Hora do banho!";
                 
-                playVoice('modo_banho'); 
+                playVoice('modo_banho'); // Alterado para MP3
                 if(Math.random() > 0.5) setTimeout(()=> playVoice('instrucao_banho'), 2000);
 
                 els.sponge.style.display = 'block';
@@ -837,21 +818,17 @@
         function setupNormalRound() {
             const types = Object.keys(fruitsData);
             state.targetType = types[Math.floor(Math.random() * types.length)];
-            state.targetCount = Math.floor(Math.random() * 3) + 1; // Entre 1 e 3
+            state.targetCount = Math.floor(Math.random() * 3) + 1; // Entre 1 e 3 para ser facil
             state.eatenCount = 0;
             els.bellyCounter.innerText = '';
             els.eatenFruits.innerHTML = '';
-            
-            // Lógica Gramatical
-            const gender = fruitsData[state.targetType].gender;
-            const numAudio = getNumberAudio(state.targetCount, gender);
-            const fruitAudio = getFruitAudio(state.targetType, state.targetCount);
-            
             const plural = state.targetCount > 1 ? 's' : '';
+            
             els.instruction.innerHTML = `Quero <span class="highlight-num">${state.targetCount}</span> ${state.targetType}${plural}!`;
             
-            // "Quero" + Numero Correto + Fruta Correta
-            playVoice(['quero', numAudio, fruitAudio]);
+            // TOCA: "Quero" -> Numero -> Fruta
+            const normalFruitName = state.targetType.replace(/[ãáàâ]/g, "a").replace("ç", "c").replace("ê", "e").replace("õ", "o");
+            playVoice(['quero', state.targetCount, normalFruitName]);
 
             fillBasket([state.targetType]);
         }
@@ -865,10 +842,7 @@
             state.targetCount--; state.eatenCount++;
             els.bellyCounter.innerText = state.eatenCount;
             
-            // O numeral de feedback também pode ser feminino dependendo da fruta
-            // Mas geralmente em contagem pura usamos o masculino (1, 2, 3...)
-            // Se preferir concordar: getNumberAudio(state.eatenCount, gender)
-            // Vou deixar contagem absoluta (1, 2, 3) que é mais fácil pra criança aprender a sequência
+            // Fala apenas o numeral
             playVoice(state.eatenCount.toString());
             
             if (state.targetCount <= 0) {
@@ -886,16 +860,13 @@
             els.blenderLiquid.style.opacity = 0;
             els.instruction.innerHTML = `Vitamina: <span class="highlight-num">1 ${t1}</span> e <span class="highlight-num">1 ${t2}</span>`;
             
-            // Nomes seguros para arquivo (sem acento) e genero
-            const f1Safe = getSafeName(t1);
-            const f2Safe = getSafeName(t2);
-            
-            // Na vitamina é sempre 1 unidade, então é sempre "UM" ou "UMA"
-            const num1 = getNumberAudio(1, fruitsData[t1].gender);
-            const num2 = getNumberAudio(1, fruitsData[t2].gender);
+            // Nomes seguros para arquivo (sem acento)
+            const f1Safe = t1.replace(/[ãáàâ]/g, "a").replace("ç", "c").replace("ê", "e").replace("õ", "o");
+            const f2Safe = t2.replace(/[ãáàâ]/g, "a").replace("ç", "c").replace("ê", "e").replace("õ", "o");
 
             if (state.justActivatedBlender) {
                 state.justActivatedBlender = false;
+                // "Vamos fazer uma vitamina" + "Vitamina de" + F1 + "com" + F2
                 playVoice(['modo_vitamina', 'vitamina_de', f1Safe, 'com', f2Safe]);
             } else {
                 playVoice(['vitamina_de', f1Safe, 'com', f2Safe]);
@@ -918,11 +889,9 @@
                 for (let [t, q] of Object.entries(state.blenderRecipe)) { if (q > 0) remaining.push(t); }
                 
                 if (remaining.length > 0) {
-                    const nextFruit = remaining[0];
-                    const safeName = getSafeName(nextFruit);
-                    const gender = fruitsData[nextFruit].gender;
-                    // "Falta" + "Uma" + "Banana"
-                    playVoice(['falta', getNumberAudio(1, gender), safeName]);
+                    // Toca "Falta" + Fruta
+                    const fSafe = remaining[0].replace(/[ãáàâ]/g, "a").replace("ç", "c").replace("ê", "e").replace("õ", "o");
+                    playVoice(['falta', '1', fSafe]);
                 }
 
                 if (Object.values(state.blenderRecipe).every(v => v === 0)) finishBlender();
