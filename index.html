@@ -25,7 +25,14 @@
             position: absolute; top: 32%; left: 50%;
             transform: translate(-50%, -50%);
             height: 42vh; width: auto; max-height: 400px; min-height: 250px;
-            z-index: 10; transition: all 0.5s ease; pointer-events: none;
+            z-index: 10; transition: all 0.5s ease; 
+            pointer-events: none; /* Deixa passar toques para a boca/barriga normalmente */
+        }
+        
+        /* Classe para ativar toques no monstro (Modo Carinho) */
+        .interactive {
+            pointer-events: auto !important;
+            cursor: pointer;
         }
 
         #monster-svg { width: 100%; height: 100%; display: block; }
@@ -38,13 +45,13 @@
 
         #mouth-sensor {
             position: absolute; top: 35%; left: 20%; width: 60%; height: 35%; 
-            z-index: 15;
+            z-index: 15; pointer-events: auto; /* Boca sempre interativa para comer */
         }
 
-        /* --- BARRIGA (CENTRALIZAÇÃO CORRIGIDA) --- */
+        /* --- BARRIGA --- */
         #belly-container {
             position: absolute; 
-            top: 71.4%; /* Alinhado perfeitamente com o centro do círculo branco no SVG */
+            top: 71.4%; 
             left: 50%; 
             transform: translate(-50%, -50%);
             width: 35%; height: 25%;
@@ -140,7 +147,6 @@
         }
         .control-btn:active { transform: translateY(3px); box-shadow: 0 3px 0 #2980b9; }
 
-        /* Estilo para Botão Ativo */
         .btn-active {
             background: #ffeaa7 !important; border-color: #f1c40f !important;
             box-shadow: 0 6px 0 #f39c12 !important; animation: pulse-active 1.5s infinite;
@@ -204,17 +210,17 @@
     </div>
 
     <div id="controls-sidebar">
-        <!-- Botão Liquidificador Profissional -->
-        <div id="btn-blender" class="control-btn" onclick="toggleBlenderMode()" title="Modo Vitamina">
+        <!-- Botão Liquidificador -->
+        <div id="btn-blender" class="control-btn" onclick="setMode('blender')" title="Modo Vitamina">
             <svg viewBox="0 0 100 100" width="45" height="45">
-                <rect x="25" y="75" width="50" height="15" rx="5" fill="#333" /> <!-- Base -->
-                <path d="M30 20 L70 20 L65 75 L35 75 Z" fill="#81ecec" stroke="#333" stroke-width="3"/> <!-- Copo -->
-                <rect x="28" y="12" width="44" height="8" rx="2" fill="#e74c3c" /> <!-- Tampa -->
-                <circle cx="50" cy="82" r="4" fill="#f1c40f" /> <!-- Botão -->
+                <rect x="25" y="75" width="50" height="15" rx="5" fill="#333" />
+                <path d="M30 20 L70 20 L65 75 L35 75 Z" fill="#81ecec" stroke="#333" stroke-width="3"/>
+                <rect x="28" y="12" width="44" height="8" rx="2" fill="#e74c3c" />
+                <circle cx="50" cy="82" r="4" fill="#f1c40f" />
             </svg>
         </div>
-        <!-- Botão Carinho (Novo) -->
-        <div id="btn-heart" class="control-btn" onclick="toggleHeartMode()" title="Modo Carinho">
+        <!-- Botão Carinho -->
+        <div id="btn-heart" class="control-btn" onclick="setMode('heart')" title="Modo Carinho">
             <span style="font-size: 35px;">❤️</span>
         </div>
         <!-- Botão Cor -->
@@ -233,7 +239,6 @@
         </div>
 
         <div id="monster-container" class="monster-idle">
-            <!-- Sensores de toque para interação -->
             <div id="mouth-sensor"></div>
             
             <div id="belly-container">
@@ -243,7 +248,6 @@
             
             <svg id="monster-svg" viewBox="0 0 300 350" preserveAspectRatio="xMidYMid meet">
                 <path id="monster-body" d="M50 300 Q20 350 80 340 L220 340 Q280 350 250 300 Q280 200 250 100 Q230 20 150 20 Q70 20 50 100 Q20 200 50 300" fill="#7bed9f" stroke="#2ecc71" stroke-width="5"/>
-                <!-- Barriga Branca (Centralizada no CX150 CY250) -->
                 <circle cx="150" cy="250" r="60" fill="rgba(255,255,255,0.4)" stroke="#fff" stroke-width="3" />
                 
                 <g id="blush-group">
@@ -313,9 +317,11 @@
         let state = {
             mode: 'normal', targetCount: 0, eatenCount: 0, targetType: '',
             blenderRecipe: {}, blenderReady: false, 
-            poopMeter: 0, isPlaying: false, needsPoop: false, activeDrag: null
+            poopMeter: 0, isPlaying: false, needsPoop: false, activeDrag: null,
+            justActivatedBlender: false
         };
 
+        const MAX_POOP = 6;
         const els = {
             instruction: document.getElementById('instruction-bubble'),
             monster: document.getElementById('monster-container'),
@@ -428,45 +434,55 @@
             setTimeout(startRound, 2500);
         }
 
-        function toggleBlenderMode() {
+        // --- SISTEMA DE MODOS UNIFICADO (CORREÇÃO DE BUGS) ---
+        function setMode(newMode) {
             if (state.needsPoop) return;
-            
-            // Se estava no coração, desliga o coração
-            if (state.mode === 'heart') toggleHeartMode();
 
-            state.mode = (state.mode === 'normal') ? 'blender' : 'normal';
-            
+            // 1. Limpar estado anterior
+            // Se estava no coração, remove a classe interativa
+            if (state.mode === 'heart') {
+                els.btnHeart.classList.remove('btn-active');
+                els.monster.classList.remove('heart-face');
+                els.monster.classList.remove('interactive'); // IMPORTANTE: Desativa toque no corpo
+                els.shelf.style.opacity = '1';
+                els.shelf.style.pointerEvents = 'auto';
+            }
+            // Se estava no liquidificador, esconde ele
             if (state.mode === 'blender') {
-                els.blenderWrapper.style.display = 'block';
-                els.btnBlender.classList.add('btn-active');
-            } else {
                 els.blenderWrapper.style.display = 'none';
                 els.btnBlender.classList.remove('btn-active');
                 resetBlender();
             }
-            startRound();
-        }
 
-        function toggleHeartMode() {
-            if (state.needsPoop) return;
+            // 2. Se clicou no mesmo modo que já está, desliga e volta ao normal
+            if (state.mode === newMode) {
+                state.mode = 'normal';
+                startRound();
+                return;
+            }
 
-            // Se estava no liquidificador, desliga o liquidificador
-            if (state.mode === 'blender') toggleBlenderMode();
+            // 3. Ativar novo modo
+            state.mode = newMode;
 
-            state.mode = (state.mode === 'normal') ? 'heart' : 'normal';
-
-            if (state.mode === 'heart') {
+            if (state.mode === 'blender') {
+                els.blenderWrapper.style.display = 'block';
+                els.btnBlender.classList.add('btn-active');
+                state.justActivatedBlender = true; // Marca para falar a frase inicial
+                startRound();
+            } else if (state.mode === 'heart') {
                 els.btnHeart.classList.add('btn-active');
-                els.monster.className = 'heart-face';
+                els.monster.classList.add('heart-face');
+                els.monster.classList.add('interactive'); // IMPORTANTE: Ativa toque no corpo
+                
                 els.instruction.innerHTML = "Dê carinho no monstro!";
                 speak("Ah, eu quero carinho!");
+                
+                // Esconde prateleira no modo carinho
                 els.shelf.style.opacity = '0.3';
                 els.shelf.style.pointerEvents = 'none';
+                const oldFruits = els.shelf.querySelectorAll('.basket-item');
+                oldFruits.forEach(el => el.remove());
             } else {
-                els.btnHeart.classList.remove('btn-active');
-                els.monster.className = 'monster-idle';
-                els.shelf.style.opacity = '1';
-                els.shelf.style.pointerEvents = 'auto';
                 startRound();
             }
         }
@@ -485,18 +501,18 @@
                 setTimeout(() => h.remove(), 1500);
             };
 
-            // Detectar toque no monstro (através do container dele)
             const handleTouch = (e) => {
                 if (state.mode !== 'heart') return;
                 const t = e.touches ? e.touches[0] : e;
                 createHeart(t.clientX, t.clientY);
             };
 
-            // Adicionamos o evento ao corpo do monstro
-            document.getElementById('monster-body').parentElement.parentElement.addEventListener('mousemove', (e) => {
+            // Adiciona listener ao container do monstro, que agora recebe eventos quando tem classe .interactive
+            els.monster.addEventListener('mousemove', (e) => {
                 if(e.buttons > 0) handleTouch(e);
             });
-            document.getElementById('monster-body').parentElement.parentElement.addEventListener('touchmove', handleTouch);
+            els.monster.addEventListener('touchmove', handleTouch, {passive: false});
+            els.monster.addEventListener('touchstart', handleTouch, {passive: false});
         }
 
         function startRound() {
@@ -506,6 +522,7 @@
             els.blenderContainer.classList.remove('blender-ready');
             els.blenderItems.innerHTML = '';
             
+            // Limpa frutas antigas
             const oldFruits = els.shelf.querySelectorAll('.basket-item');
             oldFruits.forEach(el => el.remove());
 
@@ -627,7 +644,15 @@
             state.blenderRecipe = { [t1]: 1, [t2]: 1 };
             els.blenderLiquid.style.opacity = 0;
             els.instruction.innerHTML = `Vitamina: <span class="highlight-num">1 ${t1}</span> e <span class="highlight-num">1 ${t2}</span>`;
-            speak(`Vitamina de ${t1} com ${t2}.`);
+            
+            // Lógica da narração inicial
+            let speechText = `Vitamina de ${t1} com ${t2}.`;
+            if (state.justActivatedBlender) {
+                speechText = "Vamos fazer uma vitamina! " + speechText;
+                state.justActivatedBlender = false;
+            }
+            speak(speechText);
+            
             fillBasket([t1, t2]);
         }
 
