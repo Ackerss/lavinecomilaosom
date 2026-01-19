@@ -74,7 +74,8 @@
         #eaten-fruits-visuals {
             position: absolute; width: 100%; height: 100%;
             display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
-            opacity: 0.5; z-index: 13;
+            opacity: 0.8; /* Aumentei um pouco a opacidade para ver melhor as frutas novas */
+            z-index: 13;
         }
 
         .eaten-fruit {
@@ -332,17 +333,161 @@
     </div>
 
     <script>
-        // --- DADOS DAS FRUTAS (COM GÊNERO PARA GRAMÁTICA CORRETA) ---
+        // --- DADOS DAS FRUTAS (ATUALIZADO COM IMAGENS SVG MELHORES E DETALHADAS) ---
+        // Mantive as chaves, cores e gêneros iguais para não quebrar a lógica de áudio/jogo.
+        // A propriedade 'shape' agora contém desenhos SVG mais bonitos e "reais" (cartoon).
         const fruitsData = {
-            'morango': { color: '#e74c3c', gender: 'm', shape: '<path d="M35 10 Q55 10 60 25 Q65 60 35 70 Q5 60 10 25 Q15 10 35 10 Z" fill="#e74c3c"/><path d="M35 10 L35 2" stroke="green" stroke-width="3"/>' },
-            'banana': { color: '#f1c40f', gender: 'f', shape: '<path d="M10 50 Q35 70 60 20 Q40 60 10 40 Z" fill="#f1c40f" stroke="#f39c12"/>' },
-            'maçã': { color: '#c0392b', gender: 'f', shape: '<circle cx="35" cy="40" r="25" fill="#c0392b"/><path d="M35 15 Q45 5 45 15" stroke="green" stroke-width="3" fill="none"/>' },
-            'uva': { color: '#8e44ad', gender: 'f', shape: '<g transform="translate(5,5)"><circle cx="30" cy="45" r="10" fill="#8e44ad"/><circle cx="20" cy="30" r="10" fill="#8e44ad"/><circle cx="40" cy="30" r="10" fill="#8e44ad"/><circle cx="30" cy="15" r="10" fill="#8e44ad"/></g>' },
-            'laranja': { color: '#e67e22', gender: 'f', shape: '<circle cx="35" cy="35" r="30" fill="#e67e22"/><circle cx="35" cy="35" r="2" fill="#d35400"/>' },
-            'pera': { color: '#badc58', gender: 'f', shape: '<path d="M35 5 Q55 10 55 45 Q55 65 35 65 Q15 65 15 45 Q15 10 35 5 Z" fill="#badc58"/><path d="M35 5 L35 0" stroke="#5d4037" stroke-width="3"/>' },
-            'melancia': { color: '#2ecc71', gender: 'f', shape: '<path d="M5 20 Q35 65 65 20" fill="#ff6b6b" stroke="#2ecc71" stroke-width="4"/><circle cx="35" cy="35" r="2" fill="black"/>' },
-            'abacaxi': { color: '#f9ca24', gender: 'm', shape: '<ellipse cx="35" cy="45" rx="20" ry="25" fill="#f9ca24"/><path d="M35 20 L35 0" stroke="green" stroke-width="4"/>' },
-            'limão': { color: '#6ab04c', gender: 'm', shape: '<ellipse cx="35" cy="35" rx="25" ry="20" fill="#badc58"/>' }
+            'morango': { 
+                color: '#e74c3c', 
+                gender: 'm', 
+                shape: `
+                    <g transform="translate(5,5)">
+                        <!-- Corpo Vermelho -->
+                        <path d="M30,55 C10,45 2,25 2,15 C2,5 15,0 30,5 C45,0 58,5 58,15 C58,25 50,45 30,55 Z" fill="#e74c3c" stroke="#c0392b" stroke-width="1" />
+                        <!-- Sementinhas -->
+                        <circle cx="15" cy="15" r="1.5" fill="#f1c40f" opacity="0.7"/>
+                        <circle cx="25" cy="25" r="1.5" fill="#f1c40f" opacity="0.7"/>
+                        <circle cx="35" cy="15" r="1.5" fill="#f1c40f" opacity="0.7"/>
+                        <circle cx="45" cy="25" r="1.5" fill="#f1c40f" opacity="0.7"/>
+                        <circle cx="30" cy="35" r="1.5" fill="#f1c40f" opacity="0.7"/>
+                        <circle cx="20" cy="30" r="1.5" fill="#f1c40f" opacity="0.7"/>
+                        <!-- Folhas -->
+                        <path d="M15,5 L30,10 L45,5 L40,0 L30,2 L20,0 Z" fill="#2ecc71" stroke="#27ae60" stroke-width="1" stroke-linejoin="round"/>
+                    </g>
+                `
+            },
+            'banana': { 
+                color: '#f1c40f', 
+                gender: 'f', 
+                shape: `
+                    <g transform="translate(5,5)">
+                         <!-- Corpo Principal com Sombra Sutil -->
+                        <path d="M5,60 Q15,35 40,15 Q60,5 65,10 Q60,40 35,60 Q10,70 5,60 Z" fill="#f1c40f" stroke="#f39c12" stroke-width="1.5" stroke-linejoin="round"/>
+                        <!-- Manchas Marrons -->
+                        <path d="M15,45 Q18,48 20,45 M30,35 Q33,38 35,35 M45,25 Q48,28 50,25" stroke="#795548" stroke-width="2" stroke-linecap="round" opacity="0.6" fill="none"/>
+                        <!-- Ponta Marrom (Base) -->
+                        <path d="M5,60 Q2,63 6,65" stroke="#795548" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        <!-- Haste (Topo) -->
+                        <path d="M65,10 L68,5" stroke="#2ecc71" stroke-width="4" stroke-linecap="round"/>
+                    </g>
+                `
+            },
+            'maçã': { 
+                color: '#c0392b', 
+                gender: 'f', 
+                shape: `
+                    <g transform="translate(5,5)">
+                        <!-- Corpo Maçã -->
+                        <path d="M30,60 C10,60 5,40 5,25 C5,10 20,5 30,15 C40,5 55,10 55,25 C55,40 50,60 30,60 Z" fill="#e74c3c" stroke="#c0392b" stroke-width="1"/>
+                        <!-- Brilho -->
+                        <ellipse cx="40" cy="25" rx="5" ry="8" fill="white" opacity="0.3" transform="rotate(-20 40 25)"/>
+                        <!-- Haste -->
+                        <path d="M30,15 Q30,5 35,0" fill="none" stroke="#795548" stroke-width="3" stroke-linecap="round"/>
+                        <!-- Folha -->
+                        <path d="M32,5 Q45,0 45,10 Q35,15 32,5 Z" fill="#2ecc71" stroke="#27ae60" stroke-width="1"/>
+                    </g>
+                `
+            },
+            'uva': { 
+                color: '#8e44ad', 
+                gender: 'f', 
+                shape: `
+                    <g transform="translate(10,5)">
+                        <!-- Cacho de Uvas -->
+                        <circle cx="25" cy="50" r="9" fill="#9b59b6" stroke="#8e44ad"/>
+                        <circle cx="15" cy="35" r="9" fill="#9b59b6" stroke="#8e44ad"/>
+                        <circle cx="35" cy="35" r="9" fill="#8e44ad" stroke="#6c3483"/>
+                        <circle cx="25" cy="20" r="9" fill="#9b59b6" stroke="#8e44ad"/>
+                        <circle cx="10" cy="20" r="8" fill="#8e44ad" stroke="#6c3483"/>
+                        <circle cx="40" cy="20" r="8" fill="#9b59b6" stroke="#8e44ad"/>
+                        <circle cx="25" cy="8" r="7" fill="#8e44ad" stroke="#6c3483"/>
+                        <!-- Folha -->
+                        <path d="M25,5 Q10,0 15,10 Q25,15 25,5 Z" fill="#2ecc71" stroke="#27ae60" stroke-width="1"/>
+                        <!-- Haste -->
+                        <path d="M25,5 L25,0" stroke="#795548" stroke-width="2"/>
+                    </g>
+                `
+            },
+            'laranja': { 
+                color: '#e67e22', 
+                gender: 'f', 
+                shape: `
+                    <g transform="translate(5,5)">
+                        <!-- Corpo Laranja -->
+                        <circle cx="30" cy="30" r="28" fill="#ff9f43" stroke="#e67e22" stroke-width="1"/>
+                        <!-- Poros (textura) -->
+                        <circle cx="20" cy="20" r="1" fill="#d35400" opacity="0.5"/>
+                        <circle cx="40" cy="35" r="1" fill="#d35400" opacity="0.5"/>
+                        <circle cx="15" cy="40" r="1" fill="#d35400" opacity="0.5"/>
+                        <circle cx="45" cy="15" r="1" fill="#d35400" opacity="0.5"/>
+                        <circle cx="30" cy="50" r="1" fill="#d35400" opacity="0.5"/>
+                        <!-- Umbigo/Haste -->
+                        <circle cx="30" cy="2" r="2" fill="#27ae60"/>
+                        <path d="M30,2 Q45,5 45,15 Q35,15 30,2 Z" fill="#2ecc71" stroke="#27ae60" stroke-width="1"/>
+                    </g>
+                `
+            },
+            'pera': { 
+                color: '#badc58', 
+                gender: 'f', 
+                shape: `
+                    <g transform="translate(10,5)">
+                         <!-- Corpo Pera -->
+                        <path d="M25,5 Q35,5 35,25 Q35,35 45,45 Q50,55 40,65 Q25,70 10,65 Q0,55 5,45 Q15,35 15,25 Q15,5 25,5 Z" fill="#dff9fb" stroke="#badc58" stroke-width="1.5"/>
+                        <path d="M25,5 Q35,5 35,25 Q35,35 45,45 Q50,55 40,65 Q25,70 10,65 Q0,55 5,45 Q15,35 15,25 Q15,5 25,5 Z" fill="#badc58" opacity="0.6"/>
+                        <!-- Haste -->
+                        <path d="M25,5 L25,0" stroke="#795548" stroke-width="3" stroke-linecap="round"/>
+                        <!-- Folha -->
+                        <path d="M25,2 Q35,5 35,10 Q25,10 25,2" fill="#6ab04c"/>
+                    </g>
+                `
+            },
+            'melancia': { 
+                color: '#2ecc71', 
+                gender: 'f', 
+                shape: `
+                    <g transform="translate(0,10)">
+                        <!-- Casca Verde -->
+                        <path d="M5,20 Q35,60 65,20" fill="#2ecc71" stroke="#27ae60" stroke-width="5" stroke-linecap="round"/>
+                        <!-- Polpa Vermelha -->
+                        <path d="M5,20 Q35,60 65,20 Z" fill="#ff6b6b" stroke="none"/>
+                        <!-- Sementes -->
+                        <ellipse cx="25" cy="30" rx="1.5" ry="3" fill="#333" transform="rotate(-20 25 30)"/>
+                        <ellipse cx="45" cy="30" rx="1.5" ry="3" fill="#333" transform="rotate(20 45 30)"/>
+                        <ellipse cx="35" cy="40" rx="1.5" ry="3" fill="#333"/>
+                    </g>
+                `
+            },
+            'abacaxi': { 
+                color: '#f9ca24', 
+                gender: 'm', 
+                shape: `
+                    <g transform="translate(10,5)">
+                        <!-- Coroa (Folhas) -->
+                        <path d="M15,20 L10,5 L20,15 L25,0 L30,15 L40,5 L35,20 Z" fill="#2ecc71" stroke="#27ae60" stroke-linejoin="round"/>
+                        <!-- Corpo Amarelo -->
+                        <ellipse cx="25" cy="45" rx="20" ry="25" fill="#f9ca24" stroke="#f39c12" stroke-width="1"/>
+                        <!-- Textura Cruzada -->
+                        <path d="M15,35 L35,55 M35,35 L15,55 M10,45 L40,45" stroke="#e67e22" stroke-width="1" opacity="0.6"/>
+                    </g>
+                `
+            },
+            'limão': { 
+                color: '#6ab04c', 
+                gender: 'm', 
+                shape: `
+                    <g transform="translate(5,15)">
+                        <!-- Corpo Limão (Forma de futebol americano) -->
+                        <path d="M5,25 Q15,5 35,5 Q55,5 65,25 Q55,45 35,45 Q15,45 5,25 Z" fill="#badc58" stroke="#6ab04c" stroke-width="1"/>
+                        <!-- Textura -->
+                        <circle cx="20" cy="20" r="1" fill="#6ab04c" opacity="0.5"/>
+                        <circle cx="40" cy="30" r="1" fill="#6ab04c" opacity="0.5"/>
+                        <circle cx="35" cy="15" r="1" fill="#6ab04c" opacity="0.5"/>
+                        <!-- Brilho -->
+                        <path d="M20,15 Q35,10 50,15" stroke="white" stroke-width="2" opacity="0.3" fill="none" stroke-linecap="round"/>
+                    </g>
+                `
+            }
         };
 
         const monsterColors = [
@@ -792,6 +937,7 @@
             options.forEach(type => {
                 const item = document.createElement('div');
                 item.className = 'basket-item';
+                // USEI 70px aqui para garantir que os SVGs novos caibam bem
                 item.innerHTML = `<svg viewBox="0 0 70 70" style="width:100%; height:100%; pointer-events:none;">${fruitsData[type].shape}</svg>`;
                 item.dataset.type = type;
                 item.addEventListener('touchstart', handleFruitDragStart, {passive: false});
