@@ -392,7 +392,7 @@
             if (isAmbient) state.lastAmbientSpeechTime = Date.now();
 
             if (Array.isArray(input)) {
-                // Toca sequencia
+                // Toca sequencia com a nova lógica otimizada
                 playAudioSequence(input);
             } else {
                 // Toca unico arquivo
@@ -401,25 +401,48 @@
             }
         }
 
+        // --- FUNÇÃO CORRIGIDA PARA REDUZIR DELAY ---
         function playAudioSequence(list) {
-            if (list.length === 0) return;
-            const current = list[0];
-            const audio = new Audio(`mp3/${current}.mp3`);
-            
-            audio.onended = function() {
-                playAudioSequence(list.slice(1));
-            };
-            
-            audio.onerror = function() {
-                // Se der erro (arquivo nao existe), pula para o proximo
-                console.log("Audio pulado (erro): " + current);
-                playAudioSequence(list.slice(1));
+            if (!list || list.length === 0) return;
+
+            // 1. Cria e inicia o carregamento de TODOS os áudios da sequência imediatamente
+            // Isso evita que o navegador espere o primeiro acabar para começar a baixar o segundo
+            const sequence = list.map(name => {
+                const audio = new Audio(`mp3/${name}.mp3`);
+                audio.preload = 'auto'; // Força o navegador a baixar
+                return audio;
+            });
+
+            // 2. Toca um por um, mas como já estão carregando em paralelo, o delay será mínimo
+            function playNext(index) {
+                if (index >= sequence.length) return;
+                
+                const currentAudio = sequence[index];
+                
+                // Configura o evento: quando acabar este, toca o próximo
+                currentAudio.onended = function() {
+                    playNext(index + 1);
+                };
+                
+                // Tratamento de erros para não travar a fala no meio
+                currentAudio.onerror = function() {
+                    console.log("Audio pulado (erro): " + list[index]);
+                    playNext(index + 1); 
+                };
+
+                // Tenta tocar
+                const playPromise = currentAudio.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(e => {
+                        console.log("Audio bloqueado ou erro: " + e);
+                        // Se falhar o play, tenta o próximo
+                        playNext(index + 1);
+                    });
+                }
             }
 
-            audio.play().catch(e => {
-                // Se der erro de play (bloqueio), tenta o proximo
-                playAudioSequence(list.slice(1));
-            });
+            // Inicia a sequência
+            playNext(0);
         }
 
         // Sintetizador de efeitos sonoros (mantido para efeitos como POP, FART, EAT)
