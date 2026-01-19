@@ -852,6 +852,22 @@
             }
         }
 
+        // --- FUNÇÃO AUXILIAR PARA GERAR NOME NO PLURAL CORRETO ---
+        function getFruitName(rawType, count) {
+            // Remove acentos e caracteres especiais para nome de arquivo
+            let safeName = rawType.replace(/[ãáàâ]/g, "a").replace("ç", "c").replace("ê", "e").replace("õ", "o");
+            
+            // Se for plural (mais de 1), adiciona "s" ou trata irregularidades
+            if (count > 1) {
+                if (safeName === 'limao') return 'limoes'; // Irregular
+                // Para os demais, apenas adiciona 's' (maca -> macas, morango -> morangos)
+                return safeName + 's'; 
+            }
+            
+            // Singular
+            return safeName;
+        }
+
         function setupNormalRound() {
             const types = Object.keys(fruitsData);
             state.targetType = types[Math.floor(Math.random() * types.length)];
@@ -860,7 +876,7 @@
             els.bellyCounter.innerText = '';
             els.eatenFruits.innerHTML = '';
             
-            // Lógica de Plural do Texto
+            // Lógica de Plural do Texto (para exibição na tela)
             let pluralText = state.targetType;
             if (state.targetCount > 1) {
                 if (state.targetType === 'limão') pluralText = 'limões';
@@ -877,13 +893,13 @@
             
             if (state.targetCount === 1) numAudio = (gender === 'm') ? 'um' : 'uma';
             if (state.targetCount === 2) numAudio = (gender === 'm') ? 'dois' : 'duas';
-            if (state.targetCount === 3) numAudio = 'tres';
+            if (state.targetCount === 3) numAudio = 'tres'; // Garanta que tem "tres.mp3"
 
-            // Nome do arquivo de fruta seguro
-            const normalFruitName = state.targetType.replace(/[ãáàâ]/g, "a").replace("ç", "c").replace("ê", "e").replace("õ", "o");
+            // Define nome do arquivo de áudio (singular ou plural)
+            const audioFruitName = getFruitName(state.targetType, state.targetCount);
             
-            // TOCA: "Quero" -> NumAudio (um/uma/dois/duas/tres) -> Fruta
-            playVoice(['quero', numAudio, normalFruitName]);
+            // TOCA: "Quero" -> NumAudio -> Fruta(plural se >1)
+            playVoice(['quero', numAudio, audioFruitName]);
 
             fillBasket([state.targetType]);
         }
@@ -897,18 +913,8 @@
             state.targetCount--; state.eatenCount++;
             els.bellyCounter.innerText = state.eatenCount;
             
-            // Fala apenas o numeral ao comer
-            // Aqui usamos o numeral simples (1, 2, 3) ou queremos genero também?
-            // Geralmente contagem é "um, dois, três". Vamos manter simples.
-            // Se quiser genero: 
-            // const gender = fruitsData[state.targetType].gender;
-            // let numAudio = state.eatenCount.toString();
-            // if (state.eatenCount === 1) numAudio = (gender === 'm') ? 'um' : 'uma';
-            // if (state.eatenCount === 2) numAudio = (gender === 'm') ? 'dois' : 'duas';
-            // if (state.eatenCount === 3) numAudio = 'tres';
-            // playVoice(numAudio);
-            
-            playVoice(state.eatenCount.toString()); // Mantém 1, 2, 3 simples por enquanto, a não ser que tenha "um.mp3" duplicado de "1.mp3"
+            // Fala apenas o numeral ao comer (1, 2, 3)
+            playVoice(state.eatenCount.toString()); 
             
             if (state.targetCount <= 0) {
                 setTimeout(() => playVoice('delicia'), 1000);
@@ -925,16 +931,23 @@
             els.blenderLiquid.style.opacity = 0;
             els.instruction.innerHTML = `Vitamina: <span class="highlight-num">1 ${t1}</span> e <span class="highlight-num">1 ${t2}</span>`;
             
-            // Nomes seguros para arquivo (sem acento)
-            const f1Safe = t1.replace(/[ãáàâ]/g, "a").replace("ç", "c").replace("ê", "e").replace("õ", "o");
-            const f2Safe = t2.replace(/[ãáàâ]/g, "a").replace("ç", "c").replace("ê", "e").replace("õ", "o");
+            // Nomes seguros para arquivo
+            const f1Safe = getFruitName(t1, 1);
+            const f2Safe = getFruitName(t2, 1);
+            
+            // Identifica gênero para falar "Um" ou "Uma"
+            const g1 = fruitsData[t1].gender;
+            const num1 = (g1 === 'm') ? 'um' : 'uma';
+            
+            const g2 = fruitsData[t2].gender;
+            const num2 = (g2 === 'm') ? 'um' : 'uma';
 
             if (state.justActivatedBlender) {
                 state.justActivatedBlender = false;
-                // "Vamos fazer uma vitamina" + "Vitamina de" + F1 + "com" + F2
-                playVoice(['modo_vitamina', 'vitamina_de', f1Safe, 'com', f2Safe]);
+                // "Vamos fazer uma vitamina" + "Vitamina de" + UM/UMA + Fruta1 + "com" + UM/UMA + Fruta2
+                playVoice(['modo_vitamina', 'vitamina_de', num1, f1Safe, 'com', num2, f2Safe]);
             } else {
-                playVoice(['vitamina_de', f1Safe, 'com', f2Safe]);
+                playVoice(['vitamina_de', num1, f1Safe, 'com', num2, f2Safe]);
             }
             
             fillBasket([t1, t2]);
@@ -954,12 +967,10 @@
                 for (let [t, q] of Object.entries(state.blenderRecipe)) { if (q > 0) remaining.push(t); }
                 
                 if (remaining.length > 0) {
-                    // Toca "Falta" + Fruta
-                    // Aqui sempre "Falta 1 ...", assumimos "um" ou "uma"? 
-                    // "Falta um morango" / "Falta uma banana"
+                    // Toca "Falta" + Um/Uma + Fruta (singular)
                     const gender = fruitsData[remaining[0]].gender;
                     const numAudio = (gender === 'm') ? 'um' : 'uma';
-                    const fSafe = remaining[0].replace(/[ãáàâ]/g, "a").replace("ç", "c").replace("ê", "e").replace("õ", "o");
+                    const fSafe = getFruitName(remaining[0], 1); // Singular
                     
                     playVoice(['falta', numAudio, fSafe]);
                 }
