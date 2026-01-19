@@ -898,7 +898,7 @@
             const gender = fruitsData[state.targetType].gender;
             let numAudio = state.targetCount.toString(); // Default 3 (tres)
             
-            if (state.targetCount === 1) numAudio = (gender === 'm') ? 'um' : 'uma';
+            if (state.targetCount === 1) numAudio = (gender === 'm') ? '1' : 'uma'; // Use '1.mp3' para masculino (garantido)
             if (state.targetCount === 2) numAudio = (gender === 'm') ? 'dois' : 'duas';
             if (state.targetCount === 3) numAudio = '3'; // USA '3.mp3' QUE É O PADRÃO ANTIGO
 
@@ -944,10 +944,10 @@
             
             // Identifica gênero para falar "Um" ou "Uma"
             const g1 = fruitsData[t1].gender;
-            const num1 = (g1 === 'm') ? 'um' : 'uma';
+            const num1 = (g1 === 'm') ? '1' : 'uma'; // Use '1.mp3' para masculino
             
             const g2 = fruitsData[t2].gender;
-            const num2 = (g2 === 'm') ? 'um' : 'uma';
+            const num2 = (g2 === 'm') ? '1' : 'uma'; // Use '1.mp3' para masculino
 
             if (state.justActivatedBlender) {
                 state.justActivatedBlender = false;
@@ -976,7 +976,7 @@
                 if (remaining.length > 0) {
                     // Toca "Falta" + Um/Uma + Fruta (singular)
                     const gender = fruitsData[remaining[0]].gender;
-                    const numAudio = (gender === 'm') ? 'um' : 'uma';
+                    const numAudio = (gender === 'm') ? '1' : 'uma'; // Use '1.mp3' para masculino
                     const fSafe = getFruitName(remaining[0], 1); // Singular
                     
                     playVoice(['falta', numAudio, fSafe]);
